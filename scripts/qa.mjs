@@ -135,7 +135,7 @@ check(robots.includes("Allow: /") && !robots.includes("Disallow: /"), "robots.tx
 check(robots.includes(`Sitemap: ${origin}/sitemap-index.xml`), "robots.txt must reference the automatic sitemap index");
 check(sitemapIndex.includes(`${origin}/sitemap-0.xml`), "sitemap index must reference the generated child sitemap");
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]).sort();
-const expectedUrls = pageRoutes.map((route) => route === "/" ? origin : `${origin}${route}`).sort();
+const expectedUrls = pageRoutes.map((route) => route === "/" ? `${origin}/` : `${origin}${route}`).sort();
 check(JSON.stringify(sitemapUrls) === JSON.stringify(expectedUrls), `sitemap URL set mismatch: expected ${expectedUrls.length}, got ${sitemapUrls.length}`);
 check(!sitemap.includes("/404") && !sitemap.includes("robots.txt") && !sitemap.includes("/evidence/"), "sitemap contains a non-canonical or utility URL");
 check(notFound.includes('content="noindex, follow"'), "404 must remain noindex");
