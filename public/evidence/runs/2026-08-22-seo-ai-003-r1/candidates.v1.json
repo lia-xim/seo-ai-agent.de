@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "runId": "SEO-AI-003-2026-08-22-R1",
+  "generatedAt": "2026-08-22T23:24:00+02:00",
+  "runner": {
+    "product": "OpenAI Codex Desktop",
+    "modelDisclosure": "GPT-5-basierter Codex-Agent; exakte serverseitige Build-ID nicht offengelegt",
+    "independentHumanReviewer": null
+  },
+  "candidates": [
+    {
+      "id": "L-001",
+      "sourcePath": "/aufgaben/technische-audit-triage",
+      "targetPath": "/benchmarks/2026-08-22-technische-audit-triage",
+      "sourcePassage": "Fünf technische Crawl- oder Indexierungsbefunde priorisieren und mit prüfbarer Evidenz für eine menschliche Entscheidung vorbereiten.",
+      "anchor": "ausgeführten First-Party-Lauf prüfen",
+      "placement": "Direkt nach dem Zielabschnitt",
+      "rationale": "Die Task-Spezifikation erhält einen direkten Belegpfad zum real ausgeführten Lauf derselben Task-Version.",
+      "conflict": "Der Lauf bildet den früheren Noindex-Preview ab und darf nicht als aktueller Live-Zustand gelesen werden."
+    },
+    {
+      "id": "L-002",
+      "sourcePath": "/aufgaben/technische-audit-triage",
+      "targetPath": "/fehlerbehandlung-seo-agenten",
+      "sourcePassage": "Abbrechen und Rückfrage stellen, sobald Schreibzugriff, ein nicht freigegebener kostenpflichtiger Endpunkt oder personenbezogene Kundendaten erforderlich werden.",
+      "anchor": "Stop-, Retry- und Eskalationsregeln festlegen",
+      "placement": "Unter der Stoppregel",
+      "rationale": "Die allgemeine Abbruchregel wird in einen ausführbaren Failure-Handling-Vertrag überführt.",
+      "conflict": "Kein automatischer Retry darf aus dem Link abgeleitet werden; die Zielseite verlangt taskbezogene Grenzen."
+    },
+    {
+      "id": "L-003",
+      "sourcePath": "/aufgaben/keyword-chancen-priorisieren",
+      "targetPath": "/methodik-und-konflikte",
+      "sourcePassage": "Zehn Keyword-Chancen für ein bestehendes Seiteninventar priorisieren, ohne fehlende Nachfrage- oder Rankingdaten zu erfinden.",
+      "anchor": "Evidenz- und Bewertungsmethodik prüfen",
+      "placement": "Direkt nach dem Zielabschnitt",
+      "rationale": "Die Methodik erklärt die Trennung von Beobachtung, Unsicherheit und Bewertung für datenabhängige Priorisierung.",
+      "conflict": "Die Methodik ersetzt weder echte GSC- noch Nachfrage-Daten."
+    },
+    {
+      "id": "L-004",
+      "sourcePath": "/aufgaben/keyword-chancen-priorisieren",
+      "targetPath": "/seo-agent-kosten",
+      "sourcePassage": "Abbrechen und Rückfrage stellen, wenn eine Zielseite, eine Nachfragequelle oder die Freigabe für frische kostenpflichtige Daten fehlt.",
+      "anchor": "Kostenlimit vor dem Datenabruf kalkulieren",
+      "placement": "Unter der Stoppregel",
+      "rationale": "Der lokale Rechner macht das in der Stoppregel geforderte Kostenlimit mit eigenen Konditionen planbar.",
+      "conflict": "Der Rechner kennt keine Providerpreise und liefert nur einen Planwert."
+    },
+    {
+      "id": "L-005",
+      "sourcePath": "/aufgaben/interne-links-begruenden",
+      "targetPath": "/faehigkeiten",
+      "sourcePassage": "Zehn interne Linkvorschläge erstellen, die eine reale Quellpassage mit einer hilfreichen Zielseite verbinden und von einer Person geprüft werden können.",
+      "anchor": "benötigte Link-Evidenz und Kontrollen ableiten",
+      "placement": "Direkt nach dem Zielabschnitt",
+      "rationale": "Der Capability-Rahmen zeigt, welche Lese-, Evidenz- und Kontrollfähigkeiten diese Aufgabe benötigt.",
+      "conflict": "Die Capability-Seite behauptet keine aktive Provider- oder MCP-Fähigkeit."
+    },
+    {
+      "id": "L-006",
+      "sourcePath": "/aufgaben/interne-links-begruenden",
+      "targetPath": "/fehlerbehandlung-seo-agenten",
+      "sourcePassage": "Abbrechen und Rückfrage stellen, wenn Seiteninhalte nicht gelesen werden können, die Zielseite nicht kanonisch ist oder Schreibzugriff erforderlich wird.",
+      "anchor": "Abbruch und Eskalation dokumentieren",
+      "placement": "Unter der Stoppregel",
+      "rationale": "Die Zielseite übersetzt die drei genannten Fehlerklassen in Stop-, Retry- und Eskalationsnachweise.",
+      "conflict": "Der Link darf nicht suggerieren, dass fehlender Inhalt oder ein nichtkanonisches Ziel automatisch retrybar ist."
+    },
+    {
+      "id": "L-007",
+      "sourcePath": "/agenten-vergleich",
+      "targetPath": "/methodik-und-konflikte",
+      "sourcePassage": "Ein guter Text kann trotzdem auf erfundenen Daten beruhen. Definiere Quellen und Artefakte vor dem Lauf.",
+      "anchor": "Bewertungsrubrik und Evidenzregeln",
+      "placement": "Nach der Frage „Was zählt als Beleg?“",
+      "rationale": "Die Auswahlhilfe verweist damit auf die detaillierte Rubrik statt Belegbarkeit nur abstrakt zu nennen.",
+      "conflict": "Der Methodenlink ist kein Qualitätssiegel für einen konkreten Agenten."
+    },
+    {
+      "id": "L-008",
+      "sourcePath": "/agenten-vergleich",
+      "targetPath": "/seo-agent-kosten",
+      "sourcePassage": "Fehlende Daten, neue Kosten, sensible Inhalte oder unerwartete Rechte müssen eine Rückfrage auslösen.",
+      "anchor": "Taskbudget und Kostenreserve planen",
+      "placement": "Nach der Frage „Wann muss das System stoppen?“",
+      "rationale": "Der Rechner konkretisiert den Kostenanteil des Auswahlgates ohne Marktpreisbehauptung.",
+      "conflict": "Sensible Inhalte und Rechte bleiben eigene Gates und werden durch ein Budget nicht freigegeben."
+    },
+    {
+      "id": "L-009",
+      "sourcePath": "/mcp-fuer-seo-agenten",
+      "targetPath": "/seo-agent-kosten",
+      "sourcePassage": "Endpoint, Auth, Scopes, Datenfrische, Kosten und Fehlermodi technisch verifizieren.",
+      "anchor": "Kosten- und Retry-Budget vorab kalkulieren",
+      "placement": "Unter Schritt 3 „Verbindung prüfen“",
+      "rationale": "Der Link verbindet die Kostenprüfung im MCP-Ablauf mit dem lokalen, providerneutralen Planungswerkzeug.",
+      "conflict": "Es existiert weiterhin kein öffentlich verifizierter Contextter-MCP-Endpunkt."
+    },
+    {
+      "id": "L-010",
+      "sourcePath": "/benchmarks",
+      "targetPath": "/seo-agent-kosten",
+      "sourcePassage": "Ein einzelner technischer Lauf macht noch keine Vergleichssaison. Anbieter-Rankings benötigen gleiche Aufgaben, Rechte, Budget und offengelegten Review.",
+      "anchor": "Provider- und Arbeitsbudget planen",
+      "placement": "Im Gate-Hinweis vor dem Methodenlink",
+      "rationale": "Die Benchmark-Sperre erhält einen direkten Weg zur Budgetzerlegung aus Providerkosten, Review, Retries und Reserve.",
+      "conflict": "Ein kalkuliertes Budget erfüllt weder Rechte-, Gleichheits- noch Review-Gates."
+    }
+  ]
+}

@@ -9,13 +9,15 @@ const pageRoutes = [
   "/", "/task-spec-builder", "/aufgaben",
   "/aufgaben/technische-audit-triage", "/aufgaben/keyword-chancen-priorisieren",
   "/aufgaben/interne-links-begruenden", "/benchmarks",
-  "/benchmarks/2026-08-22-technische-audit-triage", "/agenten-vergleich",
+  "/benchmarks/2026-08-22-technische-audit-triage",
+  "/benchmarks/2026-08-22-interne-link-evidenz", "/agenten-vergleich",
   "/faehigkeiten", "/mcp-fuer-seo-agenten", "/seo-agent-kosten",
   "/fehlerbehandlung-seo-agenten", "/methodik-und-konflikte",
   "/quellen-und-rechte", "/impressum", "/datenschutz"
 ];
 const collectionRoutes = new Set(["/aufgaben", "/benchmarks", "/faehigkeiten"]);
 const runRoute = "/benchmarks/2026-08-22-technische-audit-triage";
+const linkRunRoute = "/benchmarks/2026-08-22-interne-link-evidenz";
 
 const failures = [];
 const routeFile = (route) => route === "/" ? resolve(dist, "index.html") : resolve(dist, route.slice(1), "index.html");
@@ -79,8 +81,9 @@ for (const [route, html] of pageHtml) {
 
 const allSchemas = [...schemaByRoute.values()].flat();
 check(allSchemas.filter((node) => node["@type"] === "WebSite").length === 1, "schema: expected exactly one WebSite entity across the site");
-check(allSchemas.filter((node) => node["@type"] === "Dataset").length === 1, "schema: Dataset must exist only for the real reproducible run");
-check((schemaByRoute.get(runRoute) ?? []).some((node) => node["@type"] === "Dataset" && node.creator?.name === "Matthias Ramahi"), "schema: real run Dataset or creator missing");
+check(allSchemas.filter((node) => node["@type"] === "Dataset").length === 2, "schema: Dataset must exist only for the two real reproducible runs");
+check((schemaByRoute.get(runRoute) ?? []).some((node) => node["@type"] === "Dataset" && node.creator?.name === "Matthias Ramahi"), "schema: technical run Dataset or creator missing");
+check((schemaByRoute.get(linkRunRoute) ?? []).some((node) => node["@type"] === "Dataset" && node.creator?.name === "Matthias Ramahi"), "schema: link run Dataset or creator missing");
 check(allSchemas.filter((node) => node["@type"] === "SoftwareApplication").length === 1, "schema: SoftwareApplication must exist only for the Builder");
 check((schemaByRoute.get("/task-spec-builder") ?? []).some((node) => node["@type"] === "SoftwareApplication"), "schema: Builder SoftwareApplication missing");
 
@@ -119,10 +122,15 @@ check(failurePage.includes("https://airc.nist.gov/airmf-resources/playbook/manag
 const benchmark = pageHtml.get("/benchmarks");
 const runPage = pageHtml.get(runRoute);
 check(benchmark.includes("Matthias Ramahi") && benchmark.includes("Nicht vorhanden · offengelegt"), "benchmark hub: owner or missing independent review disclosure is absent");
+check(benchmark.includes("Provider- und Arbeitskostenbudget") && benchmark.includes("NOT PROVEN"), "benchmark hub: provider cost or authenticated GSC gate missing");
 check(runPage.includes("SEO-AI-001-2026-08-22-R1"), "run page: run ID missing");
 check(runPage.includes("Nicht unabhängig menschlich reviewed"), "run page: review status missing");
 check(runPage.includes("Der Lauf misst keine Rankings und behauptet keine aktive MCP-Verbindung"), "run page: ranking or MCP boundary missing");
 check((runPage.match(/class="raw-observation-head"/g) ?? []).length === 1, "run page: raw observation table missing");
+const linkRunPage = pageHtml.get(linkRunRoute);
+check(linkRunPage.includes("SEO-AI-003-2026-08-22-R1") && linkRunPage.includes("PARTIAL"), "link run page: run ID or partial status missing");
+check(linkRunPage.includes("10 / 10 bestanden") && linkRunPage.includes("Nicht unabhängig menschlich reviewed"), "link run page: validation or reviewer boundary missing");
+check((linkRunPage.match(/data-priority="PASS"/g) ?? []).length === 10, "link run page: expected ten evidence candidates");
 
 const imprint = pageHtml.get("/impressum");
 const privacy = pageHtml.get("/datenschutz");
@@ -168,11 +176,32 @@ check(result.findings.length === 5 && result.criteria.every((item) => item.statu
 check(result.execution.directCostEuro === 0 && result.execution.writesDuringRun === false, "run cost/write boundary mismatch");
 check(result.limitations.some((item) => item.includes("Search Console")) && result.limitations.some((item) => item.includes("MCP")), "run limitations must expose GSC and MCP boundaries");
 
+const linkEvidenceDir = resolve(root, "evidence", "runs", "2026-08-22-seo-ai-003-r1");
+const publicLinkEvidenceDir = resolve(root, "public", "evidence", "runs", "2026-08-22-seo-ai-003-r1");
+const linkArtifactNames = ["input.v1.json", "candidates.v1.json", "fixture.v1.json", "raw-observations.v1.json", "result.v1.json"];
+for (const name of linkArtifactNames) {
+  const canonical = await readFile(resolve(linkEvidenceDir, name), "utf8");
+  const publicMirror = await readFile(resolve(publicLinkEvidenceDir, name), "utf8");
+  check(canonical === publicMirror, `link run artifact mirror differs: ${name}`);
+}
+const linkInput = JSON.parse(await readFile(resolve(linkEvidenceDir, "input.v1.json"), "utf8"));
+const linkCandidates = JSON.parse(await readFile(resolve(linkEvidenceDir, "candidates.v1.json"), "utf8"));
+const linkFixture = JSON.parse(await readFile(resolve(linkEvidenceDir, "fixture.v1.json"), "utf8"));
+const linkRaw = JSON.parse(await readFile(resolve(linkEvidenceDir, "raw-observations.v1.json"), "utf8"));
+const linkResult = JSON.parse(await readFile(resolve(linkEvidenceDir, "result.v1.json"), "utf8"));
+check([linkInput.runId, linkCandidates.runId, linkFixture.runId, linkRaw.runId, linkResult.runId].every((id) => id === "SEO-AI-003-2026-08-22-R1"), "link run artifact IDs are inconsistent");
+check(linkFixture.origin === "https://seo-ai-agent.de" && Object.keys(linkFixture.pages).length >= 10, "link run frozen fixture is incomplete");
+check(linkInput.runner.independentReviewer === null && linkResult.review.independentHumanReviewer === null, "link run must not invent an independent reviewer");
+check(linkCandidates.candidates.length === 10 && linkRaw.observations.length === 10, "link run must preserve ten candidates and observations");
+check(linkRaw.observations.every((item) => Object.values(item.checks).every((value) => value === true) && !item.source.error && !item.target.error), "link run automated evidence checks must all pass");
+check(linkResult.status === "partial" && linkResult.criteria.some((item) => item.status === "not_proven"), "link run must preserve the partial Human-Review gate");
+check(linkResult.execution.directCostEuro === 0 && linkResult.execution.writesDuringRun === false && linkResult.execution.gscConnected === false && linkResult.execution.mcpConnected === false, "link run cost, write, GSC, or MCP boundary mismatch");
+
 const rights = JSON.parse(await readFile(resolve(root, "evidence", "rights-and-sources.v1.json"), "utf8"));
 const vercel = JSON.parse(await readFile(resolve(root, "vercel.json"), "utf8"));
 const packageJson = JSON.parse(await readFile(resolve(root, "package.json"), "utf8"));
 check(rights.domain === domain, "rights manifest domain mismatch");
-for (const id of ["first-real-task-run", "contextter-product-context", "seo-mcp-capability-reference", "original-social-card"]) check(rights.sources.some((source) => source.id === id), `rights manifest source missing: ${id}`);
+for (const id of ["first-real-task-run", "second-real-task-run", "contextter-product-context", "seo-mcp-capability-reference", "original-social-card"]) check(rights.sources.some((source) => source.id === id), `rights manifest source missing: ${id}`);
 check(rights.unknowns.some((item) => item.includes("Search Console")), "rights manifest must preserve authenticated GSC uncertainty");
 check(packageJson.dependencies?.["@astrojs/sitemap"], "official Astro sitemap integration is missing");
 check(packageJson.devDependencies?.["axe-core"], "axe-core dev dependency is missing");

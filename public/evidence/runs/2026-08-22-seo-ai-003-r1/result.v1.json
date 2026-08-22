@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "runId": "SEO-AI-003-2026-08-22-R1",
+  "evaluatedAt": "2026-08-22T23:27:00+02:00",
+  "benchmarkOwner": "Matthias Ramahi",
+  "task": "SEO-AI-003@0.1.0",
+  "promptVersion": "1.0.0",
+  "status": "partial",
+  "summary": {
+    "decision": "Der Lauf erzeugte genau zehn interne Linkkandidaten. Der nachgelagerte Harness bestätigte für alle zehn eine reale Quellpassage im Hauptinhalt, kanonische 200-Quellen und -Ziele sowie das Fehlen des Zielpfads im Hauptinhalt der Quelle. Natürlichkeit, Platzierung und redaktioneller Nutzen bleiben ohne zweiten menschlichen Reviewer nicht unabhängig bestätigt.",
+    "candidates": 10,
+    "automatedEvidenceChecksPassed": 10,
+    "independentlyReviewed": 0,
+    "publishedLinksDuringRun": 0
+  },
+  "execution": {
+    "startedAt": "2026-08-22T21:25:44.714Z",
+    "completedAt": "2026-08-22T21:25:45.371Z",
+    "validationDurationMs": 657,
+    "directCostEuro": 0,
+    "humanLaborCostEuro": null,
+    "paidProviderCalls": 0,
+    "writesDuringRun": false,
+    "gscConnected": false,
+    "mcpConnected": false
+  },
+  "review": {
+    "status": "Nicht unabhängig menschlich reviewed",
+    "independentHumanReviewer": null,
+    "editorialAdjudication": "Ausstehend",
+    "conflict": "Matthias Ramahi betreibt die geprüfte Website. Codex erzeugte und validierte die Vorschläge im Auftrag des Betreibers. Das ist First-Party-Arbeit und keine unabhängige Qualitätsbestätigung."
+  },
+  "criteria": [
+    {
+      "criterion": "Kanonische Quell- und Ziel-URL genannt",
+      "status": "pass",
+      "reason": "Alle zehn Kandidaten nennen Quelle und Ziel; beide Seiten lieferten im Harness 200 mit der erwarteten selbstreferenzierenden Canonical."
+    },
+    {
+      "criterion": "Quellpassage im Hauptinhalt vorhanden",
+      "status": "pass",
+      "reason": "Alle zehn wörtlich dokumentierten Passagen wurden innerhalb des jeweiligen <main>-Elements gefunden."
+    },
+    {
+      "criterion": "Bestehende Hauptinhaltslinks berücksichtigt",
+      "status": "pass",
+      "reason": "Keiner der zehn Zielpfade war vor dem Lauf im <main>-Bereich der jeweiligen Quelle verlinkt. Globale Navigation und Footer wurden bewusst nicht als Kontextlink gewertet."
+    },
+    {
+      "criterion": "Kein automatisches Setzen von Links",
+      "status": "pass",
+      "reason": "Der Lauf und sein Harness verwendeten ausschließlich öffentliche read-only HTTP-Aufrufe."
+    },
+    {
+      "criterion": "Anchor, Platzierung und Nutzerwert menschlich bestätigt",
+      "status": "not_proven",
+      "reason": "Es stand kein zweiter unabhängiger menschlicher Reviewer zur Verfügung; die zehn Vorschläge bleiben überprüfbare Kandidaten statt bestätigter Empfehlungen."
+    },
+    {
+      "criterion": "Keine GSC-, MCP- oder bezahlte Providerabhängigkeit",
+      "status": "pass",
+      "reason": "GSC und MCP waren nicht verbunden; es gab keine kostenpflichtigen Provideraufrufe und keine Providerbewertung."
+    }
+  ],
+  "limitations": [
+    "Kein unabhängiger menschlicher Reviewer war verfügbar; redaktionelle Qualität und tatsächlicher Nutzerwert bleiben deshalb NOT PROVEN.",
+    "Die exakte serverseitige Modell-Build-ID der Codex-Laufumgebung ist nicht offengelegt.",
+    "Der Harness prüft Textvorkommen, Status, Canonical und vorhandene Hauptinhaltslinks, nicht semantische Qualität oder spätere SEO-Wirkung.",
+    "Globale Navigation und Footer wurden nicht als Kontextlink gewertet; wiederholte Zielseiten können trotzdem zu Überverlinkung führen.",
+    "Search Console, Rankings, Klicks, Indexierung und Google-selected Canonicals wurden nicht abgefragt.",
+    "Es wurde kein MCP verbunden, kein externer Agent verglichen und kein Provideroutput als Ranking verwendet.",
+    "Direkte technische Kosten betrugen 0,00 EUR; menschliche Arbeitszeit wurde nicht monetär bewertet und ist daher keine vollständige Kostenmessung.",
+    "Die Rohbeobachtungen sind eine Momentaufnahme des Live-Stands vor nachgelagerten Website-Änderungen."
+  ],
+  "artifacts": {
+    "input": "/evidence/runs/2026-08-22-seo-ai-003-r1/input.v1.json",
+    "candidates": "/evidence/runs/2026-08-22-seo-ai-003-r1/candidates.v1.json",
+    "rawObservations": "/evidence/runs/2026-08-22-seo-ai-003-r1/raw-observations.v1.json",
+    "result": "/evidence/runs/2026-08-22-seo-ai-003-r1/result.v1.json",
+    "harness": "scripts/run-internal-link-evidence.mjs",
+    "fixture": "/evidence/runs/2026-08-22-seo-ai-003-r1/fixture.v1.json"
+  }
+}

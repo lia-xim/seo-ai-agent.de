@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "runId": "SEO-AI-003-2026-08-22-R1",
+  "frozenAt": "2026-08-22T23:23:30+02:00",
+  "benchmarkOwner": {
+    "name": "Matthias Ramahi",
+    "role": "Betreiber und Benchmark Owner"
+  },
+  "runner": {
+    "product": "OpenAI Codex Desktop",
+    "modelDisclosure": "GPT-5-basierter Codex-Agent; eine exakte serverseitige Modell-Build-ID wird der Laufumgebung nicht offengelegt.",
+    "independentReviewer": null,
+    "reviewStatus": "Nicht unabhängig menschlich reviewed"
+  },
+  "task": {
+    "id": "SEO-AI-003",
+    "version": "0.1.0",
+    "title": "Interne Links begründen",
+    "promptVersion": "1.0.0",
+    "prompt": "Erstelle genau zehn interne Linkvorschläge für die eingefrorenen Quellseiten. Jeder Vorschlag nennt Quell-URL, kanonische Ziel-URL, eine tatsächlich gelesene Quellpassage, natürlichen Anchor, Platzierung, Nutzen und möglichen Konflikt. Berücksichtige bestehende Links im Hauptinhalt. Führe keine Änderung aus, erfinde keine Passage, nutze keine kostenpflichtige API und behaupte keinen GSC-, Ranking-, Provider- oder MCP-Zustand."
+  },
+  "target": {
+    "origin": "https://seo-ai-agent.de",
+    "releaseState": "Indexierbare Produktion auf Git-Commit 0f5eac6 vor Umsetzung der geprüften Linkvorschläge",
+    "ownership": "Eigene Domain des Benchmark Owners; daher First-Party-Evidenz und keine unabhängige Drittprüfung"
+  },
+  "constraints": {
+    "access": "Öffentliches HTTP(S), read-only",
+    "timeLimitMinutes": 25,
+    "costLimitEuro": 0,
+    "externalPaidCallsAllowed": false,
+    "writesAllowed": false,
+    "gscAllowed": false,
+    "mcpAllowed": false,
+    "manualInterventions": "Laufstart, Kandidatengenerierung und nachgelagerte Auswertung durch Codex; HTTP-Validierung automatisiert"
+  },
+  "sourcePaths": [
+    "/aufgaben/technische-audit-triage",
+    "/aufgaben/keyword-chancen-priorisieren",
+    "/aufgaben/interne-links-begruenden",
+    "/agenten-vergleich",
+    "/mcp-fuer-seo-agenten",
+    "/benchmarks"
+  ],
+  "allowedTargetPaths": [
+    "/benchmarks/2026-08-22-technische-audit-triage",
+    "/methodik-und-konflikte",
+    "/faehigkeiten",
+    "/seo-agent-kosten",
+    "/fehlerbehandlung-seo-agenten"
+  ],
+  "evaluationCriteria": [
+    "Jeder Vorschlag nennt eine kanonische Quell- und Ziel-URL.",
+    "Die zitierte Quellpassage ist im öffentlichen Hauptinhalt tatsächlich vorhanden.",
+    "Das Ziel liefert 200 und deklariert sich selbst als Canonical.",
+    "Der Zielpfad ist im Hauptinhalt der Quelle noch nicht verlinkt.",
+    "Anchor, Platzierung und Konflikt werden offengelegt; ihre redaktionelle Qualität bleibt ohne unabhängigen Review unbestätigt.",
+    "Der Lauf setzt keinen Link und nutzt weder GSC, MCP noch kostenpflichtige Provider."
+  ],
+  "userAgent": "seo-ai-agent.de internal-link evidence probe/1.0 (+https://seo-ai-agent.de/methodik-und-konflikte)"
+}

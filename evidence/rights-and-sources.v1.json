@@ -99,6 +99,21 @@
       "rights": "Original First-Party run artifacts. No third-party model or provider output is reproduced."
     },
     {
+      "id": "second-real-task-run",
+      "kind": "implementation_evidence",
+      "title": "SEO-AI-003-2026-08-22-R1",
+      "location": "evidence/runs/2026-08-22-seo-ai-003-r1",
+      "url": "https://seo-ai-agent.de/benchmarks/2026-08-22-interne-link-evidenz",
+      "verifiedAt": "2026-08-22",
+      "supports": [
+        "A real dated First-Party internal-link task was executed against the public production site at commit 0f5eac6.",
+        "Ten source passages, canonical 200 sources and targets, and missing main-content target links were validated by a reproducible read-only harness.",
+        "An HTTP-derived First-Party page fixture freezes status, canonical, main text, main links and full-body hashes so the historical checks remain replayable after the live site changes.",
+        "Naturalness, placement and editorial value are not independently human-reviewed; the result status is partial and establishes no provider ranking or SEO outcome."
+      ],
+      "rights": "Original project task output and First-Party validation artifacts. No third-party provider output, screenshot, customer data, or ranking is reproduced."
+    },
+    {
       "id": "contextter-product-context",
       "kind": "verified_common_ownership_product_source",
       "title": "Contextter product website",
@@ -160,7 +175,7 @@
   ],
   "unknowns": [
     "Authenticated Search Console property, sitemap-submission, URL Inspection, Google-selected canonical, manual-action and security-issue state are not verified in this repository.",
-    "No independent human reviewer participated in SEO-AI-001-2026-08-22-R1.",
+    "No independent human reviewer participated in SEO-AI-001-2026-08-22-R1 or SEO-AI-003-2026-08-22-R1; the latter therefore remains partial.",
     "Provider permissions, fixed comparison budget and reviewer governance for a future multi-provider season are not recorded.",
     "The exact server-side model build identifier used by the Codex runtime is not exposed."
   ],

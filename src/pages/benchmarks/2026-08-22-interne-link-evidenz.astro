@@ -1,0 +1,128 @@
+---
+import input from "../../../evidence/runs/2026-08-22-seo-ai-003-r1/input.v1.json";
+import candidates from "../../../evidence/runs/2026-08-22-seo-ai-003-r1/candidates.v1.json";
+import raw from "../../../evidence/runs/2026-08-22-seo-ai-003-r1/raw-observations.v1.json";
+import result from "../../../evidence/runs/2026-08-22-seo-ai-003-r1/result.v1.json";
+import PageIntro from "../../components/PageIntro.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const evidenceRoot = "/evidence/runs/2026-08-22-seo-ai-003-r1";
+const observationById = new Map(raw.observations.map((observation) => [observation.id, observation]));
+---
+
+<BaseLayout
+  title="Interne Link-Evidenz vom 22.08.2026"
+  description="Ausgeführter First-Party-Tasklauf SEO-AI-003 mit zehn belegten Linkkandidaten, automatisierten HTML-Prüfungen und offenem Review-Gate."
+  canonicalPath="/benchmarks/2026-08-22-interne-link-evidenz"
+  structuredData={{
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "@id": "https://seo-ai-agent.de/benchmarks/2026-08-22-interne-link-evidenz#dataset",
+    name: "SEO-AI-003-2026-08-22-R1: Interne Link-Evidenz",
+    description: "Datierter First-Party-Tasklauf mit zehn Linkkandidaten und automatisierten Quell-, Ziel-, Passage- und Bestandslink-Prüfungen.",
+    url: "https://seo-ai-agent.de/benchmarks/2026-08-22-interne-link-evidenz",
+    creator: { "@type": "Person", name: "Matthias Ramahi" },
+    datePublished: "2026-08-22",
+    inLanguage: "de",
+    license: "https://seo-ai-agent.de/quellen-und-rechte",
+    isAccessibleForFree: true
+  }}
+>
+  <PageIntro
+    section="03.2"
+    title="Interne Link-Evidenz · R1"
+    description="Ein real ausgeführter read-only Lauf erzeugte zehn prüfbare Linkkandidaten. Die HTML-Evidenz ist bestanden; die redaktionelle Qualität bleibt ohne unabhängigen Human-Review bewusst offen."
+    meta="22.08.2026 / PARTIAL / NICHT UNABHÄNGIG REVIEWED"
+  />
+
+  <section class="run-summary" aria-labelledby="run-summary-title">
+    <div>
+      <span class="eyebrow">{result.runId}</span>
+      <h2 id="run-summary-title">Ausgeführt, aber nicht vollständig abgenommen</h2>
+      <p>{result.summary.decision}</p>
+    </div>
+    <dl>
+      <div><dt>Owner</dt><dd>{result.benchmarkOwner}</dd></div>
+      <div><dt>Task</dt><dd>{result.task}</dd></div>
+      <div><dt>Kandidaten</dt><dd>{result.summary.candidates}</dd></div>
+      <div><dt>HTML-Checks</dt><dd>{result.summary.automatedEvidenceChecksPassed} / 10 bestanden</dd></div>
+      <div><dt>Direkte Kosten</dt><dd>{result.execution.directCostEuro.toFixed(2)} EUR</dd></div>
+      <div><dt>Review</dt><dd>{result.review.status}</dd></div>
+    </dl>
+  </section>
+
+  <div class="two-column-section run-contract">
+    <section>
+      <h2>Eingefrorener Auftrag</h2>
+      <p>{input.task.prompt}</p>
+      <dl class="compact-definition-list">
+        <div><dt>Produktionsstand</dt><dd>Commit 0f5eac6</dd></div>
+        <div><dt>Zugriff</dt><dd>{input.constraints.access}</dd></div>
+        <div><dt>Zeitlimit</dt><dd>{input.constraints.timeLimitMinutes} Minuten</dd></div>
+        <div><dt>Kostenlimit</dt><dd>{input.constraints.costLimitEuro.toFixed(2)} EUR</dd></div>
+        <div><dt>Harness</dt><dd>{raw.harness.name} v{raw.harness.version} · {raw.harness.node}</dd></div>
+        <div><dt>Input-Hash</dt><dd><code>{raw.inputSha256}</code></dd></div>
+      </dl>
+    </section>
+    <aside class="disclosure-box">
+      <span>REVIEW-GRENZE</span>
+      <p>{result.review.conflict}</p>
+      <p>Kein zweiter Reviewer wurde erfunden. Deshalb ist der Gesamtstatus <strong>PARTIAL</strong>, nicht „bestanden“ und kein Ranking.</p>
+    </aside>
+  </div>
+
+  <section class="finding-ledger" aria-labelledby="candidates-title">
+    <h2 id="candidates-title">Zehn reproduzierbare Kandidaten</h2>
+    {candidates.candidates.map((candidate) => {
+      const observation = observationById.get(candidate.id);
+      return (
+        <article>
+          <header><span>{candidate.id}</span><strong data-priority="PASS">HTML PASS</strong></header>
+          <h3>{candidate.sourcePath} → {candidate.targetPath}</h3>
+          <dl>
+            <div><dt>Gelesene Passage</dt><dd>„{candidate.sourcePassage}“</dd></div>
+            <div><dt>Anchor</dt><dd>{candidate.anchor}</dd></div>
+            <div><dt>Platzierung</dt><dd>{candidate.placement}</dd></div>
+            <div><dt>Begründung</dt><dd>{candidate.rationale}</dd></div>
+            <div><dt>Konflikt</dt><dd>{candidate.conflict}</dd></div>
+            <div><dt>Automatische Evidenz</dt><dd>Quelle {observation?.source.status}, Ziel {observation?.target.status}, Passage gefunden, Ziel im Hauptinhalt zuvor nicht verlinkt.</dd></div>
+          </dl>
+        </article>
+      );
+    })}
+  </section>
+
+  <section class="criteria-ledger" aria-labelledby="criteria-title">
+    <h2 id="criteria-title">Kriterien und offener Gate</h2>
+    {result.criteria.map((item, index) => (
+      <div>
+        <span>{String(index + 1).padStart(2, "0")}</span>
+        <p><strong>{item.criterion}</strong><br />{item.reason}</p>
+        <b>{item.status.toUpperCase()}</b>
+      </div>
+    ))}
+  </section>
+
+  <div class="two-column-section">
+    <section>
+      <h2>Grenzen</h2>
+      <ul class="rule-list">{result.limitations.map((limitation) => <li>{limitation}</li>)}</ul>
+    </section>
+    <section>
+      <h2>Versionierte Artefakte</h2>
+      <ul class="rule-list">
+        <li><a class="text-link" href={`${evidenceRoot}/input.v1.json`}>Eingefrorener Input</a></li>
+        <li><a class="text-link" href={`${evidenceRoot}/candidates.v1.json`}>Ungeglättete Kandidaten</a></li>
+        <li><a class="text-link" href={`${evidenceRoot}/fixture.v1.json`}>Eingefrorenes Seiten-Fixture</a></li>
+        <li><a class="text-link" href={`${evidenceRoot}/raw-observations.v1.json`}>Automatische Rohbeobachtungen</a></li>
+        <li><a class="text-link" href={`${evidenceRoot}/result.v1.json`}>Auswertung</a></li>
+        <li><a class="text-link" href="https://github.com/lia-xim/seo-ai-agent.de/blob/main/scripts/run-internal-link-evidence.mjs">Reproduktions-Harness</a></li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="statement-band">
+    <p>Der Lauf beweist keine SEO-Wirkung. Er zeigt, welche Teile eines internen Linkvorschlags technisch reproduzierbar geprüft werden können – und welche menschlich offen bleiben.</p>
+    <a class="text-link" href="/benchmarks">Alle Taskläufe</a>
+  </section>
+</BaseLayout>

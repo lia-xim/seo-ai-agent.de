@@ -65,7 +65,7 @@ export const tasks = [
     slug: "interne-links-begruenden",
     title: "Interne Links begründen",
     version: "0.1.0",
-    status: "draft_spec",
+    status: "executed_once",
     summary: "Interne Linkvorschläge mit Quell-, Ziel-, Anchor- und Platzierungsevidenz belegen.",
     goal: "Zehn interne Linkvorschläge erstellen, die eine reale Quellpassage mit einer hilfreichen Zielseite verbinden und von einer Person geprüft werden können.",
     inScope: ["bereitgestellter Crawl- oder Linkexport", "Quell- und Ziel-URL", "konkrete Quellpassage", "Anchor-Vorschlag", "Nutzer- und Crawlpfad"],

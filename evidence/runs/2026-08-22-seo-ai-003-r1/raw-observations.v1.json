@@ -1,0 +1,382 @@
+{
+  "schemaVersion": 1,
+  "runId": "SEO-AI-003-2026-08-22-R1",
+  "inputSha256": "0820ad7e7483d9a2857ad690e28b47dff4df99b15689ddf668171ba0ce3ded54",
+  "candidatesSha256": "a9afce314086e7c86f75ea0f3a92237c2482527b7da879f5a61be1834e375c18",
+  "harness": {
+    "name": "run-internal-link-evidence.mjs",
+    "version": "1.0.0",
+    "node": "v24.15.0",
+    "redirects": "manual",
+    "mainContentBoundary": "<main> only"
+  },
+  "startedAt": "2026-08-22T21:25:44.714Z",
+  "completedAt": "2026-08-22T21:25:45.371Z",
+  "observations": [
+    {
+      "id": "L-001",
+      "source": {
+        "path": "/aufgaben/technische-audit-triage",
+        "requestedUrl": "https://seo-ai-agent.de/aufgaben/technische-audit-triage",
+        "observedAt": "2026-08-22T21:25:44.715Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/aufgaben/technische-audit-triage",
+        "expectedCanonical": "https://seo-ai-agent.de/aufgaben/technische-audit-triage",
+        "bodySha256": "4da4f37ca75e6835a6743df91fb16bdba62a521e0c2811f123043263fbd43c20",
+        "passageFound": true,
+        "targetAlreadyLinkedInMain": false,
+        "mainLinks": [
+          "/task-spec-builder"
+        ],
+        "error": null
+      },
+      "target": {
+        "path": "/benchmarks/2026-08-22-technische-audit-triage",
+        "requestedUrl": "https://seo-ai-agent.de/benchmarks/2026-08-22-technische-audit-triage",
+        "observedAt": "2026-08-22T21:25:44.806Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/benchmarks/2026-08-22-technische-audit-triage",
+        "expectedCanonical": "https://seo-ai-agent.de/benchmarks/2026-08-22-technische-audit-triage",
+        "bodySha256": "a0531262ab4d6c1b83466b678167ff8cbb7935a622bb5d1b0422ad865cd495cc",
+        "error": null
+      },
+      "checks": {
+        "sourceStatus200": true,
+        "sourceSelfCanonical": true,
+        "passagePresentInMain": true,
+        "targetStatus200": true,
+        "targetSelfCanonical": true,
+        "targetAbsentFromMainLinks": true
+      }
+    },
+    {
+      "id": "L-002",
+      "source": {
+        "path": "/aufgaben/technische-audit-triage",
+        "requestedUrl": "https://seo-ai-agent.de/aufgaben/technische-audit-triage",
+        "observedAt": "2026-08-22T21:25:44.715Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/aufgaben/technische-audit-triage",
+        "expectedCanonical": "https://seo-ai-agent.de/aufgaben/technische-audit-triage",
+        "bodySha256": "4da4f37ca75e6835a6743df91fb16bdba62a521e0c2811f123043263fbd43c20",
+        "passageFound": true,
+        "targetAlreadyLinkedInMain": false,
+        "mainLinks": [
+          "/task-spec-builder"
+        ],
+        "error": null
+      },
+      "target": {
+        "path": "/fehlerbehandlung-seo-agenten",
+        "requestedUrl": "https://seo-ai-agent.de/fehlerbehandlung-seo-agenten",
+        "observedAt": "2026-08-22T21:25:44.894Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/fehlerbehandlung-seo-agenten",
+        "expectedCanonical": "https://seo-ai-agent.de/fehlerbehandlung-seo-agenten",
+        "bodySha256": "c55f209be547f9ab6fd04979bb600040161b23e2b58786a4e6add67376702ff4",
+        "error": null
+      },
+      "checks": {
+        "sourceStatus200": true,
+        "sourceSelfCanonical": true,
+        "passagePresentInMain": true,
+        "targetStatus200": true,
+        "targetSelfCanonical": true,
+        "targetAbsentFromMainLinks": true
+      }
+    },
+    {
+      "id": "L-003",
+      "source": {
+        "path": "/aufgaben/keyword-chancen-priorisieren",
+        "requestedUrl": "https://seo-ai-agent.de/aufgaben/keyword-chancen-priorisieren",
+        "observedAt": "2026-08-22T21:25:44.926Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/aufgaben/keyword-chancen-priorisieren",
+        "expectedCanonical": "https://seo-ai-agent.de/aufgaben/keyword-chancen-priorisieren",
+        "bodySha256": "aebf321e799548393f51fd16e50cc4527179671c0d5de34d9ba5de322c8661b4",
+        "passageFound": true,
+        "targetAlreadyLinkedInMain": false,
+        "mainLinks": [
+          "/task-spec-builder"
+        ],
+        "error": null
+      },
+      "target": {
+        "path": "/methodik-und-konflikte",
+        "requestedUrl": "https://seo-ai-agent.de/methodik-und-konflikte",
+        "observedAt": "2026-08-22T21:25:44.927Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/methodik-und-konflikte",
+        "expectedCanonical": "https://seo-ai-agent.de/methodik-und-konflikte",
+        "bodySha256": "6c36a5eb9782a6834523d0f909ebbc87c795f4ece0cd89f528add2ceba5d1985",
+        "error": null
+      },
+      "checks": {
+        "sourceStatus200": true,
+        "sourceSelfCanonical": true,
+        "passagePresentInMain": true,
+        "targetStatus200": true,
+        "targetSelfCanonical": true,
+        "targetAbsentFromMainLinks": true
+      }
+    },
+    {
+      "id": "L-004",
+      "source": {
+        "path": "/aufgaben/keyword-chancen-priorisieren",
+        "requestedUrl": "https://seo-ai-agent.de/aufgaben/keyword-chancen-priorisieren",
+        "observedAt": "2026-08-22T21:25:44.926Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/aufgaben/keyword-chancen-priorisieren",
+        "expectedCanonical": "https://seo-ai-agent.de/aufgaben/keyword-chancen-priorisieren",
+        "bodySha256": "aebf321e799548393f51fd16e50cc4527179671c0d5de34d9ba5de322c8661b4",
+        "passageFound": true,
+        "targetAlreadyLinkedInMain": false,
+        "mainLinks": [
+          "/task-spec-builder"
+        ],
+        "error": null
+      },
+      "target": {
+        "path": "/seo-agent-kosten",
+        "requestedUrl": "https://seo-ai-agent.de/seo-agent-kosten",
+        "observedAt": "2026-08-22T21:25:45.223Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/seo-agent-kosten",
+        "expectedCanonical": "https://seo-ai-agent.de/seo-agent-kosten",
+        "bodySha256": "f646fe0327b40f23be2ec13ae8cef9042565b189d28721777b79389a9158ac3b",
+        "error": null
+      },
+      "checks": {
+        "sourceStatus200": true,
+        "sourceSelfCanonical": true,
+        "passagePresentInMain": true,
+        "targetStatus200": true,
+        "targetSelfCanonical": true,
+        "targetAbsentFromMainLinks": true
+      }
+    },
+    {
+      "id": "L-005",
+      "source": {
+        "path": "/aufgaben/interne-links-begruenden",
+        "requestedUrl": "https://seo-ai-agent.de/aufgaben/interne-links-begruenden",
+        "observedAt": "2026-08-22T21:25:45.252Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/aufgaben/interne-links-begruenden",
+        "expectedCanonical": "https://seo-ai-agent.de/aufgaben/interne-links-begruenden",
+        "bodySha256": "b8bad82671ad3b231a708186a5d40342184d8c59d2cf145f3f80cfa7b95a48cb",
+        "passageFound": true,
+        "targetAlreadyLinkedInMain": false,
+        "mainLinks": [
+          "/task-spec-builder"
+        ],
+        "error": null
+      },
+      "target": {
+        "path": "/faehigkeiten",
+        "requestedUrl": "https://seo-ai-agent.de/faehigkeiten",
+        "observedAt": "2026-08-22T21:25:45.252Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/faehigkeiten",
+        "expectedCanonical": "https://seo-ai-agent.de/faehigkeiten",
+        "bodySha256": "574c6abac18732c226d5ba58b8170d5eeef8d4ba95e5fb421e97f88a0d727098",
+        "error": null
+      },
+      "checks": {
+        "sourceStatus200": true,
+        "sourceSelfCanonical": true,
+        "passagePresentInMain": true,
+        "targetStatus200": true,
+        "targetSelfCanonical": true,
+        "targetAbsentFromMainLinks": true
+      }
+    },
+    {
+      "id": "L-006",
+      "source": {
+        "path": "/aufgaben/interne-links-begruenden",
+        "requestedUrl": "https://seo-ai-agent.de/aufgaben/interne-links-begruenden",
+        "observedAt": "2026-08-22T21:25:45.252Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/aufgaben/interne-links-begruenden",
+        "expectedCanonical": "https://seo-ai-agent.de/aufgaben/interne-links-begruenden",
+        "bodySha256": "b8bad82671ad3b231a708186a5d40342184d8c59d2cf145f3f80cfa7b95a48cb",
+        "passageFound": true,
+        "targetAlreadyLinkedInMain": false,
+        "mainLinks": [
+          "/task-spec-builder"
+        ],
+        "error": null
+      },
+      "target": {
+        "path": "/fehlerbehandlung-seo-agenten",
+        "requestedUrl": "https://seo-ai-agent.de/fehlerbehandlung-seo-agenten",
+        "observedAt": "2026-08-22T21:25:44.894Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/fehlerbehandlung-seo-agenten",
+        "expectedCanonical": "https://seo-ai-agent.de/fehlerbehandlung-seo-agenten",
+        "bodySha256": "c55f209be547f9ab6fd04979bb600040161b23e2b58786a4e6add67376702ff4",
+        "error": null
+      },
+      "checks": {
+        "sourceStatus200": true,
+        "sourceSelfCanonical": true,
+        "passagePresentInMain": true,
+        "targetStatus200": true,
+        "targetSelfCanonical": true,
+        "targetAbsentFromMainLinks": true
+      }
+    },
+    {
+      "id": "L-007",
+      "source": {
+        "path": "/agenten-vergleich",
+        "requestedUrl": "https://seo-ai-agent.de/agenten-vergleich",
+        "observedAt": "2026-08-22T21:25:45.285Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/agenten-vergleich",
+        "expectedCanonical": "https://seo-ai-agent.de/agenten-vergleich",
+        "bodySha256": "a7217684eb52694f8e8a101823599611f7091d31427eba0033d33dc2a6089b13",
+        "passageFound": true,
+        "targetAlreadyLinkedInMain": false,
+        "mainLinks": [
+          "/aufgaben",
+          "/fehlerbehandlung-seo-agenten"
+        ],
+        "error": null
+      },
+      "target": {
+        "path": "/methodik-und-konflikte",
+        "requestedUrl": "https://seo-ai-agent.de/methodik-und-konflikte",
+        "observedAt": "2026-08-22T21:25:44.927Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/methodik-und-konflikte",
+        "expectedCanonical": "https://seo-ai-agent.de/methodik-und-konflikte",
+        "bodySha256": "6c36a5eb9782a6834523d0f909ebbc87c795f4ece0cd89f528add2ceba5d1985",
+        "error": null
+      },
+      "checks": {
+        "sourceStatus200": true,
+        "sourceSelfCanonical": true,
+        "passagePresentInMain": true,
+        "targetStatus200": true,
+        "targetSelfCanonical": true,
+        "targetAbsentFromMainLinks": true
+      }
+    },
+    {
+      "id": "L-008",
+      "source": {
+        "path": "/agenten-vergleich",
+        "requestedUrl": "https://seo-ai-agent.de/agenten-vergleich",
+        "observedAt": "2026-08-22T21:25:45.285Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/agenten-vergleich",
+        "expectedCanonical": "https://seo-ai-agent.de/agenten-vergleich",
+        "bodySha256": "a7217684eb52694f8e8a101823599611f7091d31427eba0033d33dc2a6089b13",
+        "passageFound": true,
+        "targetAlreadyLinkedInMain": false,
+        "mainLinks": [
+          "/aufgaben",
+          "/fehlerbehandlung-seo-agenten"
+        ],
+        "error": null
+      },
+      "target": {
+        "path": "/seo-agent-kosten",
+        "requestedUrl": "https://seo-ai-agent.de/seo-agent-kosten",
+        "observedAt": "2026-08-22T21:25:45.223Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/seo-agent-kosten",
+        "expectedCanonical": "https://seo-ai-agent.de/seo-agent-kosten",
+        "bodySha256": "f646fe0327b40f23be2ec13ae8cef9042565b189d28721777b79389a9158ac3b",
+        "error": null
+      },
+      "checks": {
+        "sourceStatus200": true,
+        "sourceSelfCanonical": true,
+        "passagePresentInMain": true,
+        "targetStatus200": true,
+        "targetSelfCanonical": true,
+        "targetAbsentFromMainLinks": true
+      }
+    },
+    {
+      "id": "L-009",
+      "source": {
+        "path": "/mcp-fuer-seo-agenten",
+        "requestedUrl": "https://seo-ai-agent.de/mcp-fuer-seo-agenten",
+        "observedAt": "2026-08-22T21:25:45.313Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/mcp-fuer-seo-agenten",
+        "expectedCanonical": "https://seo-ai-agent.de/mcp-fuer-seo-agenten",
+        "bodySha256": "9a977bf35c3e973e1d3e2bf217cafc59871dd58e415f94ca4451955c48607d88",
+        "passageFound": true,
+        "targetAlreadyLinkedInMain": false,
+        "mainLinks": [
+          "/capabilities",
+          "/",
+          "/task-spec-builder"
+        ],
+        "error": null
+      },
+      "target": {
+        "path": "/seo-agent-kosten",
+        "requestedUrl": "https://seo-ai-agent.de/seo-agent-kosten",
+        "observedAt": "2026-08-22T21:25:45.223Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/seo-agent-kosten",
+        "expectedCanonical": "https://seo-ai-agent.de/seo-agent-kosten",
+        "bodySha256": "f646fe0327b40f23be2ec13ae8cef9042565b189d28721777b79389a9158ac3b",
+        "error": null
+      },
+      "checks": {
+        "sourceStatus200": true,
+        "sourceSelfCanonical": true,
+        "passagePresentInMain": true,
+        "targetStatus200": true,
+        "targetSelfCanonical": true,
+        "targetAbsentFromMainLinks": true
+      }
+    },
+    {
+      "id": "L-010",
+      "source": {
+        "path": "/benchmarks",
+        "requestedUrl": "https://seo-ai-agent.de/benchmarks",
+        "observedAt": "2026-08-22T21:25:45.346Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/benchmarks",
+        "expectedCanonical": "https://seo-ai-agent.de/benchmarks",
+        "bodySha256": "8e39ee447eac2050635707472cdf8e292a48f45fdb3d74d5b75723db34cf774a",
+        "passageFound": true,
+        "targetAlreadyLinkedInMain": false,
+        "mainLinks": [
+          "/benchmarks/2026-08-22-technische-audit-triage",
+          "/methodik-und-konflikte"
+        ],
+        "error": null
+      },
+      "target": {
+        "path": "/seo-agent-kosten",
+        "requestedUrl": "https://seo-ai-agent.de/seo-agent-kosten",
+        "observedAt": "2026-08-22T21:25:45.223Z",
+        "status": 200,
+        "canonical": "https://seo-ai-agent.de/seo-agent-kosten",
+        "expectedCanonical": "https://seo-ai-agent.de/seo-agent-kosten",
+        "bodySha256": "f646fe0327b40f23be2ec13ae8cef9042565b189d28721777b79389a9158ac3b",
+        "error": null
+      },
+      "checks": {
+        "sourceStatus200": true,
+        "sourceSelfCanonical": true,
+        "passagePresentInMain": true,
+        "targetStatus200": true,
+        "targetSelfCanonical": true,
+        "targetAbsentFromMainLinks": true
+      }
+    }
+  ]
+}

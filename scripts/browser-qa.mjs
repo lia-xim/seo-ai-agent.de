@@ -349,6 +349,23 @@ try {
   assert(resultInteraction.scrollWidth <= resultInteraction.viewport, "Result view horizontal overflow detected");
   const resultScreenshot = await screenshot("result-desktop.png");
 
+  await navigate("/benchmarks", desktopViewport);
+  const benchmarkHub = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector('h1')?.textContent.trim(),
+    runs: document.querySelectorAll('.published-run').length,
+    gates: document.querySelectorAll('.gate-list > div').length,
+    gscNotProven: document.body.textContent.includes('Authentifizierte Search Console') && document.body.textContent.includes('NOT PROVEN'),
+    providerBudgetBlocked: document.body.textContent.includes('Provider- und Arbeitskostenbudget') && document.body.textContent.includes('Nicht fixiert'),
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(benchmarkHub.h1 === "Zwei ausgeführte Läufe. Noch keine Rangliste.", "Benchmark hub h1 mismatch");
+  assert(benchmarkHub.runs === 2 && benchmarkHub.gates === 8, "Benchmark hub run or gate count mismatch");
+  assert(benchmarkHub.gscNotProven && benchmarkHub.providerBudgetBlocked, "Benchmark hub GSC or provider-budget gate missing");
+  assert(benchmarkHub.scrollWidth <= benchmarkHub.viewport, "Benchmark hub desktop horizontal overflow detected");
+  await runAxe("benchmark hub desktop");
+  const benchmarkHubScreenshot = await screenshot("benchmark-hub-desktop.png");
+
   await navigate("/benchmarks/2026-08-22-technische-audit-triage", desktopViewport);
   const runEvidence = JSON.parse(await evaluate(`JSON.stringify({
     h1: document.querySelector('h1')?.textContent.trim(),
@@ -366,6 +383,23 @@ try {
   await runAxe("run evidence desktop");
   const runScreenshot = await screenshot("run-evidence-desktop.png");
 
+  await navigate("/benchmarks/2026-08-22-interne-link-evidenz", desktopViewport);
+  const linkRunEvidence = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector('h1')?.textContent.trim(),
+    partial: document.body.textContent.includes('PARTIAL'),
+    reviewMissing: document.body.textContent.includes('Nicht unabhängig menschlich reviewed'),
+    candidates: document.querySelectorAll('.finding-ledger > article').length,
+    evidencePassed: document.body.textContent.includes('10 / 10 bestanden'),
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(linkRunEvidence.h1 === "Interne Link-Evidenz · R1", "Link run page h1 mismatch");
+  assert(linkRunEvidence.partial && linkRunEvidence.reviewMissing && linkRunEvidence.evidencePassed, "Link run partial/review evidence is incomplete");
+  assert(linkRunEvidence.candidates === 10, "Link run page does not expose ten candidates");
+  assert(linkRunEvidence.scrollWidth <= linkRunEvidence.viewport, "Link run desktop horizontal overflow detected");
+  await runAxe("link run evidence desktop");
+  const linkRunScreenshot = await screenshot("link-run-evidence-desktop.png");
+
   await navigate("/datenschutz", desktopViewport);
   const legal = JSON.parse(await evaluate(`JSON.stringify({
     h1: document.querySelector('h1')?.textContent.trim(),
@@ -380,6 +414,32 @@ try {
   assert(legal.scrollWidth <= legal.viewport, "Privacy page horizontal overflow detected");
   await runAxe("privacy desktop");
   const legalScreenshot = await screenshot("datenschutz-desktop.png");
+
+  await navigate("/benchmarks", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+  const benchmarkHubMobile = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector('h1')?.textContent.trim(),
+    runs: document.querySelectorAll('.published-run').length,
+    gates: document.querySelectorAll('.gate-list > div').length,
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(benchmarkHubMobile.h1 === "Zwei ausgeführte Läufe. Noch keine Rangliste.", "Mobile benchmark hub h1 mismatch");
+  assert(benchmarkHubMobile.runs === 2 && benchmarkHubMobile.gates === 8, "Mobile benchmark hub run or gate count mismatch");
+  assert(benchmarkHubMobile.scrollWidth <= benchmarkHubMobile.viewport, "Mobile benchmark hub horizontal overflow detected");
+  await runAxe("benchmark hub mobile");
+  const benchmarkHubMobileScreenshot = await screenshot("benchmark-hub-mobile.png");
+
+  await navigate("/benchmarks/2026-08-22-interne-link-evidenz", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+  const linkRunMobile = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector('h1')?.textContent.trim(),
+    candidates: document.querySelectorAll('.finding-ledger > article').length,
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(linkRunMobile.h1 === "Interne Link-Evidenz · R1" && linkRunMobile.candidates === 10, "Mobile link run content is incomplete");
+  assert(linkRunMobile.scrollWidth <= linkRunMobile.viewport, "Mobile link run horizontal overflow detected");
+  await runAxe("link run evidence mobile");
+  const linkRunMobileScreenshot = await screenshot("link-run-evidence-mobile.png");
 
   await navigate("/seo-agent-kosten", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   const costMobile = JSON.parse(await evaluate(`JSON.stringify({
@@ -423,7 +483,7 @@ try {
   const mobileScreenshot = await screenshot("homepage-mobile.png");
 
   assert(errors.length === 0, `Browser console/runtime errors: ${errors.join(" | ")}`);
-  console.log(JSON.stringify({ browserExecutable, desktop, performance, keyboard, capabilities, mcp, costCalculator, failureHandling, comparison, library, interaction, resultInteraction, runEvidence, legal, costMobile, builderMobile, mobile, axeResults, screenshots: [desktopScreenshot, capabilitiesScreenshot, mcpScreenshot, costScreenshot, failureScreenshot, comparisonScreenshot, libraryScreenshot, builderScreenshot, resultScreenshot, runScreenshot, legalScreenshot, costMobileScreenshot, builderMobileScreenshot, mobileScreenshot], errors }, null, 2));
+  console.log(JSON.stringify({ browserExecutable, desktop, performance, keyboard, capabilities, mcp, costCalculator, failureHandling, comparison, library, interaction, resultInteraction, benchmarkHub, runEvidence, linkRunEvidence, legal, benchmarkHubMobile, linkRunMobile, costMobile, builderMobile, mobile, axeResults, screenshots: [desktopScreenshot, capabilitiesScreenshot, mcpScreenshot, costScreenshot, failureScreenshot, comparisonScreenshot, libraryScreenshot, builderScreenshot, resultScreenshot, benchmarkHubScreenshot, runScreenshot, linkRunScreenshot, legalScreenshot, benchmarkHubMobileScreenshot, linkRunMobileScreenshot, costMobileScreenshot, builderMobileScreenshot, mobileScreenshot], errors }, null, 2));
 } finally {
   if (socket?.readyState === WebSocket.OPEN) socket.close();
   browserProcess.kill();

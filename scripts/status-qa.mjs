@@ -10,12 +10,18 @@ const routes = [
   "/", "/task-spec-builder", "/aufgaben",
   "/aufgaben/technische-audit-triage", "/aufgaben/keyword-chancen-priorisieren",
   "/aufgaben/interne-links-begruenden", "/benchmarks",
-  "/benchmarks/2026-08-22-technische-audit-triage", "/agenten-vergleich",
+  "/benchmarks/2026-08-22-technische-audit-triage",
+  "/benchmarks/2026-08-22-interne-link-evidenz", "/agenten-vergleich",
   "/faehigkeiten", "/mcp-fuer-seo-agenten", "/seo-agent-kosten", "/fehlerbehandlung-seo-agenten", "/methodik-und-konflikte", "/quellen-und-rechte", "/impressum", "/datenschutz",
   "/robots.txt", "/sitemap-index.xml", "/sitemap-0.xml",
   "/evidence/runs/2026-08-22-seo-ai-001-r1/input.v1.json",
   "/evidence/runs/2026-08-22-seo-ai-001-r1/raw-observations.v1.json",
   "/evidence/runs/2026-08-22-seo-ai-001-r1/result.v1.json",
+  "/evidence/runs/2026-08-22-seo-ai-003-r1/input.v1.json",
+  "/evidence/runs/2026-08-22-seo-ai-003-r1/candidates.v1.json",
+  "/evidence/runs/2026-08-22-seo-ai-003-r1/fixture.v1.json",
+  "/evidence/runs/2026-08-22-seo-ai-003-r1/raw-observations.v1.json",
+  "/evidence/runs/2026-08-22-seo-ai-003-r1/result.v1.json",
   "/social-card.png"
 ];
 

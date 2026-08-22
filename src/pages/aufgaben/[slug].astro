@@ -9,6 +9,16 @@ export const getStaticPaths = (() =>
   tasks.map((task) => ({ params: { slug: task.slug }, props: { task } }))) satisfies GetStaticPaths;
 
 const { task } = Astro.props as { task: TaskDefinition };
+const runHref = task.id === "SEO-AI-001"
+  ? "/benchmarks/2026-08-22-technische-audit-triage"
+  : task.id === "SEO-AI-003"
+    ? "/benchmarks/2026-08-22-interne-link-evidenz"
+    : null;
+const taskMeta = task.status === "draft_spec"
+  ? `ENTWURF / V${task.version} / KEIN LAUF`
+  : task.id === "SEO-AI-003"
+    ? `AUSGEFÜHRT / V${task.version} / PARTIAL`
+    : `AUSGEFÜHRT / V${task.version} / REALER LAUF`;
 ---
 
 <BaseLayout
@@ -20,7 +30,7 @@ const { task } = Astro.props as { task: TaskDefinition };
     section={task.id.slice(-2)}
     title={task.title}
     description={task.summary}
-    meta={`ENTWURF / V${task.version} / KEIN LAUF`}
+    meta={taskMeta}
   />
 
   <div class="task-detail-grid">
@@ -72,5 +82,16 @@ const { task } = Astro.props as { task: TaskDefinition };
   <section class="stop-rule">
     <span>STOPPREGEL</span>
     <p>{task.stopRule}</p>
+  </section>
+
+  <section class="statement-band">
+    <p>{task.status === "executed_once" ? "Zu dieser Spezifikation ist ein datierter First-Party-Lauf veröffentlicht. Prüfe Ergebnisstatus und Grenzen, bevor du die Recipe übernimmst." : "Diese Spezifikation ist noch nicht als realer Lauf veröffentlicht. Methodik, Budget und Failure Handling bleiben vor einer Ausführung Pflicht."}</p>
+    <div class="inline-links">
+      {runHref && <a class="text-link" href={runHref}>Ausgeführten Lauf prüfen</a>}
+      <a class="text-link" href="/methodik-und-konflikte">Evidenz- und Bewertungsmethodik</a>
+      <a class="text-link" href="/faehigkeiten">Fähigkeiten und Kontrollen</a>
+      <a class="text-link" href="/seo-agent-kosten">Taskbudget kalkulieren</a>
+      <a class="text-link" href="/fehlerbehandlung-seo-agenten">Stop und Eskalation festlegen</a>
+    </div>
   </section>
 </BaseLayout>

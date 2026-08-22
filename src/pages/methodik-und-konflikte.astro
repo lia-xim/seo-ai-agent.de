@@ -22,7 +22,7 @@ const dimensions = [
     section="05"
     title="Eine Punktzahl ersetzt kein Protokoll."
     description="Die Rubrik soll Entscheidungen strukturieren. Sie darf weder fehlende Evidenz überdecken noch unterschiedliche Aufgaben in eine scheinbar präzise Rangliste pressen."
-    meta="METHODIK / ENTWURF V0.1"
+    meta="METHODIK / V0.2 / PROVIDER-GATES"
   />
 
   <section class="dimension-ledger" aria-labelledby="dimension-title">
@@ -51,7 +51,7 @@ const dimensions = [
   <div class="two-column-section">
     <section>
       <h2>Review und Adjudikation</h2>
-      <p>Objektive Felder werden gegen das Laufprotokoll geprüft. Der erste technische First-Party-Lauf hat keinen unabhängigen menschlichen Reviewer und kennzeichnet das offen. Subjektive SEO-Qualität oder eine spätere Anbieter-Rangliste braucht zwei Reviewer oder eine schriftlich begründete Adjudikation. Abweichungen bleiben sichtbar; sie werden nicht nachträglich in einen Mittelwert versteckt.</p>
+      <p>Objektive Felder werden gegen das Laufprotokoll geprüft. Beide veröffentlichten First-Party-Läufe haben keinen unabhängigen menschlichen Reviewer und kennzeichnen das offen; SEO-AI-003 bleibt deshalb trotz bestandener HTML-Gates nur teilweise abgenommen. Subjektive SEO-Qualität oder eine spätere Anbieter-Rangliste braucht zwei Reviewer oder eine schriftlich begründete Adjudikation. Abweichungen bleiben sichtbar; sie werden nicht nachträglich in einen Mittelwert versteckt.</p>
       <p>Die Planung orientiert sich an dokumentierten Test-, Evaluations-, Verifikations- und Validierungsprozessen. Als Primärreferenz dient das <a class="text-link" href="https://airc.nist.gov/">NIST AI Resource Center</a>. Das ist keine NIST-Prüfung oder -Empfehlung dieser Website.</p>
     </section>
     <section>
@@ -59,6 +59,15 @@ const dimensions = [
       <p>Je nach Aufgabe können Crawl-Exporte, Search-Console-Daten, kanonische Signale, robots-Regeln, Sitemaps, interne Links und Repository-Diffs relevant sein. Die <a class="text-link" href="https://developers.google.com/search/docs/fundamentals/get-started">Google-Search-Central-Dokumentation</a> ist eine Primärquelle für Google-spezifische Aussagen, aber kein Ersatz für die Beobachtung der getesteten Website.</p>
     </section>
   </div>
+
+  <section class="gate-list" aria-labelledby="season-gates-title">
+    <h2 id="season-gates-title">Verbindliche Gates vor einem Providervergleich</h2>
+    <div><span>01</span><p>Rechte und Bedingungen</p><strong>Benchmarking, Output, Screenshots und Zitate vorab geklärt</strong></div>
+    <div><span>02</span><p>Gleiche Ausführung</p><strong>Gefrorener Input, Version, Scope, Zeit, Rubrik und Retry-Regel</strong></div>
+    <div><span>03</span><p>Vollständiges Kostenlimit</p><strong>Provider, Daten, Accounts, Infrastruktur, Retries und Human-Review</strong></div>
+    <div><span>04</span><p>Reviewerstatus</p><strong>Zweiter Mensch oder sichtbarer Nicht-unabhängig-Status</strong></div>
+    <div><span>05</span><p>Ausschlüsse</p><strong>Fehler, Timeouts, Abbrüche und nicht vergleichbare Läufe bleiben sichtbar</strong></div>
+  </section>
 
   <section class="conflict-grid">
     <div>
@@ -76,6 +85,14 @@ const dimensions = [
     <div>
       <h2>Versionsregel</h2>
       <p>Ein Ergebnis gilt nur für die dokumentierte Aufgabe, Produktversion, Umgebung und das Testdatum. Spätere Produktänderungen werden als Korrektur oder neuer Lauf behandelt.</p>
+    </div>
+    <div>
+      <h2>Search-Console-Status</h2>
+      <p><strong>NOT PROVEN:</strong> In dieser Audit-Sitzung ist kein authentifizierter GSC-Zugang verfügbar. Property, Sitemap-Submission, URL Inspection, Google-selected Canonical, manuelle Maßnahmen und Sicherheitsprobleme werden daher nicht als geprüft behauptet.</p>
+    </div>
+    <div>
+      <h2>Kostenstatus künftiger Vergleiche</h2>
+      <p><strong>Gesperrt:</strong> Ein jährliches oder saisonales Provider- und Arbeitsbudget ist nicht fixiert. Kein bezahlter Abruf und keine Anbieter-Saison startet ohne dokumentierte Obergrenzen.</p>
     </div>
   </section>
 </BaseLayout>

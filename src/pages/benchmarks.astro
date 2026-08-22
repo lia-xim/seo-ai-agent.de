@@ -5,10 +5,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const gates = [
   ["Benchmark Owner", "Matthias Ramahi · erfüllt"],
-  ["Eingefrorene Aufgabe", "SEO-AI-001@0.1.0 · erfüllt"],
-  ["Rohbeobachtungen", "14 Probes · veröffentlicht"],
+  ["Eingefrorene Aufgaben", "SEO-AI-001 und SEO-AI-003 · veröffentlicht"],
+  ["Rohbeobachtungen", "14 HTTP-Probes und 10 Linkvalidierungen"],
   ["Unabhängiger menschlicher Review", "Nicht vorhanden · offengelegt"],
+  ["Provider- und Arbeitskostenbudget", "Nicht fixiert · Providervergleich gesperrt"],
   ["Vergleichbare Anbieter-Saison", "Nicht durchgeführt"],
+  ["Authentifizierte Search Console", "NOT PROVEN"],
   ["Live-MCP-Verbindung", "Deaktiviert"]
 ];
 ---
@@ -20,9 +22,9 @@ const gates = [
   pageType="CollectionPage"
 >
   <PageIntro    section="03"
-    title="Ein echter Lauf. Noch keine Rangliste."
-    description="Der erste veröffentlichte Lauf prüft den eigenen Noindex-Preview vor dem Launch. Er dokumentiert echte HTTP-Beobachtungen, aber weder ein Anbieter-Ranking noch eine unabhängige Review."
-    meta="TASKLAUF / 22.08.2026 / FIRST-PARTY"
+    title="Zwei ausgeführte Läufe. Noch keine Rangliste."
+    description="Zu zwei First-Party-Läufen sind technische Rohbeobachtungen und Linkkandidaten veröffentlicht. Der zweite bleibt ohne unabhängigen menschlichen Review ausdrücklich nur teilweise abgenommen."
+    meta="2 TASKLÄUFE / 22.08.2026 / FIRST-PARTY"
   />
 
   <section class="gate-list" aria-labelledby="gate-title">
@@ -51,9 +53,25 @@ const gates = [
     <a class="button button-primary" href="/benchmarks/2026-08-22-technische-audit-triage">Lauf und Rohdaten prüfen</a>
   </section>
 
+  <section class="published-run" aria-labelledby="published-link-run-title">
+    <div>
+      <span class="eyebrow">SEO-AI-003-2026-08-22-R1</span>
+      <h2 id="published-link-run-title">Interne Link-Evidenz der Live-Site</h2>
+      <p>Zehn Kandidaten wurden gegen den damaligen Hauptinhalt geprüft. Für alle zehn sind Passage, kanonische 200-Quelle und -Ziel sowie der zuvor fehlende Kontextlink belegt. Die menschliche Qualitätsabnahme bleibt offen.</p>
+    </div>
+    <dl>
+      <div><dt>Owner</dt><dd>Matthias Ramahi</dd></div>
+      <div><dt>Status</dt><dd>PARTIAL</dd></div>
+      <div><dt>Review</dt><dd>Nicht unabhängig menschlich reviewed</dd></div>
+      <div><dt>Kosten</dt><dd>0,00 EUR direkt; Arbeitszeit unbewertet</dd></div>
+      <div><dt>MCP / GSC</dt><dd>Nicht verbunden</dd></div>
+    </dl>
+    <a class="button button-primary" href="/benchmarks/2026-08-22-interne-link-evidenz">Kandidaten und Rohdaten prüfen</a>
+  </section>
+
   <div class="two-column-section">
     <section>
-      <h2>Was dieser Lauf belegt</h2>
+      <h2>Was der technische Lauf belegt</h2>
       <ul class="rule-list">
         <li>Der Task wurde vor der Launch-Korrektur gegen reale öffentliche Antworten ausgeführt.</li>
         <li>Input, Prompt, Harness, Node-Version, Zeitstempel und Kriterien sind eingefroren.</li>
@@ -68,8 +86,24 @@ const gates = [
     </aside>
   </div>
 
+  <section class="comparison-gates" aria-labelledby="provider-gates-title">
+    <header class="section-heading">
+      <div>
+        <span class="eyebrow">Providervergleich bleibt gesperrt</span>
+        <h2 id="provider-gates-title">Vier Nachweise fehlen vor jeder Anbieter-Saison.</h2>
+        <p>Die zwei First-Party-Läufe öffnen keine Rangliste. Ein externer Vergleich beginnt erst, wenn alle Gates vor dem ersten Abruf feststehen.</p>
+      </div>
+    </header>
+    <div>
+      <article><span>01</span><h3>Gleicher eingefrorener Auftrag</h3><p>Identischer Input, Scope, Zeitrahmen, Fehlerregel und Abnahmerubrik für jeden Teilnehmer.</p></article>
+      <article><span>02</span><h3>Rechte und Bedingungen</h3><p>Öffentliche Benchmarking-, Screenshot-, Output- und Zitierrechte werden je Produkt vorab dokumentiert.</p></article>
+      <article><span>03</span><h3>Vollständiges Budget</h3><p>Provider, Daten, Accounts, Retries, Infrastruktur und menschliche Prüfzeit erhalten feste Limits. Aktuell ist kein Saisonbudget fixiert.</p></article>
+      <article><span>04</span><h3>Review und Ausschlüsse</h3><p>Zweiter menschlicher Reviewer oder klarer Nicht-unabhängig-Status; Fehlversuche und ausgeschlossene Läufe bleiben sichtbar.</p></article>
+    </div>
+  </section>
+
   <section class="statement-band">
-    <p>Ein einzelner technischer Lauf macht noch keine Vergleichssaison. Anbieter-Rankings benötigen gleiche Aufgaben, Rechte, Budget und offengelegten Review.</p>
-    <a class="text-link" href="/methodik-und-konflikte">Methodik lesen</a>
+    <p>Authentifizierte Search-Console-Evidenz ist aktuell <strong>NOT PROVEN</strong>. Sitemap-Erreichbarkeit, ein Site-Query oder öffentlicher Crawl beweisen weder Submission noch Indexierung.</p>
+    <div class="inline-links"><a class="text-link" href="/methodik-und-konflikte">Methodik lesen</a><a class="text-link" href="/seo-agent-kosten">Provider- und Arbeitsbudget planen</a></div>
   </section>
 </BaseLayout>
