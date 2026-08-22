@@ -85,7 +85,19 @@ check(Array.isArray(rights.unknowns) && rights.unknowns.length > 0, "rights mani
 
 const robotsHeader = vercel.headers?.flatMap((entry) => entry.headers ?? []).find((entry) => entry.key === "X-Robots-Tag");
 check(robotsHeader?.value === "noindex, follow", "Vercel must apply the X-Robots-Tag boundary to all routes");
-check(!Array.isArray(vercel.redirects) || vercel.redirects.length === 0, "Vercel config must not introduce catch-all redirects");
+const redirects = vercel.redirects ?? [];
+check(redirects.length === 1, "Vercel must define exactly one canonical-host redirect");
+const wwwRedirect = redirects[0];
+check(
+  wwwRedirect?.source === "/:path*" &&
+    wwwRedirect?.destination === "https://seo-ai-agent.de/:path*" &&
+    wwwRedirect?.permanent === true,
+  "Vercel must preserve paths while permanently redirecting www to the apex domain",
+);
+check(
+  wwwRedirect?.has?.some((condition) => condition.type === "host" && condition.value === "www.seo-ai-agent.de"),
+  "the canonical redirect must be scoped to the www host",
+);
 
 if (failures.length > 0) {
   console.error(`QA failed with ${failures.length} issue(s):\n- ${failures.join("\n- ")}`);
