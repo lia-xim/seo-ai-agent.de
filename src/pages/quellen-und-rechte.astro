@@ -1,0 +1,59 @@
+---
+import PageIntro from "../components/PageIntro.astro";
+import { site } from "../data/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Quellen und Rechte"
+  description="Quellenregister, Drittanbieterrechte und Evidenzgrenzen von seo-ai-agent.de."
+  canonicalPath="/quellen-und-rechte"
+>
+  <PageIntro
+    section="06"
+    title="Quelle, Beobachtung und Bewertung bleiben getrennt."
+    description="Jede belastbare Aussage braucht eine benannte Quelle oder einen reproduzierbaren Lauf. Gemeinsames Eigentum ist keine unabhängige Bestätigung."
+    meta="QUELLENREGISTER / 2026-08-22"
+  />
+
+  <section class="source-register" aria-labelledby="source-title">
+    <h2 id="source-title">Verifizierte öffentliche Quellen</h2>
+    <article>
+      <span>01 / PRIMÄRQUELLE</span>
+      <h3><a href="https://airc.nist.gov/">NIST AI Resource Center</a></h3>
+      <p>Referenz für dokumentierte Test-, Evaluations-, Verifikations- und Validierungsprozesse. Keine NIST-Prüfung oder Empfehlung dieser Website.</p>
+    </article>
+    <article>
+      <span>02 / PRIMÄRQUELLE</span>
+      <h3><a href="https://developers.google.com/search/docs/fundamentals/get-started">Google Search Central</a></h3>
+      <p>Referenz für Google-spezifische Crawl-, Indexierungs-, Canonical-, robots-, Sitemap- und 404-Aussagen. Keine Google-Empfehlung dieser Website.</p>
+    </article>
+    <article>
+      <span>03 / IMPLEMENTIERUNG</span>
+      <h3><a href={site.githubUrl}>Öffentliches Projekt-Repository</a></h3>
+      <p>Quelle für Code, aktuelle Datenschutzfunktion und Änderungshistorie. Ohne ausdrücklich hinzugefügte Lizenz wird keine Open-Source-Nutzungserlaubnis erteilt.</p>
+    </article>
+  </section>
+
+  <div class="two-column-section">
+    <section>
+      <h2>Fresh-Domain-Status</h2>
+      <ul class="rule-list">
+        <li>seo-ai-agent.de ist eine neu registrierte eigene Domain.</li>
+        <li>Die Seite führt keine frühere Website, Marke, Betreiberidentität oder historische URL-Struktur fort.</li>
+        <li>Unbekannte Pfade bleiben echte 404-Antworten; es gibt keinen Catch-all-Redirect.</li>
+        <li>Für den Preview-Start bestehen keine Archiv-, Altbetreiber- oder Legacy-Rechte-Gates.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Drittanbieter-Material</h2>
+      <p>Screenshots, Texte, Code, Datensätze, Logos sowie Modell- und Provideroutputs werden nur mit passender Lizenz, Erlaubnis oder rechtlich zulässiger Zitatgrundlage verwendet.</p>
+      <p>Produktnamen dürfen zur sachlichen Identifikation eines getesteten Systems genannt werden. Eine Nennung ist keine Partnerschaft, Empfehlung oder Rechteübertragung.</p>
+    </section>
+  </div>
+
+  <section class="rights-boundary">
+    <span>BEWERTUNGSGRENZE</span>
+    <p>Keine erfundenen Tests, Rankings, Kundenresultate oder Hands-on-Erfahrungen. Contextter und andere gemeinsam kontrollierte Seiten gelten nicht als unabhängige Bestätigung.</p>
+  </section>
+</BaseLayout>

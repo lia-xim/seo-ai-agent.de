@@ -1,24 +1,22 @@
 ---
-import { site } from "../data/site";
-import "../styles/global.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<!doctype html>
-<html lang={site.language}>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="robots" content="noindex, nofollow, noarchive" />
-    <title>Not found | {site.domain}</title>
-  </head>
-  <body>
-    <main>
-      <div class="eyebrow">{site.domain}</div>
-      <h1>Page not found</h1>
-      <p class="purpose">Only the project setup page exists at the moment.</p>
-      <div class="actions"><a href="/">Return to the project setup</a></div>
-    </main>
-  </body>
-</html>
-
-
+<BaseLayout
+  title="Seite nicht gefunden"
+  description="Diese URL ist nicht Teil der aktuellen seo-ai-agent.de-Architektur."
+  canonicalPath="/404"
+  bodyClass="not-found-page"
+>
+  <section class="not-found">
+    <span class="section-number" aria-hidden="true">404</span>
+    <div>
+      <h1>Dieser Pfad hat keine Aufgabe.</h1>
+      <p>Diese URL gehört nicht zur aktuellen Seitenstruktur. Sie antwortet deshalb als echte 404 und wird nicht pauschal zur Startseite umgeleitet.</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="/">Zur Startseite</a>
+        <a class="text-link" href="/aufgaben">Aufgaben ansehen</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

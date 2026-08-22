@@ -1,0 +1,497 @@
+---
+import { tasks } from "../data/tasks";
+
+
+const sourceOptions = [...new Set(tasks.flatMap((task) => task.allowedSources))];
+const initialTask = tasks[0];
+---
+
+<section class="builder" data-task-builder data-reveal>
+  <div class="builder-status" aria-live="polite">
+    <span>Lokaler Status</span>
+    <strong data-local-status>Felder vollständig</strong>
+  </div>
+
+  <div class="recipe-mode-bar">
+    <div class="mode-switch" aria-label="Datenmodus">
+      <span>Modus</span>
+      <button type="button" class="mode-option active" aria-pressed="true"><i aria-hidden="true"></i>Ohne MCP</button>
+      <button type="button" class="mode-option" aria-pressed="false" aria-disabled="true" data-live-mode><i aria-hidden="true"></i>Mit echten Daten</button>
+    </div>
+    <div class="recipe-promise">
+      <strong>Task Recipe</strong>
+      <span>Prompt, Datenbedarf, Grenzen und Nachweise in einem Vertrag.</span>
+    </div>
+  </div>
+
+  <div class="step-rail" aria-label="Abschnitte der Spezifikation">
+    {[
+      ["01", "Aufgabe", "task-fields"],
+      ["02", "Evidenz", "evidence-fields"],
+      ["03", "Zugriff", "access-fields"],
+      ["04", "Budget", "limit-fields"],
+      ["05", "Abnahme", "acceptance-fields"]
+    ].map(([number, label, target], index) => (
+      <button type="button" class:list={{ active: index === 0 }} data-step-target={target} data-flow-node>
+        <span>{number}</span>{label}
+      </button>
+    ))}
+  </div>
+
+  <div class="builder-workspace">
+    <form class="spec-form">
+      <div class="active-task">
+        <label for="task-id">Ausgewählte Recipe</label>
+        <select id="task-id" name="taskId">
+          {tasks.map((task) => <option value={task.slug}>{task.title}</option>)}
+        </select>
+      </div>
+
+      <fieldset id="task-fields">
+        <legend>01 / Aufgabe</legend>
+        <label for="goal">Ziel</label>
+        <textarea id="goal" name="goal" rows="4">{initialTask.goal}</textarea>
+
+        <label for="domain">Domain</label>
+        <div>
+          <input id="domain" name="domain" type="url" inputmode="url" value="https://deine-domain.de" />
+          <p class="field-help inline-help">Bleibt lokal in dieser Recipe.</p>
+        </div>
+
+        <label for="in-scope">Im Scope</label>
+        <textarea id="in-scope" name="inScope" rows="4">{initialTask.inScope.join("\n")}</textarea>
+
+        <label for="out-of-scope">Nicht im Scope</label>
+        <textarea id="out-of-scope" name="outOfScope" rows="3">{initialTask.outOfScope.join("\n")}</textarea>
+      </fieldset>
+
+      <fieldset id="evidence-fields">
+        <legend>02 / Evidenz</legend>
+        <p class="field-help">Nur tatsächlich bereitgestellte Quellen auswählen.</p>
+        <div class="source-options">
+          {sourceOptions.map((source) => (
+            <label>
+              <input type="checkbox" name="sources" value={source} checked={initialTask.allowedSources.includes(source as never)} />
+              <span>{source}</span>
+            </label>
+          ))}
+        </div>
+
+        <label for="freshness-policy">Freshness</label>
+        <select id="freshness-policy" name="freshnessPolicy">
+          <option value="providedOnly">Nur bereitgestellte Daten</option>
+          <option value="storedOnly">Gespeicherte MCP-Daten</option>
+        </select>
+      </fieldset>
+
+      <fieldset id="access-fields">
+        <legend>03 / Zugriff</legend>
+        <label for="access-mode">Zugriffsmodus</label>
+        <select id="access-mode" name="accessMode">
+          <option value="read-only">Nur lesen</option>
+          <option value="propose-only">Änderungen nur vorschlagen</option>
+        </select>
+        <p class="field-help">Schreibzugriff ist in dieser Spezifikation bewusst nicht verfügbar.</p>
+      </fieldset>
+
+      <fieldset id="limit-fields" class="limit-grid">
+        <legend>04 / Budget</legend>
+        <div>
+          <label for="time-limit">Zeitlimit</label>
+          <div class="input-unit">
+            <input id="time-limit" name="timeLimit" type="number" min="1" max="480" value={initialTask.timeLimitMinutes} />
+            <span>Minuten</span>
+          </div>
+        </div>
+        <div>
+          <label for="cost-limit">Kostenlimit</label>
+          <div class="input-unit">
+            <input id="cost-limit" name="costLimit" type="number" min="0" max="1000" step="0.01" value={initialTask.costLimitEuro} />
+            <span>EUR</span>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset id="acceptance-fields">
+        <legend>05 / Abnahme</legend>
+        <label for="expected-output">Erwartetes Ergebnis</label>
+        <textarea id="expected-output" name="expectedOutput" rows="4">{initialTask.expectedOutput}</textarea>
+
+        <label for="stop-rule">Abbruchregel</label>
+        <textarea id="stop-rule" name="stopRule" rows="4">{initialTask.stopRule}</textarea>
+      </fieldset>
+
+      <div class="builder-actions">
+        <button class="button button-primary" type="submit">Task Recipe erstellen</button>
+        <button class="button button-secondary" type="button" data-show-example>Beispiel ansehen</button>
+        <button class="button button-secondary" type="button" data-copy-markdown>Markdown kopieren</button>
+        <button class="button button-secondary" type="button" data-download-json>JSON herunterladen</button>
+      </div>
+      <p class="action-status" aria-live="polite" data-action-status>Die Spezifikation bleibt in diesem Browser.</p>
+    </form>
+
+    <aside class="connection-panel" aria-labelledby="connection-title">
+      <header>
+        <span class="connection-orbit" aria-hidden="true"></span>
+        <div><p>Datenverbindung</p><h2 id="connection-title">Contextter MCP</h2></div>
+      </header>
+      <button type="button" class="button button-disabled" disabled>MCP-Pilot in Vorbereitung</button>
+      <p class="connection-state"><i aria-hidden="true"></i>Noch nicht verbunden</p>
+      <div class="capability-list">
+        <h3>Erforderliche Fähigkeiten</h3>
+        <ul data-capabilities>
+          {initialTask.requiredCapabilities.map((capability) => <li>{capability}</li>)}
+        </ul>
+      </div>
+      <div class="connection-policy">
+        <span aria-hidden="true">i</span>
+        <p>Contextter wird gemeinsam betrieben. Keine automatische Bewertung.</p>
+      </div>
+      <p class="connection-help">Ein echter Connect wird erst aktiviert, wenn OAuth, Scopes und mindestens ein Read-Tool live nachgewiesen sind.</p>
+    </aside>
+
+    <aside class="spec-output" aria-label="Aktuelle Spezifikation">
+      <header>
+        <h2>TASK RECIPE / <span data-output-id>{initialTask.id}</span></h2>
+        <label for="output-format">Format</label>
+        <select id="output-format" data-output-format>
+          <option value="markdown">Markdown</option>
+          <option value="json">JSON</option>
+        </select>
+      </header>
+      <div class="output-body">
+        <pre tabindex="0"><code data-spec-output></code></pre>
+        <div class="validation-rail">
+          <h3>Validierung</h3>
+          <ol>
+            {["ID", "Ziel & Domain", "Scope", "Quellen", "Zugriff", "Limits", "Ergebnis", "Abbruchregel", "Schema"].map((label) => (
+              <li data-validation-item><span aria-hidden="true"></span><b>{label}</b><em>OK</em></li>
+            ))}
+          </ol>
+          <output data-validation-total>9 / 9 Felder</output>
+        </div>
+      </div>
+      <footer>
+        <span>SCHEMA / TASK-SPEC.V1.JSON</span>
+        <span data-output-time>LOKAL</span>
+      </footer>
+    </aside>
+  </div>
+
+  <section class="result-workspace" data-result-workspace hidden aria-labelledby="result-title">
+    <header class="result-intro">
+      <button type="button" class="result-back" data-edit-recipe>
+        <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M16 10H5M9 5l-5 5 5 5" /></svg>
+        Recipe bearbeiten
+      </button>
+      <div>
+        <h2 id="result-title">Ergebnis prüfen.</h2>
+        <p>So sieht ein prüfbarer Run aus: Befunde, Evidenz, Datenlücken, Kosten und Abbruchstatus bleiben sichtbar.</p>
+      </div>
+      <strong>Beispielergebnis · keine Live-Daten</strong>
+    </header>
+
+    <div class="result-summary">
+      <div><span>Recipe</span><b>Technische Audit-Triage</b></div>
+      <div><span>Status</span><b>abgeschlossen</b></div>
+      <div><span>Datenmodus</span><b>synthetisches Beispiel</b></div>
+      <div><span>Kosten</span><b>0,00 EUR</b></div>
+      <div><span>Freshness</span><b>nicht anwendbar</b></div>
+    </div>
+
+    <div class="result-canvas">
+      <div class="findings-pane">
+        <header><h3>Befunde (3)</h3><span>Auswahl zur Prüfung</span></header>
+        <div class="findings-list">
+          <button type="button" class="active" data-finding data-title="Canonical-Ziel widerspricht der Indexierungsabsicht" data-priority="Hoch" data-priority-class="high" data-url="/beispiel-seite/" data-reason="Die Canonical-Referenz zeigt auf eine andere URL als die Seite, die laut interner Verlinkung indexiert werden soll. Dadurch kann die gewünschte Seite möglicherweise nicht wie beabsichtigt im Index erscheinen." data-evidence="Synthetischer Audit-Snapshot&#10;Canonical: /andere-seite/&#10;Interne Links: 7 auf /beispiel-seite/&#10;HTTP-Status: 200" data-next="Canonical-Ziel und Indexierungsabsicht manuell abgleichen. Erst danach Canonical oder interne Verlinkung anpassen." data-uncertainty="Die Aussage basiert auf einem künstlichen Snapshot. Parameter, Facetten und Sprachversionen wurden nicht live geprüft.">
+            <span>01</span><b>Canonical-Ziel widerspricht der Indexierungsabsicht</b><em class="priority high">Hoch</em><code>/beispiel-seite/</code><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" /></svg>
+          </button>
+          <button type="button" data-finding data-title="Interner Link endet in einer Weiterleitung" data-priority="Mittel" data-priority-class="medium" data-url="/ratgeber/" data-reason="Ein interner Link verweist im Beispiel nicht direkt auf das kanonische Ziel. Das erzeugt einen unnötigen Redirect-Hop und erschwert die spätere Pflege." data-evidence="Synthetischer Audit-Snapshot&#10;Quell-URL: /ratgeber/&#10;Linkziel: /alte-leistung/&#10;Redirect-Ziel: /leistung/" data-next="Quellpassage und endgültiges Ziel prüfen. Den Link erst nach menschlicher Freigabe direkt auf die kanonische URL setzen." data-uncertainty="Es wurde keine Live-Seite gelesen. Der Link kann im realen System absichtlich über eine Weiterleitung geführt werden.">
+            <span>02</span><b>Interner Link endet in einer Weiterleitung</b><em class="priority medium">Mittel</em><code>/ratgeber/</code><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" /></svg>
+          </button>
+          <button type="button" data-finding data-title="Title und H1 beschreiben unterschiedliche Suchintentionen" data-priority="Prüfen" data-priority-class="review" data-url="/leistung/" data-reason="Title und H1 setzen im Beispiel unterschiedliche Schwerpunkte. Das kann sinnvoll sein, sollte aber gegen Seiteninhalt und Suchnachfrage geprüft werden." data-evidence="Synthetischer Seiten-Snapshot&#10;Title: Technisches SEO Audit&#10;H1: SEO-Beratung für Unternehmen&#10;Search Performance: nicht verbunden" data-next="Seiteninhalt, Zielgruppe und Search-Performance zusammen prüfen. Ohne Nachfrage- oder Seitenevidenz keine automatische Textänderung vorschlagen." data-uncertainty="Ohne Search-Performance und vollständigen Seiteninhalt ist dies nur ein Prüfhinweis, kein bestätigter Fehler.">
+            <span>03</span><b>Title und H1 beschreiben unterschiedliche Suchintentionen</b><em class="priority review">Prüfen</em><code>/leistung/</code><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" /></svg>
+          </button>
+        </div>
+
+        <section class="evidence-ledger">
+          <h3>Evidenz &amp; Grenzen</h3>
+          <dl>
+            <div><dt>Quelle</dt><dd>synthetischer Audit-Snapshot</dd></div>
+            <div><dt>Abdeckung</dt><dd>3 Beispiel-URLs</dd></div>
+            <div><dt>Datenlücke</dt><dd>keine Search-Performance verbunden</dd></div>
+            <div><dt>Review</dt><dd>Manuelle Prüfung erforderlich</dd></div>
+          </dl>
+        </section>
+      </div>
+
+      <article class="finding-detail">
+        <header>
+          <span class="priority high" data-detail-priority>Hoch</span>
+          <div><h3 data-detail-title>Canonical-Ziel widerspricht der Indexierungsabsicht</h3><p>Betroffene URL: <code data-detail-url>/beispiel-seite/</code></p></div>
+        </header>
+        <section><h4>Begründung</h4><p data-detail-reason>Die Canonical-Referenz zeigt auf eine andere URL als die Seite, die laut interner Verlinkung indexiert werden soll. Dadurch kann die gewünschte Seite möglicherweise nicht wie beabsichtigt im Index erscheinen.</p></section>
+        <section><h4>Evidenz</h4><pre data-detail-evidence>Synthetischer Audit-Snapshot
+Canonical: /andere-seite/
+Interne Links: 7 auf /beispiel-seite/
+HTTP-Status: 200</pre></section>
+        <section><h4>Empfohlener nächster Schritt</h4><p data-detail-next>Canonical-Ziel und Indexierungsabsicht manuell abgleichen. Erst danach Canonical oder interne Verlinkung anpassen.</p></section>
+        <aside><strong>Unsicherheit</strong><p data-detail-uncertainty>Die Aussage basiert auf einem künstlichen Snapshot. Parameter, Facetten und Sprachversionen wurden nicht live geprüft.</p></aside>
+      </article>
+    </div>
+
+    <div class="result-connect">
+      <div><span>Für einen echten Run verbinden</span><ul data-result-capabilities>{initialTask.requiredCapabilities.map((capability) => <li>{capability}</li>)}</ul></div>
+      <button type="button" class="button button-disabled" disabled>Contextter MCP verbinden – bald verfügbar</button>
+      <p>Contextter wird gemeinsam betrieben.<br />Keine automatische Bewertung.</p>
+    </div>
+
+    <footer class="result-actions">
+      <button class="button button-secondary" type="button" data-result-copy>Als Markdown exportieren</button>
+      <button class="button button-secondary" type="button" data-result-download>JSON herunterladen</button>
+      <button class="button button-primary" type="button" data-new-recipe>Neue Recipe</button>
+    </footer>
+  </section>
+</section>
+
+<script>
+  import { tasks } from "../data/tasks";
+  import gsap from "gsap";
+
+  const root = document.querySelector<HTMLElement>("[data-task-builder]");
+
+  if (root) {
+    const form = root.querySelector<HTMLFormElement>(".spec-form")!;
+    const output = root.querySelector<HTMLElement>("[data-spec-output]")!;
+    const outputId = root.querySelector<HTMLElement>("[data-output-id]")!;
+    const outputFormat = root.querySelector<HTMLSelectElement>("[data-output-format]")!;
+    const validationItems = [...root.querySelectorAll<HTMLElement>("[data-validation-item]")];
+    const validationTotal = root.querySelector<HTMLOutputElement>("[data-validation-total]")!;
+    const localStatus = root.querySelector<HTMLElement>("[data-local-status]")!;
+    const actionStatus = root.querySelector<HTMLElement>("[data-action-status]")!;
+    const outputTime = root.querySelector<HTMLElement>("[data-output-time]")!;
+    const taskSelect = form.elements.namedItem("taskId") as HTMLSelectElement;
+
+    const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+    const lines = (value: string) => value.split("\n").map((line) => line.trim()).filter(Boolean);
+    const selectedSources = () => [...form.querySelectorAll<HTMLInputElement>('input[name="sources"]:checked')].map((item) => item.value);
+
+    const buildSpec = () => {
+      const selected = tasks.find((task) => task.slug === taskSelect.value) ?? tasks[0];
+      return {
+        schema: "task-spec.v1",
+        id: selected.id,
+        version: selected.version,
+        task: selected.title,
+        target: {
+          domain: field("domain").value.trim()
+        },
+        goal: field("goal").value.trim(),
+        in_scope: lines(field("inScope").value),
+        out_of_scope: lines(field("outOfScope").value),
+        allowed_sources: selectedSources(),
+        required_capabilities: [...selected.requiredCapabilities],
+        data_connection: {
+          provider: "contextter",
+          status: "not_connected",
+          execution_available: false,
+          freshness_policy: field("freshnessPolicy").value
+        },
+        access: {
+          mode: field("accessMode").value,
+          write_allowed: false
+        },
+        limits: {
+          time_minutes: Number(field("timeLimit").value),
+          cost_eur: Number(field("costLimit").value)
+        },
+        expected_output: field("expectedOutput").value.trim(),
+        stop_rule: field("stopRule").value.trim(),
+        review_required: true
+      };
+    };
+
+    const toMarkdown = (spec: ReturnType<typeof buildSpec>) => [
+      `# Task Recipe: ${spec.task}`,
+      "",
+      `- ID: ${spec.id}`,
+      `- Version: ${spec.version}`,
+      `- Zugriff: ${spec.access.mode}; Schreibzugriff: nein`,
+      `- Zeitlimit: ${spec.limits.time_minutes} Minuten`,
+      `- Kostenlimit: ${spec.limits.cost_eur.toFixed(2)} EUR`,
+      "",
+      "## Ziel",
+      spec.goal,
+      "",
+      "## Im Scope",
+      ...spec.in_scope.map((item) => `- ${item}`),
+      "",
+      "## Nicht im Scope",
+      ...spec.out_of_scope.map((item) => `- ${item}`),
+      "",
+      "## Erlaubte Quellen",
+      ...spec.allowed_sources.map((item) => `- ${item}`),
+      "",
+      "## Erforderliche MCP-Capabilities",
+      ...spec.required_capabilities.map((item) => "- " + item),
+      "",
+      "MCP-Status: nicht verbunden; keine Live-Ausführung.",
+      "",
+      "## Erwartetes Ergebnis",
+      spec.expected_output,
+      "",
+      "## Abbruchregel",
+      spec.stop_rule,
+      "",
+      "Eine menschliche Abnahme ist erforderlich."
+    ].join("\n");
+
+    const render = () => {
+      const spec = buildSpec();
+      const checks = [
+        Boolean(spec.id),
+        Boolean(spec.goal) && /^https?:\/\//.test(spec.target.domain),
+        spec.in_scope.length > 0 && spec.out_of_scope.length > 0,
+        spec.allowed_sources.length > 0,
+        Boolean(spec.access.mode) && spec.access.write_allowed === false,
+        spec.limits.time_minutes > 0 && spec.limits.cost_eur >= 0,
+        Boolean(spec.expected_output),
+        Boolean(spec.stop_rule),
+        spec.schema === "task-spec.v1"
+      ];
+
+      output.textContent = outputFormat.value === "markdown"
+        ? toMarkdown(spec)
+        : JSON.stringify(spec, null, 2);
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        gsap.fromTo(output, { autoAlpha: 0.58, y: 5 }, { autoAlpha: 1, y: 0, duration: 0.2, ease: "power2.out", overwrite: "auto" });
+      }
+      outputId.textContent = spec.id;
+      checks.forEach((passed, index) => {
+        validationItems[index].classList.toggle("invalid", !passed);
+        validationItems[index].querySelector("em")!.textContent = passed ? "OK" : "FEHLT";
+      });
+      const complete = checks.filter(Boolean).length;
+      validationTotal.textContent = `${complete} / ${checks.length} Felder`;
+      localStatus.textContent = complete === checks.length ? "Felder vollständig" : `${checks.length - complete} Felder offen`;
+      outputTime.textContent = `AKTUALISIERT / ${new Intl.DateTimeFormat("de-DE", { hour: "2-digit", minute: "2-digit" }).format(new Date())}`;
+    };
+
+    const applyTask = (slug: string) => {
+      const task = tasks.find((item) => item.slug === slug) ?? tasks[0];
+      taskSelect.value = task.slug;
+      field("goal").value = task.goal;
+      field("inScope").value = task.inScope.join("\n");
+      field("outOfScope").value = task.outOfScope.join("\n");
+      field("accessMode").value = task.accessMode;
+      field("timeLimit").value = String(task.timeLimitMinutes);
+      field("costLimit").value = String(task.costLimitEuro);
+      field("expectedOutput").value = task.expectedOutput;
+      field("stopRule").value = task.stopRule;
+      form.querySelectorAll<HTMLInputElement>('input[name="sources"]').forEach((item) => {
+        item.checked = task.allowedSources.includes(item.value as never);
+      });
+      root.querySelectorAll<HTMLElement>("[data-capabilities], [data-result-capabilities]").forEach((list) => {
+        list.replaceChildren(...task.requiredCapabilities.map((capability) => {
+          const item = document.createElement("li");
+          item.textContent = capability;
+          return item;
+        }));
+      });
+      render();
+    };
+
+    form.addEventListener("input", render);
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      render();
+      actionStatus.textContent = "Spezifikation lokal aktualisiert.";
+    });
+    taskSelect.addEventListener("change", () => applyTask(taskSelect.value));
+    outputFormat.addEventListener("change", render);
+
+    const configSections = [...root.querySelectorAll<HTMLElement>(".builder-status, .recipe-mode-bar, .step-rail, .builder-workspace")];
+    const resultWorkspace = root.querySelector<HTMLElement>("[data-result-workspace]")!;
+
+    const showResult = () => {
+      render();
+      configSections.forEach((section) => { section.hidden = true; });
+      resultWorkspace.hidden = false;
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        gsap.fromTo(resultWorkspace, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: "power2.out" });
+      }
+      resultWorkspace.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    };
+
+    const showConfig = () => {
+      resultWorkspace.hidden = true;
+      configSections.forEach((section) => { section.hidden = false; });
+      root.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    };
+
+    root.querySelector("[data-live-mode]")?.addEventListener("click", () => {
+      actionStatus.textContent = "Der Contextter MCP-Pilot ist noch nicht verbunden. Die Recipe bleibt lokal.";
+    });
+    root.querySelector("[data-show-example]")?.addEventListener("click", showResult);
+    root.querySelector("[data-edit-recipe]")?.addEventListener("click", showConfig);
+    root.querySelector("[data-new-recipe]")?.addEventListener("click", showConfig);
+
+    root.querySelectorAll<HTMLButtonElement>("[data-finding]").forEach((button) => {
+      button.addEventListener("click", () => {
+        root.querySelectorAll("[data-finding]").forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        const priority = root.querySelector<HTMLElement>("[data-detail-priority]")!;
+        priority.textContent = button.dataset.priority ?? "";
+        priority.className = "priority " + (button.dataset.priorityClass ?? "review");
+        root.querySelector<HTMLElement>("[data-detail-title]")!.textContent = button.dataset.title ?? "";
+        root.querySelector<HTMLElement>("[data-detail-url]")!.textContent = button.dataset.url ?? "";
+        root.querySelector<HTMLElement>("[data-detail-reason]")!.textContent = button.dataset.reason ?? "";
+        root.querySelector<HTMLElement>("[data-detail-evidence]")!.textContent = button.dataset.evidence ?? "";
+        root.querySelector<HTMLElement>("[data-detail-next]")!.textContent = button.dataset.next ?? "";
+        root.querySelector<HTMLElement>("[data-detail-uncertainty]")!.textContent = button.dataset.uncertainty ?? "";
+      });
+    });
+
+    root.querySelector("[data-result-copy]")?.addEventListener("click", () => {
+      root.querySelector<HTMLButtonElement>("[data-copy-markdown]")?.click();
+    });
+    root.querySelector("[data-result-download]")?.addEventListener("click", () => {
+      root.querySelector<HTMLButtonElement>("[data-download-json]")?.click();
+    });
+
+    root.querySelector("[data-copy-markdown]")?.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(toMarkdown(buildSpec()));
+        actionStatus.textContent = "Markdown in die Zwischenablage kopiert.";
+      } catch {
+        actionStatus.textContent = "Kopieren wurde vom Browser blockiert. Nutze die Markdown-Ansicht im Ausgabefeld.";
+        outputFormat.value = "markdown";
+        render();
+      }
+    });
+
+    root.querySelector("[data-download-json]")?.addEventListener("click", () => {
+      const spec = buildSpec();
+      const url = URL.createObjectURL(new Blob([JSON.stringify(spec, null, 2)], { type: "application/json" }));
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${spec.id.toLowerCase()}-${taskSelect.value}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+      actionStatus.textContent = "JSON-Datei erstellt.";
+    });
+
+    root.querySelectorAll<HTMLButtonElement>("[data-step-target]").forEach((button) => {
+      button.addEventListener("click", () => {
+        root.querySelectorAll("[data-step-target]").forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        const target = document.getElementById(button.dataset.stepTarget ?? "");
+        target?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+        target?.querySelector<HTMLElement>("input, textarea, select")?.focus({ preventScroll: true });
+      });
+    });
+
+    const requestedTask = new URLSearchParams(location.search).get("task");
+    applyTask(requestedTask ?? tasks[0].slug);
+  }
+</script>

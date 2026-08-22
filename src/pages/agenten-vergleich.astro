@@ -1,0 +1,66 @@
+---
+import PageIntro from "../components/PageIntro.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const approaches = [
+  {
+    name: "Analyse-Assistent",
+    fit: "Daten lesen, Befunde strukturieren, Fragen offenlegen",
+    boundary: "Keine externen Aktionen; Mensch entscheidet und setzt um",
+    proof: "Quellenbezug, Vollständigkeit, klare Unsicherheit"
+  },
+  {
+    name: "Begrenzter Workflow",
+    fit: "Wiederholbare Schritte mit festen Tools und Freigabepunkten",
+    boundary: "Nur vorab definierte Aktionen; keine freie Ausweitung",
+    proof: "Schrittprotokoll, Toolaufrufe, Kosten und Übergaben"
+  },
+  {
+    name: "Handelnder Agent",
+    fit: "Mehrstufige Arbeit in einer kontrollierten Umgebung",
+    boundary: "Schreibzugriff nur mit expliziter Freigabe und Rückweg",
+    proof: "Änderungsdiff, Rollback, Audit Log und menschliche Abnahme"
+  }
+];
+---
+
+<BaseLayout
+  title="SEO-Agenten vergleichen"
+  description="Wähle einen Automationsansatz nach Aufgabe, Zugriff, Risiko und erforderlichem Nachweis statt nach pauschalem Anbieter-Ranking."
+  canonicalPath="/agenten-vergleich"
+>
+  <PageIntro
+    section="04"
+    title="Erst den Risikorahmen wählen. Dann das System."
+    description="Nicht jede SEO-Aufgabe braucht einen handelnden Agenten. Je größer Zugriff und möglicher Schaden, desto wichtiger werden Freigabe, Rückweg und vollständiges Protokoll."
+    meta="ENTSCHEIDUNGSHILFE / KEIN RANKING"
+  />
+
+  <section class="approach-table" aria-labelledby="approach-title">
+    <h2 id="approach-title" class="visually-hidden">Automationsansätze</h2>
+    <div class="table-head"><span>Ansatz</span><span>Geeignet für</span><span>Grenze</span><span>Nachweis</span></div>
+    {approaches.map((approach, index) => (
+      <article>
+        <h2><span>{String(index + 1).padStart(2, "0")}</span>{approach.name}</h2>
+        <p>{approach.fit}</p>
+        <p>{approach.boundary}</p>
+        <p>{approach.proof}</p>
+      </article>
+    ))}
+  </section>
+
+  <section class="decision-rules">
+    <h2>Vier Fragen vor jeder Tool-Auswahl</h2>
+    <ol>
+      <li><span>01</span><div><h3>Welche Handlung ist erlaubt?</h3><p>Lesen, Vorschlagen und Schreiben sind verschiedene Aufträge. Schreibzugriff ist kein Komfortmerkmal.</p></div></li>
+      <li><span>02</span><div><h3>Was zählt als Beleg?</h3><p>Ein guter Text kann trotzdem auf erfundenen Daten beruhen. Definiere Quellen und Artefakte vor dem Lauf.</p></div></li>
+      <li><span>03</span><div><h3>Wann muss das System stoppen?</h3><p>Fehlende Daten, neue Kosten, sensible Inhalte oder unerwartete Rechte müssen eine Rückfrage auslösen.</p></div></li>
+      <li><span>04</span><div><h3>Wie wird eine Änderung zurückgenommen?</h3><p>Ohne Diff, Freigabe und Rückweg ist autonome Ausführung für viele SEO-Aufgaben unnötig riskant.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="statement-band">
+    <p>Diese Entscheidungshilfe vergleicht Arbeitsweisen. Konkrete Anbieter folgen erst nach datierten Läufen unter derselben Spezifikation.</p>
+    <a class="text-link" href="/aufgaben">Aufgaben ansehen</a>
+  </section>
+</BaseLayout>

@@ -1,0 +1,70 @@
+---
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteMotion from "../components/SiteMotion.astro";
+import { robotsMeta, site } from "../data/site";
+import "@fontsource-variable/space-grotesk";
+import "@fontsource-variable/jetbrains-mono";
+import "../styles/tokens.css";
+import "../styles/components.css";
+import "../styles/content.css";
+import "../styles/responsive.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath: string;
+  bodyClass?: string;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  title = site.title,
+  description = site.description,
+  canonicalPath,
+  bodyClass = "",
+  structuredData
+} = Astro.props;
+
+const canonicalUrl = new URL(canonicalPath, site.origin).href;
+const pageTitle = title === site.title ? title : `${title} | SEO AI Agent`;
+const jsonLd = structuredData ?? {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "SEO AI Agent",
+  url: site.origin,
+  description: site.description,
+  inLanguage: site.language
+};
+---
+
+<!doctype html>
+<html lang={site.language}>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content={robotsMeta} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={site.locale} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta name="theme-color" content="#090d0c" />
+    <title>{pageTitle}</title>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, "\\u003c")} />
+  </head>
+  <body class={bodyClass}>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <div class="site-frame">
+      <SiteHeader currentPath={Astro.url.pathname} />
+      <main id="main-content">
+        <slot />
+      </main>
+      <SiteFooter />
+    </div>
+    <SiteMotion />
+  </body>
+</html>

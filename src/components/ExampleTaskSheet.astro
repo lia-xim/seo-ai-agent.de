@@ -1,0 +1,42 @@
+---
+import { tasks } from "../data/tasks";
+const task = tasks[0];
+const steps = ["Aufgabe", "Evidenz", "Zugriff", "Budget", "Abnahme"];
+---
+
+<article class="task-sheet" aria-labelledby="example-task-title" data-reveal>
+  <ol class="task-flow" aria-label="Task-Spec-Schritte">
+    {steps.map((step, index) => (
+      <li class:list={{ active: index === 0 }} data-flow-node>
+        <span>{String(index + 1).padStart(2, "0")}</span>
+        <b>{step}</b>
+      </li>
+    ))}
+  </ol>
+
+  <div class="task-card-content">
+    <header>
+      <div>
+        <p>Task Recipe</p>
+        <h2 id="example-task-title">{task.title}</h2>
+      </div>
+      <span class="draft-state"><i aria-hidden="true"></i> Entwurf</span>
+    </header>
+
+    <dl>
+      <div><dt>ID</dt><dd>{task.id}</dd></div>
+      <div><dt>Zugriff</dt><dd>Nur lesen</dd></div>
+      <div><dt>Zeitlimit</dt><dd>{task.timeLimitMinutes} min</dd></div>
+      <div><dt>Budget</dt><dd>{task.costLimitEuro.toFixed(2).replace(".", ",")} €</dd></div>
+      <div><dt>Ergebnis</dt><dd>5 priorisierte Befunde</dd></div>
+    </dl>
+
+    <footer>
+      <a class="text-link" href={`/aufgaben/${task.slug}`}>Aufgabe ansehen</a>
+      <a class="button button-primary button-compact" href={`/task-spec-builder?task=${task.slug}`}>
+        Recipe öffnen
+        <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg>
+      </a>
+    </footer>
+  </div>
+</article>

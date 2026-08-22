@@ -1,0 +1,25 @@
+---
+import { site } from "../data/site";
+---
+
+<footer class="site-footer">
+  <div class="footer-brand">
+    <span>SEO AI AGENT</span>
+    <p>Aufgaben definieren. Daten verbinden. Ergebnisse belegen.</p>
+  </div>
+  <nav aria-label="Fußnavigation">
+    <a href="/task-spec-builder">Task Recipe</a>
+    <a href="/aufgaben">Aufgaben</a>
+    <a href="/benchmarks">Benchmarks</a>
+    <a href="/agenten-vergleich">Vergleich</a>
+    <a href="/methodik-und-konflikte">Methodik</a>
+    <a href="/quellen-und-rechte">Quellen &amp; Rechte</a>
+    <a href="/impressum">Impressum</a>
+    <a href="/datenschutz">Datenschutz</a>
+    <a href={site.githubUrl}>GitHub</a>
+  </nav>
+  <div class="footer-meta">
+    <p><span class="status-dot" aria-hidden="true"></span> Noindex · Preview · {site.reviewedAt}</p>
+    <p>Korrekturen und Anbieterantworten werden dokumentiert.</p>
+  </div>
+</footer>

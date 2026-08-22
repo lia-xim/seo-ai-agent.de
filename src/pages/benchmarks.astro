@@ -1,0 +1,62 @@
+---
+import PageIntro from "../components/PageIntro.astro";
+import { site } from "../data/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const gates = [
+  ["Benannter Testverantwortlicher", "Offen"],
+  ["Freigegebenes Saisonbudget", "Offen"],
+  ["Zwei Reviewer oder dokumentierte Adjudikation", "Offen"],
+  ["Rechteklare Testdaten", "Offen"],
+  ["Gleiche Aufgabe und Rubrik für alle Systeme", "Entwurf"],
+  ["Freigabe für öffentliche Anbieterergebnisse", "Offen"]
+];
+---
+
+<BaseLayout
+  title="Benchmarks"
+  description="Warum es noch keinen öffentlichen SEO-Agent-Benchmark gibt und welche Evidenz vor dem ersten Lauf fehlen darf."
+  canonicalPath="/benchmarks"
+>
+  <PageIntro
+    section="03"
+    title="Der öffentliche Benchmark wartet."
+    description="Hier steht bewusst keine Rangliste. Ein Anbietername ohne gefrorene Aufgabe, Version, Kosten, Fehlversuche und Review wäre keine belastbare Entscheidungshilfe."
+    meta="NOINDEX / VORBEREITUNG"
+  />
+
+  <section class="gate-list" aria-labelledby="gate-title">
+    <h2 id="gate-title">Startbedingungen</h2>
+    {gates.map(([label, status], index) => (
+      <div>
+        <span>{String(index + 1).padStart(2, "0")}</span>
+        <p>{label}</p>
+        <strong>{status}</strong>
+      </div>
+    ))}
+  </section>
+
+  <div class="two-column-section">
+    <section>
+      <h2>Was später pro Lauf sichtbar sein muss</h2>
+      <ul class="rule-list">
+        <li>Aufgabe, Eingaben und erwartetes Ergebnis</li>
+        <li>Produkt, Version, Modell und Testdatum</li>
+        <li>Erlaubte Tools, Zugriffe und manuelle Eingriffe</li>
+        <li>Direkte Kosten, Zeitlimit, Laufzeit und Wartezeit</li>
+        <li>Fehlversuche, Timeouts, Abbrüche und Ausschlüsse</li>
+        <li>Reviewer, Begründung und nachträgliche Korrekturen</li>
+      </ul>
+    </section>
+    <aside class="disclosure-box">
+      <span>OWNERSHIP DISCLOSURE</span>
+      <p>{site.ownershipDisclosure}</p>
+      <p>Eine methodisch getrennte Prüfung ist möglich. Unabhängiges Eigentum wird nicht behauptet.</p>
+    </aside>
+  </div>
+
+  <section class="statement-band">
+    <p>Bis die Gates erfüllt sind, bleibt der Task Spec Builder das veröffentlichungsfähige Kernprodukt.</p>
+    <a class="text-link" href="/task-spec-builder">Auftrag bauen</a>
+  </section>
+</BaseLayout>

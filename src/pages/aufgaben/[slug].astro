@@ -1,0 +1,76 @@
+---
+import type { GetStaticPaths } from "astro";
+import PageIntro from "../../components/PageIntro.astro";
+import type { TaskDefinition } from "../../data/tasks";
+import { tasks } from "../../data/tasks";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export const getStaticPaths = (() =>
+  tasks.map((task) => ({ params: { slug: task.slug }, props: { task } }))) satisfies GetStaticPaths;
+
+const { task } = Astro.props as { task: TaskDefinition };
+---
+
+<BaseLayout
+  title={task.title}
+  description={task.summary}
+  canonicalPath={`/aufgaben/${task.slug}`}
+>
+  <PageIntro
+    section={task.id.slice(-2)}
+    title={task.title}
+    description={task.summary}
+    meta={`ENTWURF / V${task.version} / KEIN LAUF`}
+  />
+
+  <div class="task-detail-grid">
+    <article class="protocol">
+      <section>
+        <h2>Ziel</h2>
+        <p>{task.goal}</p>
+      </section>
+      <section>
+        <h2>Im Scope</h2>
+        <ul>{task.inScope.map((item) => <li>{item}</li>)}</ul>
+      </section>
+      <section>
+        <h2>Nicht im Scope</h2>
+        <ul>{task.outOfScope.map((item) => <li>{item}</li>)}</ul>
+      </section>
+      <section>
+        <h2>Erlaubte Quellen</h2>
+        <ul>{task.allowedSources.map((item) => <li>{item}</li>)}</ul>
+      </section>
+    </article>
+
+    <aside class="protocol-sidebar">
+      <dl>
+        <div><dt>Task ID</dt><dd>{task.id}</dd></div>
+        <div><dt>Version</dt><dd>{task.version}</dd></div>
+        <div><dt>Zugriff</dt><dd>Nur lesen</dd></div>
+        <div><dt>Zeitlimit</dt><dd>{task.timeLimitMinutes} Minuten</dd></div>
+        <div><dt>Kostenlimit</dt><dd>{task.costLimitEuro.toFixed(2).replace(".", ",")} EUR</dd></div>
+        <div><dt>Abnahme</dt><dd>Durch eine Person</dd></div>
+      </dl>
+      <a class="button button-primary" href={`/task-spec-builder?task=${task.slug}`}>Im Builder öffnen</a>
+    </aside>
+  </div>
+
+  <section class="criteria-section">
+    <div>
+      <span class="section-number" aria-hidden="true">A</span>
+      <h2>Abnahmekriterien</h2>
+      <ol>{task.acceptanceCriteria.map((item) => <li>{item}</li>)}</ol>
+    </div>
+    <div>
+      <span class="section-number" aria-hidden="true">F</span>
+      <h2>Fehlsignale</h2>
+      <ol>{task.failureSignals.map((item) => <li>{item}</li>)}</ol>
+    </div>
+  </section>
+
+  <section class="stop-rule">
+    <span>STOPPREGEL</span>
+    <p>{task.stopRule}</p>
+  </section>
+</BaseLayout>

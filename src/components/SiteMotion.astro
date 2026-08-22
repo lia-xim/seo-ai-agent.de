@@ -1,0 +1,71 @@
+<script>
+  import gsap from "gsap";
+
+  let media: ReturnType<typeof gsap.matchMedia> | undefined;
+
+  const initMotion = () => {
+    media?.revert();
+    media = gsap.matchMedia();
+
+    media.add(
+      {
+        reduceMotion: "(prefers-reduced-motion: reduce)",
+        desktop: "(min-width: 821px)"
+      },
+      (context) => {
+        const { reduceMotion, desktop } = context.conditions as {
+          reduceMotion: boolean;
+          desktop: boolean;
+        };
+
+        const reveals = gsap.utils.toArray<HTMLElement>("[data-reveal]");
+        const revealItems = gsap.utils.toArray<HTMLElement>("[data-reveal-item]");
+        const flowNodes = gsap.utils.toArray<HTMLElement>("[data-flow-node]");
+
+        if (reduceMotion) {
+          gsap.set([...reveals, ...revealItems, ...flowNodes], { clearProps: "all" });
+          return;
+        }
+
+        gsap.from(reveals, {
+          autoAlpha: 0,
+          y: desktop ? 24 : 14,
+          duration: 0.72,
+          ease: "power3.out",
+          stagger: 0.08,
+          clearProps: "transform,opacity,visibility"
+        });
+
+        gsap.from(revealItems, {
+          autoAlpha: 0,
+          y: 12,
+          duration: 0.5,
+          ease: "power2.out",
+          stagger: 0.055,
+          delay: 0.12,
+          clearProps: "transform,opacity,visibility"
+        });
+
+        gsap.from(flowNodes, {
+          autoAlpha: 0,
+          scale: 0.72,
+          duration: 0.4,
+          ease: "back.out(1.6)",
+          stagger: 0.07,
+          delay: 0.18,
+          transformOrigin: "center",
+          clearProps: "transform,opacity,visibility"
+        });
+      }
+    );
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMotion, { once: true });
+  } else {
+    initMotion();
+  }
+
+  document.addEventListener("astro:page-load", initMotion);
+  document.addEventListener("astro:before-swap", () => media?.revert());
+</script>

@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "domain": "seo-ai-agent.de",
+  "reviewedAt": "2026-08-22",
+  "reuseDefault": "link_and_paraphrase_only",
+  "domainStatus": "newly_registered",
+  "sources": [
+    {
+      "id": "owner-domain-status",
+      "kind": "user_assertion",
+      "title": "Owner domain-status correction",
+      "location": "Current authorized task and C:\\Users\\matth\\Documents\\DomainPortfolio\\portfolio.json",
+      "supports": [
+        "The domain is owned_confirmed.",
+        "The owner explicitly confirms that seo-ai-agent.de is a newly registered domain, not an expired or legacy domain."
+      ],
+      "rights": "Fact provenance only."
+    },
+    {
+      "id": "canonical-domain-dossier",
+      "kind": "accepted_strategy",
+      "title": "Canonical seo-ai-agent.de strategy dossier",
+      "location": "C:\\Users\\matth\\Documents\\DomainPortfolio\\strategy\\domains\\seo-ai-agent.de.md",
+      "supports": [
+        "Accepted purpose, audience, architecture, ownership disclosure, operating model, and indexing gates."
+      ],
+      "rights": "Internal strategy evidence; do not publish personal or operational unknowns as facts."
+    },
+    {
+      "id": "verified-operator-imprint",
+      "kind": "verified_operator_source",
+      "title": "Matthias Ramahi imprint and local legal source",
+      "url": "https://matthiasramahi.de/impressum.html",
+      "location": "C:\\Users\\matth\\Documents\\MatthiasRamahiDe\\apps\\web\\src\\lib\\legalContent.ts",
+      "verifiedAt": "2026-08-22",
+      "supports": [
+        "Operator name, postal address, and contact email used for the adapted imprint."
+      ],
+      "rights": "Operator facts adapted for the commonly operated domain; photography-specific claims are not reused."
+    },
+    {
+      "id": "nist-airc",
+      "kind": "verified_primary_source",
+      "title": "NIST AI Resource Center",
+      "url": "https://airc.nist.gov/",
+      "verifiedAt": "2026-08-22",
+      "supports": [
+        "Testing, evaluation, verification, and validation need documented methods and evidence.",
+        "Independent review can reduce conflicts of interest."
+      ],
+      "rights": "Link and original paraphrase only; no NIST endorsement is implied."
+    },
+    {
+      "id": "google-search-maintenance",
+      "kind": "verified_primary_source",
+      "title": "Google Search Central",
+      "url": "https://developers.google.com/search/docs/fundamentals/get-started",
+      "verifiedAt": "2026-08-22",
+      "supports": [
+        "SEO task evidence can include crawl and index state, canonicals, robots, sitemaps, links, and Search Console observations.",
+        "A missing page must return a real 404 rather than a soft 404."
+      ],
+      "rights": "Link and original paraphrase; no Google endorsement is implied."
+    },
+    {
+      "id": "vercel-privacy",
+      "kind": "verified_provider_source",
+      "title": "Vercel Privacy Notice",
+      "url": "https://vercel.com/legal/privacy-notice",
+      "verifiedAt": "2026-08-22",
+      "supports": [
+        "Vercel processes request and service-generated metadata such as IP address and log or diagnostic information when delivering hosted sites."
+      ],
+      "rights": "Link and original paraphrase only."
+    },
+    {
+      "id": "project-repository",
+      "kind": "implementation_source",
+      "title": "Public seo-ai-agent.de repository",
+      "url": "https://github.com/lia-xim/seo-ai-agent.de",
+      "verifiedAt": "2026-08-22",
+      "supports": [
+        "Current source, noindex implementation, privacy behavior, and public change history."
+      ],
+      "rights": "No open-source license is granted unless a later commit adds one explicitly."
+    }
+  ],
+  "unknowns": [
+    "Search Console state, manual actions, and security issues are not verified.",
+    "Named benchmark owner, reviewer, annual budget, and provider benchmark permissions are not recorded.",
+    "No real reproducible provider task run has been published."
+  ],
+  "forbiddenReuse": [
+    "Third-party screenshots, text, code, data, brands, or model and provider outputs without an applicable right, license, permission, or quotation basis.",
+    "Client, customer, account, or personal data in public task runs without explicit permission and a documented lawful basis.",
+    "Commonly owned portfolio sites as independent corroboration."
+  ]
+}

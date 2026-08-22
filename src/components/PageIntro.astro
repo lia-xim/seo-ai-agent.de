@@ -1,0 +1,18 @@
+---
+interface Props {
+  section: string;
+  title: string;
+  description: string;
+  meta?: string;
+}
+
+const { section, title, description, meta } = Astro.props;
+---
+
+<header class="page-intro" data-reveal data-section={section}>
+  <div class="page-intro-copy">
+    <h1>{title}</h1>
+    <p>{description}</p>
+  </div>
+  {meta && <p class="page-intro-meta">{meta}</p>}
+</header>

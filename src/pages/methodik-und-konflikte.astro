@@ -1,0 +1,69 @@
+---
+import PageIntro from "../components/PageIntro.astro";
+import { site } from "../data/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const dimensions = [
+  ["Evidenz", "Sind zentrale Aussagen mit Quellen, URLs, Artefakten oder reproduzierbaren Beobachtungen verbunden?"],
+  ["Berechtigungen", "Hat der Lauf nur die vereinbarten Tools, Daten und Zugriffe verwendet?"],
+  ["Wiederholbarkeit", "Kann eine zweite Person denselben Auftrag mit denselben Eingaben und Versionen erneut ausführen?"],
+  ["Kosten", "Sind direkte Provider-, Tool- und Infrastrukturkosten vollständig ausgewiesen?"],
+  ["Zeit", "Sind Zeitbudget, Laufzeit, Wartezeiten und manuelle Eingriffe getrennt protokolliert?"],
+  ["Fehlerbehandlung", "Sind Fehlversuche, Abbrüche, Rückfragen, Umwege und ausgeschlossene Läufe sichtbar?"]
+];
+---
+
+<BaseLayout
+  title="Methodik und Interessenkonflikte"
+  description="Die geplante Rubrik für Evidenz, Berechtigungen, Wiederholbarkeit, Kosten, Zeit und Fehlerbehandlung."
+  canonicalPath="/methodik-und-konflikte"
+>
+  <PageIntro
+    section="05"
+    title="Eine Punktzahl ersetzt kein Protokoll."
+    description="Die Rubrik soll Entscheidungen strukturieren. Sie darf weder fehlende Evidenz überdecken noch unterschiedliche Aufgaben in eine scheinbar präzise Rangliste pressen."
+    meta="METHODIK / ENTWURF V0.1"
+  />
+
+  <section class="dimension-ledger" aria-labelledby="dimension-title">
+    <h2 id="dimension-title">Was ein belastbarer Lauf zeigen muss</h2>
+    {dimensions.map(([name, description], index) => (
+      <article>
+        <span>{String(index + 1).padStart(2, "0")}</span>
+        <h3>{name}</h3>
+        <p>{description}</p>
+      </article>
+    ))}
+  </section>
+
+  <div class="two-column-section">
+    <section>
+      <h2>Review und Adjudikation</h2>
+      <p>Objektive Felder werden gegen das Laufprotokoll geprüft. Subjektive SEO-Qualität braucht zwei Reviewer oder eine schriftlich begründete Adjudikation. Abweichungen bleiben sichtbar; sie werden nicht nachträglich in einen Mittelwert versteckt.</p>
+      <p>Die Planung orientiert sich an dokumentierten Test-, Evaluations-, Verifikations- und Validierungsprozessen. Als Primärreferenz dient das <a class="text-link" href="https://airc.nist.gov/">NIST AI Resource Center</a>. Das ist keine NIST-Prüfung oder -Empfehlung dieser Website.</p>
+    </section>
+    <section>
+      <h2>SEO-Evidenz</h2>
+      <p>Je nach Aufgabe können Crawl-Exporte, Search-Console-Daten, kanonische Signale, robots-Regeln, Sitemaps, interne Links und Repository-Diffs relevant sein. Die <a class="text-link" href="https://developers.google.com/search/docs/fundamentals/get-started">Google-Search-Central-Dokumentation</a> ist eine Primärquelle für Google-spezifische Aussagen, aber kein Ersatz für die Beobachtung der getesteten Website.</p>
+    </section>
+  </div>
+
+  <section class="conflict-grid">
+    <div>
+      <h2>Offengelegter Konflikt</h2>
+      <p>{site.ownershipDisclosure}</p>
+    </div>
+    <div>
+      <h2>Kommerzielle Beziehungen</h2>
+      <p>Affiliate-Vergütung, Review-Zugang, kostenloses Guthaben und bezahlte Kooperation werden direkt am betroffenen Lauf genannt. Sie bestimmen weder Aufnahme noch Gewichtung.</p>
+    </div>
+    <div id="korrekturen">
+      <h2>Korrekturen und Antworten</h2>
+      <p>Fachliche Korrekturen und Anbieterantworten können über das <a class="text-link" href={`${site.githubUrl}/issues`}>öffentliche GitHub-Repository</a> eingereicht werden. Sicherheitsmeldungen gehören in den privaten Security-Flow des Repositories.</p>
+    </div>
+    <div>
+      <h2>Versionsregel</h2>
+      <p>Ein Ergebnis gilt nur für die dokumentierte Aufgabe, Produktversion, Umgebung und das Testdatum. Spätere Produktänderungen werden als Korrektur oder neuer Lauf behandelt.</p>
+    </div>
+  </section>
+</BaseLayout>

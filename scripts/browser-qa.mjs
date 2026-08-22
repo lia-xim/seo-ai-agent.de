@@ -1,0 +1,267 @@
+import { spawn } from "node:child_process";
+import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
+import { createServer } from "node:net";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
+
+const baseUrl = process.env.BROWSER_QA_BASE_URL ?? "http://127.0.0.1:4317";
+const outputDir = resolve(process.env.BROWSER_QA_OUTPUT_DIR ?? ".browser-qa");
+const chromeCandidates = [
+  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+  "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+  "C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe"
+];
+
+const { access } = await import("node:fs/promises");
+let browserExecutable;
+for (const candidate of chromeCandidates) {
+  try {
+    await access(candidate);
+    browserExecutable = candidate;
+    break;
+  } catch {}
+}
+if (!browserExecutable) throw new Error("No supported local Chromium browser found");
+
+const debugPort = await new Promise((resolvePort, reject) => {
+  const probe = createServer();
+  probe.once("error", reject);
+  probe.listen(0, "127.0.0.1", () => {
+    const address = probe.address();
+    if (!address || typeof address === "string") return reject(new Error("Could not allocate a debugging port"));
+    probe.close(() => resolvePort(address.port));
+  });
+});
+
+const profileDir = await mkdtemp(join(tmpdir(), "seo-ai-agent-browser-qa-"));
+await mkdir(outputDir, { recursive: true });
+const browserProcess = spawn(browserExecutable, [
+  "--headless=new",
+  `--remote-debugging-port=${debugPort}`,
+  `--user-data-dir=${profileDir}`,
+  "--no-first-run",
+  "--disable-default-apps",
+  "--disable-extensions",
+  "--disable-background-networking",
+  "--hide-scrollbars",
+  "about:blank"
+], { stdio: "ignore", windowsHide: true });
+
+const waitForDebugger = async () => {
+  for (let attempt = 0; attempt < 60; attempt += 1) {
+    try {
+      const response = await fetch(`http://127.0.0.1:${debugPort}/json/version`);
+      if (response.ok) return;
+    } catch {}
+    await new Promise((resolveWait) => setTimeout(resolveWait, 100));
+  }
+  throw new Error("Chromium debugging endpoint did not start");
+};
+
+let socket;
+const errors = [];
+try {
+  await waitForDebugger();
+  const targetResponse = await fetch(`http://127.0.0.1:${debugPort}/json/new?${encodeURIComponent(baseUrl)}`, { method: "PUT" });
+  const target = await targetResponse.json();
+  socket = new WebSocket(target.webSocketDebuggerUrl);
+  await new Promise((resolveOpen, reject) => {
+    socket.addEventListener("open", resolveOpen, { once: true });
+    socket.addEventListener("error", reject, { once: true });
+  });
+
+  let nextId = 0;
+  const pending = new Map();
+  socket.addEventListener("message", (event) => {
+    const message = JSON.parse(String(event.data));
+    if (message.id) {
+      const request = pending.get(message.id);
+      if (!request) return;
+      pending.delete(message.id);
+      if (message.error) request.reject(new Error(message.error.message));
+      else request.resolve(message.result);
+      return;
+    }
+    if (message.method === "Runtime.exceptionThrown") errors.push(message.params.exceptionDetails.text);
+    if (message.method === "Log.entryAdded" && message.params.entry.level === "error") errors.push(message.params.entry.text);
+  });
+
+  const command = (method, params = {}) => new Promise((resolveCommand, reject) => {
+    const id = ++nextId;
+    pending.set(id, { resolve: resolveCommand, reject });
+    socket.send(JSON.stringify({ id, method, params }));
+  });
+  const evaluate = async (expression) => {
+    const result = await command("Runtime.evaluate", { expression, returnByValue: true, awaitPromise: true });
+    if (result.exceptionDetails) throw new Error(result.exceptionDetails.text);
+    return result.result.value;
+  };
+  const waitForPage = async () => {
+    for (let attempt = 0; attempt < 60; attempt += 1) {
+      const ready = await evaluate("document.readyState === 'complete' && Boolean(document.querySelector('h1'))");
+      if (ready) return;
+      await new Promise((resolveWait) => setTimeout(resolveWait, 100));
+    }
+    throw new Error("Page did not become ready");
+  };
+  const navigate = async (path, viewport) => {
+    await command("Emulation.setDeviceMetricsOverride", viewport);
+    await command("Page.navigate", { url: `${baseUrl}${path}` });
+    await waitForPage();
+    await new Promise((resolveWait) => setTimeout(resolveWait, 700));
+  };
+  const screenshot = async (name) => {
+    const capture = await command("Page.captureScreenshot", { format: "png", fromSurface: true, captureBeyondViewport: false });
+    const file = resolve(outputDir, name);
+    await writeFile(file, Buffer.from(capture.data, "base64"));
+    return file;
+  };
+  const assert = (condition, message) => {
+    if (!condition) throw new Error(message);
+  };
+
+  await command("Page.enable");
+  await command("Runtime.enable");
+  await command("Log.enable");
+
+  const desktopViewport = { width: 1536, height: 1024, deviceScaleFactor: 1, mobile: false };
+
+  await navigate("/", desktopViewport);
+  const desktop = JSON.parse(await evaluate(`JSON.stringify({
+    title: document.title,
+    lang: document.documentElement.lang,
+    h1: document.querySelector("h1")?.textContent.trim(),
+    noindex: document.querySelector('meta[name="robots"]')?.content,
+    viewport: window.innerWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+    primaryCta: document.querySelector('.hero .button-primary')?.textContent.trim()
+  })`));
+  assert(desktop.lang === "de", "Desktop document language is not de");
+  assert(desktop.h1 === "Gib SEO-Agenten einen prüfbaren Auftrag.", "Desktop h1 mismatch");
+  assert(desktop.noindex === "noindex, follow", "Desktop noindex boundary missing");
+  assert(desktop.scrollWidth <= desktop.viewport, "Desktop horizontal overflow detected");
+  const desktopScreenshot = await screenshot("homepage-desktop.png");
+
+  await navigate("/aufgaben", desktopViewport);
+  const library = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector("h1")?.textContent.trim(),
+    taskRows: document.querySelectorAll(".task-library-item").length,
+    openRows: document.querySelectorAll(".task-library-item[open]").length,
+    ownerDisclosure: document.body.textContent.includes("Contextter erhält keinen automatischen Siegerstatus"),
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(library.h1 === "Drei Aufgaben. Klar begrenzt.", "Task library h1 mismatch");
+  assert(library.taskRows === 3, "Task library does not expose three tasks");
+  assert(library.openRows === 1, "Task library default expansion state changed");
+  assert(library.ownerDisclosure, "Task library ownership boundary is missing");
+  assert(library.scrollWidth <= library.viewport, "Task library horizontal overflow detected");
+  const libraryScreenshot = await screenshot("library-desktop.png");
+
+  await navigate("/task-spec-builder", desktopViewport);
+  const interaction = JSON.parse(await evaluate(`(async () => {
+    const task = document.querySelector('#task-id');
+    task.value = 'keyword-chancen-priorisieren';
+    task.dispatchEvent(new Event('change', { bubbles: true }));
+    const time = document.querySelector('#time-limit');
+    time.value = '37';
+    time.dispatchEvent(new Event('input', { bubbles: true }));
+    document.querySelector('.spec-form').requestSubmit();
+    await new Promise((resolve) => setTimeout(resolve, 80));
+    const format = document.querySelector('[data-output-format]');
+    format.value = 'json';
+    format.dispatchEvent(new Event('change', { bubbles: true }));
+    await new Promise((resolve) => setTimeout(resolve, 30));
+    const json = document.querySelector('[data-spec-output]').textContent;
+    format.value = 'markdown';
+    format.dispatchEvent(new Event('change', { bubbles: true }));
+    await new Promise((resolve) => setTimeout(resolve, 30));
+    return JSON.stringify({
+      outputId: document.querySelector('[data-output-id]').textContent,
+      jsonHasTime: json.includes('"time_minutes": 37'),
+      jsonHasTask: json.includes('SEO-AI-002'),
+      markdownStartsCorrectly: document.querySelector('[data-spec-output]').textContent.startsWith('# Task Recipe:'),
+      validation: document.querySelector('[data-validation-total]').textContent,
+      scrollWidth: document.documentElement.scrollWidth,
+      viewport: window.innerWidth
+    });
+  })()`));
+  assert(interaction.outputId === "SEO-AI-002", "Builder did not switch task");
+  assert(interaction.jsonHasTime && interaction.jsonHasTask, "Builder JSON did not update");
+  assert(interaction.markdownStartsCorrectly, "Builder Markdown did not render");
+  assert(interaction.validation === "9 / 9 Felder", "Builder validation is incomplete");
+  assert(interaction.scrollWidth <= interaction.viewport, "Builder horizontal overflow detected");
+  const builderScreenshot = await screenshot("builder-desktop.png");
+
+  const resultInteraction = JSON.parse(await evaluate(`(async () => {
+    document.querySelector('[data-show-example]').click();
+    await new Promise((resolve) => setTimeout(resolve, 120));
+    const rows = [...document.querySelectorAll('[data-finding]')];
+    rows[1].click();
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    return JSON.stringify({
+      visible: !document.querySelector('[data-result-workspace]').hidden,
+      sampleLabel: document.body.textContent.includes('Beispielergebnis · keine Live-Daten'),
+      selectedTitle: document.querySelector('[data-detail-title]').textContent.trim(),
+      disabledConnect: document.querySelector('.result-connect .button-disabled').disabled,
+      capabilityCount: document.querySelectorAll('[data-result-capabilities] li').length,
+      scrollWidth: document.documentElement.scrollWidth,
+      viewport: window.innerWidth
+    });
+  })()`));
+  assert(resultInteraction.visible, "Example result did not open");
+  assert(resultInteraction.sampleLabel, "Synthetic result disclosure is missing");
+  assert(resultInteraction.selectedTitle === "Interner Link endet in einer Weiterleitung", "Finding selection did not update details");
+  assert(resultInteraction.disabledConnect, "MCP connect must remain disabled");
+  assert(resultInteraction.capabilityCount === 3, "Result capability list is incomplete");
+  assert(resultInteraction.scrollWidth <= resultInteraction.viewport, "Result view horizontal overflow detected");
+  const resultScreenshot = await screenshot("result-desktop.png");
+
+  await navigate("/datenschutz", desktopViewport);
+  const legal = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector('h1')?.textContent.trim(),
+    noTracking: document.body.textContent.includes('Keine Analyse, Cookies oder Formulare'),
+    localBuilder: document.body.textContent.includes('ausschließlich im Arbeitsspeicher des Browsers'),
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(legal.h1 === "Datenschutz", "Privacy page h1 mismatch");
+  assert(legal.noTracking && legal.localBuilder, "Privacy implementation truth is incomplete");
+  assert(legal.scrollWidth <= legal.viewport, "Privacy page horizontal overflow detected");
+  const legalScreenshot = await screenshot("datenschutz-desktop.png");
+
+  await navigate("/task-spec-builder", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+  const builderMobile = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector('h1')?.textContent.trim(),
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth,
+    modeVisible: Boolean(document.querySelector('.recipe-mode-bar')),
+    connectDisabled: document.querySelector('.connection-panel .button-disabled')?.disabled
+  })`));
+  assert(builderMobile.h1 === "Baue einen prüfbaren SEO-Agent-Auftrag.", "Mobile builder h1 mismatch");
+  assert(builderMobile.scrollWidth <= builderMobile.viewport, "Mobile builder horizontal overflow detected");
+  assert(builderMobile.modeVisible && builderMobile.connectDisabled, "Mobile Recipe or MCP readiness state missing");
+  const builderMobileScreenshot = await screenshot("builder-mobile.png");
+
+  await navigate("/", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+  const mobile = JSON.parse(await evaluate(`JSON.stringify({
+    viewport: window.innerWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+    mobileMenuVisible: getComputedStyle(document.querySelector('.mobile-menu')).display !== 'none',
+    desktopNavHidden: getComputedStyle(document.querySelector('.desktop-nav')).display === 'none',
+    h1: document.querySelector('h1')?.textContent.trim()
+  })`));
+  assert(mobile.viewport === 390, "Mobile viewport mismatch");
+  assert(mobile.scrollWidth <= mobile.viewport, "Mobile horizontal overflow detected");
+  assert(mobile.mobileMenuVisible && mobile.desktopNavHidden, "Mobile navigation breakpoint failed");
+  const mobileScreenshot = await screenshot("homepage-mobile.png");
+
+  assert(errors.length === 0, `Browser console/runtime errors: ${errors.join(" | ")}`);
+  console.log(JSON.stringify({ browserExecutable, desktop, library, interaction, resultInteraction, legal, builderMobile, mobile, screenshots: [desktopScreenshot, libraryScreenshot, builderScreenshot, resultScreenshot, legalScreenshot, builderMobileScreenshot, mobileScreenshot], errors }, null, 2));
+} finally {
+  if (socket?.readyState === WebSocket.OPEN) socket.close();
+  browserProcess.kill();
+  await new Promise((resolveWait) => setTimeout(resolveWait, 300));
+  await rm(profileDir, { recursive: true, force: true, maxRetries: 4, retryDelay: 150 });
+}

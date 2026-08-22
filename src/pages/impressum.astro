@@ -1,0 +1,51 @@
+---
+import PageIntro from "../components/PageIntro.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Impressum"
+  description="Anbieterkennzeichnung und Kontakt für seo-ai-agent.de."
+  canonicalPath="/impressum"
+>
+  <PageIntro
+    section="07"
+    title="Impressum"
+    description="Anbieterkennzeichnung und Kontakt für das Onlineangebot seo-ai-agent.de."
+    meta="RECHTLICH / STAND 22.08.2026"
+  />
+
+  <article class="legal-document">
+    <section>
+      <span>01 / ANBIETER</span>
+      <h2>Angaben gemäß § 5 DDG</h2>
+      <address>
+        <strong>Matthias Ramahi</strong><br />
+        Kempener Straße 44<br />
+        40699 Erkrath<br />
+        Deutschland
+      </address>
+      <p>E-Mail: <a class="text-link" href="mailto:info@matthiasramahi.de">info@matthiasramahi.de</a></p>
+    </section>
+
+    <section>
+      <span>02 / REDAKTION</span>
+      <h2>Verantwortlich für redaktionelle Inhalte</h2>
+      <p>Matthias Ramahi, Anschrift wie oben.</p>
+      <p>Die Inhalte dienen der technischen und redaktionellen Einordnung von SEO-Agenten und ersetzen keine Rechts-, Steuer- oder Unternehmensberatung.</p>
+    </section>
+
+    <section>
+      <span>03 / HINWEISE</span>
+      <h2>Externe Links und Rechte</h2>
+      <p>Für Inhalte externer Seiten sind deren jeweilige Betreiber verantwortlich. Hinweise auf konkrete Rechtsverletzungen oder fehlerhafte Anbieterangaben können an die oben genannte E-Mail-Adresse gesendet werden.</p>
+      <p>Eigene Inhalte unterliegen dem geltenden Urheberrecht. Rechte Dritter an Screenshots, Texten, Daten, Marken sowie Modell- und Provideroutputs bleiben unberührt.</p>
+    </section>
+
+    <section>
+      <span>04 / INTERESSENKONFLIKT</span>
+      <h2>Eigentumsoffenlegung</h2>
+      <p>seo-ai-agent.de wird im Umfeld von Contextter betrieben. Contextter kann später ein offengelegter Testteilnehmer sein, ist keine unabhängige Quelle und erhält keinen automatischen Siegerstatus.</p>
+    </section>
+  </article>
+</BaseLayout>

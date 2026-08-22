@@ -1,0 +1,48 @@
+---
+import { site } from "../data/site";
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+const isActive = (href: string) =>
+  currentPath === href || (href === "/aufgaben" && currentPath.startsWith("/aufgaben/"));
+---
+
+<header class="site-header" data-reveal>
+  <a class="brand" href="/" aria-label="SEO AI Agent – Startseite">
+    <svg aria-hidden="true" viewBox="0 0 32 32">
+      <path d="M3 12V3h9M20 3h9v9M29 20v9h-9M12 29H3v-9" />
+      <circle cx="16" cy="16" r="3" />
+    </svg>
+    <span>SEO AI AGENT</span>
+  </a>
+
+  <nav class="desktop-nav" aria-label="Hauptnavigation">
+    {site.navigation.map((item) => (
+      <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</a>
+    ))}
+  </nav>
+
+  <a class="header-action" href="/task-spec-builder">
+    <span>Task Recipe erstellen</span>
+    <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg>
+  </a>
+
+  <details class="mobile-menu">
+    <summary aria-label="Navigation öffnen">
+      <span>Menü</span>
+      <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 7h12M4 13h12" /></svg>
+    </summary>
+    <nav aria-label="Mobile Navigation">
+      {site.navigation.map((item) => (
+        <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</a>
+      ))}
+      <a href="/agenten-vergleich">Agentenvergleich</a>
+      <a href="/quellen-und-rechte">Quellen &amp; Rechte</a>
+      <a href="/impressum">Impressum</a>
+      <a href="/datenschutz">Datenschutz</a>
+    </nav>
+  </details>
+</header>

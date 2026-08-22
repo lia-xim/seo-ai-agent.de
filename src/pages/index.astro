@@ -1,40 +1,113 @@
 ---
+import ExampleTaskSheet from "../components/ExampleTaskSheet.astro";
 import { site } from "../data/site";
-import "../styles/global.css";
+import { tasks } from "../data/tasks";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const dimensions = [
+  ["Evidenz", "Quellen und Artefakte statt bloßer Behauptungen"],
+  ["Berechtigungen", "Nur vereinbarte Daten, Tools und Aktionen"],
+  ["Wiederholbarkeit", "Gleiche Eingaben, Versionen und Regeln"],
+  ["Kosten", "Direkte Ausgaben und kostenpflichtige Umwege"],
+  ["Zeit", "Budget, Laufzeit, Wartezeit und Handarbeit"],
+  ["Fehlerbehandlung", "Abbrüche, Rückfragen und Wiederherstellung"]
+];
 ---
 
-<!doctype html>
-<html lang={site.language}>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="robots" content="noindex, nofollow, noarchive" />
-    <meta name="description" content={site.description} />
-    <title>{site.title} | Project setup</title>
-  </head>
-  <body>
-    <main>
-      <div class="eyebrow">{site.domain} · Project setup</div>
-      <h1>{site.title}</h1>
-      <p class="purpose">{site.purpose}</p>
-
-      <section aria-labelledby="status-heading">
-        <h2 id="status-heading">Current status</h2>
-        <p>{site.status}</p>
-      </section>
-
-      <section aria-labelledby="boundary-heading">
-        <h2 id="boundary-heading">Hard boundary</h2>
-        <p>{site.boundary}</p>
-      </section>
-
-      <div class="actions">
-        <a href={site.githubUrl}>View the public source repository</a>
+<BaseLayout canonicalPath="/" bodyClass="home-page">
+  <section class="hero">
+    <div class="hero-copy" data-reveal>
+      <h1>Gib SEO-Agenten einen prüfbaren Auftrag.</h1>
+      <p>Definiere Aufgabe, Datenzugriff, Budget und Abbruchregeln. Verbinde später reale SEO-Daten über MCP und prüfe Ergebnisse mit sichtbarer Evidenz.</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="/task-spec-builder">
+          Task Recipe erstellen
+          <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg>
+        </a>
+        <a class="text-link" href="/methodik-und-konflikte">Methodik prüfen</a>
       </div>
+    </div>
+    <ExampleTaskSheet />
+  </section>
 
-      <p class="note">This temporary project page is deliberately excluded from indexing. The custom domain is not connected yet.</p>
-    </main>
-  </body>
-</html>
+  <section class="home-section task-overview" aria-labelledby="task-overview-title">
+    <header class="section-heading" data-reveal>
+      <div>
+        <h2 id="task-overview-title">Drei Recipes. Ein prüfbares Schema.</h2>
+        <p>Die geplanten Pilotaufgaben sind versioniert und klar begrenzt. Keine davon ist bereits ein öffentlicher Anbieter-Benchmark.</p>
+      </div>
+      <a class="text-link" href="/aufgaben">Alle Aufgaben ansehen</a>
+    </header>
 
+    <div class="home-task-table" data-reveal>
+      <div class="task-table-head" aria-hidden="true">
+        <span>ID</span><span>Aufgabe</span><span>Evidenz</span><span>Zugriff</span><span>Zeitlimit</span><span>Budget</span><span>Ergebnis</span><span></span>
+      </div>
+      {tasks.map((task) => (
+        <a class="task-table-row" href={`/aufgaben/${task.slug}`} data-reveal-item>
+          <span class="task-id">{task.id}</span>
+          <strong>{task.title}</strong>
+          <span class="evidence-state"><i aria-hidden="true"></i> definiert</span>
+          <span>Nur lesen</span>
+          <span>{task.timeLimitMinutes} min</span>
+          <span>{task.costLimitEuro.toFixed(2).replace(".", ",")} €</span>
+          <span>{task.id === "SEO-AI-001" ? "5 priorisierte Befunde" : task.id === "SEO-AI-002" ? "10 priorisierte Chancen" : "10 Linkvorschläge"}</span>
+          <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg>
+        </a>
+      ))}
+    </div>
+  </section>
 
+  <section class="home-section measurement-section" aria-labelledby="measurement-title">
+    <header class="section-heading" data-reveal>
+      <div>
+        <h2 id="measurement-title">Was ein belastbarer Lauf zeigen muss.</h2>
+        <p>Das Ergebnis zählt. Der Weg dorthin ebenfalls.</p>
+      </div>
+    </header>
+    <div class="measurement-ledger">
+      {dimensions.map(([name, description], index) => (
+        <article data-reveal-item>
+          <span>{String(index + 1).padStart(2, "0")}</span>
+          <h3>{name}</h3>
+          <p>{description}</p>
+        </article>
+      ))}
+    </div>
+    <p class="ledger-note" data-reveal><span aria-hidden="true"></span> Eine hohe Punktzahl ersetzt kein Protokoll. Ohne Eingaben, Version, Kosten und Fehlversuche gibt es keinen vergleichbaren Lauf.</p>
+  </section>
+
+  <section class="home-section benchmark-wait" aria-labelledby="wait-title">
+    <div class="benchmark-gates" data-reveal>
+      <header class="section-heading">
+        <div>
+          <h2 id="wait-title">Der öffentliche Benchmark wartet.</h2>
+          <p>Die Auswertung startet erst, wenn Verantwortung, Budget, Rechte und Review geklärt sind.</p>
+        </div>
+      </header>
+      <ul>
+        <li>Benannter Testverantwortlicher</li>
+        <li>Freigegebenes Saisonbudget</li>
+        <li>Zwei Reviewer oder dokumentierte Adjudikation</li>
+        <li>Rechteklare Testdaten</li>
+        <li>Gleiche Aufgabe und Rubrik für alle Systeme</li>
+      </ul>
+    </div>
+    <aside class="disclosure-box" data-reveal>
+      <span>Offengelegte Verbindung</span>
+      <p>{site.ownershipDisclosure}</p>
+      <a class="text-link" href="/methodik-und-konflikte#korrekturen">Konflikte und Korrekturen prüfen</a>
+    </aside>
+  </section>
+
+  <section class="closing-cta" data-reveal>
+    <div>
+      <h2>Von der Vorlage zum evidenzbasierten Run.</h2>
+      <p>Ohne Verbindung exportierst du eine saubere Task Recipe. Mit einem später verifizierten MCP-Connect werden daraus reale, nachvollziehbare Ergebnisse – ohne versteckte Aktionen.</p>
+    </div>
+    <a class="button button-primary" href="/task-spec-builder">
+      Task Recipe erstellen
+      <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg>
+    </a>
+  </section>
+</BaseLayout>
