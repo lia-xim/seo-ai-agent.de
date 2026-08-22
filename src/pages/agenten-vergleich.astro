@@ -59,8 +59,32 @@ const approaches = [
     </ol>
   </section>
 
+  <section class="comparison-gates" aria-labelledby="comparison-gates-title">
+    <header class="section-heading">
+      <div>
+        <span class="eyebrow">Risiko vor Funktionsumfang</span>
+        <h2 id="comparison-gates-title">Vier Grenzen entscheiden über den Automationsgrad.</h2>
+        <p>Bewerte jede Aufgabe einzeln. Derselbe Agent kann für eine read-only Analyse passen und für eine Veröffentlichung ungeeignet sein.</p>
+      </div>
+    </header>
+    <div>
+      <article><span>01</span><h3>Zugriff</h3><p>Nur lesen, Vorschläge erzeugen oder tatsächlich schreiben? Jede höhere Stufe braucht eine eigene Freigabe.</p></article>
+      <article><span>02</span><h3>Schadensradius</h3><p>Eine falsche Tabellenzeile, hundert geänderte Canonicals und eine Domainmigration haben nicht dasselbe Risiko.</p></article>
+      <article><span>03</span><h3>Rückweg</h3><p>Gibt es Preview, Diff, Backup, Rollback-Owner und einen getesteten Weg zurück zum letzten sicheren Zustand?</p></article>
+      <article><span>04</span><h3>Belegbarkeit</h3><p>Bleiben Input, Toolaufrufe, Rohbeobachtungen, Kosten, Fehler und menschliche Entscheidungen prüfbar?</p></article>
+    </div>
+  </section>
+
+  <section class="selection-path" aria-labelledby="selection-path-title">
+    <div><span class="eyebrow">Praktische Auswahlregel</span><h2 id="selection-path-title">Wähle die kleinste sichere Arbeitsweise.</h2></div>
+    <ol>
+      <li><strong>Analyse-Assistent</strong><p>Wenn der Nutzen bereits durch Lesen, Strukturieren und begründete Vorschläge entsteht.</p></li>
+      <li><strong>Begrenzter Workflow</strong><p>Wenn feste Schritte wiederholt werden, aber neue Scopes oder Kosten eine Rückfrage auslösen.</p></li>
+      <li><strong>Handelnder Agent</strong><p>Nur wenn Schreibrecht erforderlich, der Schadensradius begrenzt und der Rückweg nachweislich vorhanden ist.</p></li>
+    </ol>
+  </section>
   <section class="statement-band">
     <p>Diese Entscheidungshilfe vergleicht Arbeitsweisen. Konkrete Anbieter folgen erst nach datierten Läufen unter derselben Spezifikation.</p>
-    <a class="text-link" href="/aufgaben">Aufgaben ansehen</a>
+    <div class="inline-links"><a class="text-link" href="/aufgaben">Aufgaben ansehen</a><a class="text-link" href="/fehlerbehandlung-seo-agenten">Failure Handling festlegen</a></div>
   </section>
 </BaseLayout>

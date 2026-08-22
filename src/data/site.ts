@@ -62,6 +62,8 @@ export const site: SiteConfig = {
     { path: "/agenten-vergleich", label: "Agentenvergleich", description: "Einen Ansatz nach Aufgabe, Risiko und Nachweisbedarf auswählen.", indexableWhenLaunched: true },
     { path: "/faehigkeiten", label: "Fähigkeiten", description: "Welche Daten-, Analyse-, Evidenz- und Kontrollfähigkeiten SEO-Agenten für klar begrenzte Aufgaben benötigen.", indexableWhenLaunched: true },
     { path: "/mcp-fuer-seo-agenten", label: "MCP für SEO-Agenten", description: "Wie MCP Datenzugriff und Toolgrenzen für SEO-Agenten beschreiben kann, ohne einen aktiven Endpoint vorzutäuschen.", indexableWhenLaunched: true },
+    { path: "/seo-agent-kosten", label: "SEO-Agent-Kosten", description: "Direkte Ausgaben, Review, Retries und Reserve für begrenzte SEO-Agent-Taskläufe berechnen.", indexableWhenLaunched: true },
+    { path: "/fehlerbehandlung-seo-agenten", label: "Fehlerbehandlung", description: "Stop-, Retry-, Eskalations- und Rollback-Regeln für SEO-Agent-Aufgaben definieren.", indexableWhenLaunched: true },
     { path: "/methodik-und-konflikte", label: "Methodik und Konflikte", description: "Rubrik, Eigentum, Korrekturen und Grenzen prüfen.", indexableWhenLaunched: true },
     { path: "/quellen-und-rechte", label: "Quellen und Rechte", description: "Quellenregister, Drittanbieterrechte und Evidenzgrenzen.", indexableWhenLaunched: true },
     { path: "/impressum", label: "Impressum", description: "Anbieterkennzeichnung und Kontakt für seo-ai-agent.de.", indexableWhenLaunched: true },

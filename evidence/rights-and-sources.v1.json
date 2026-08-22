@@ -123,6 +123,30 @@
       "rights": "Link and original factual description only; common ownership is disclosed beside the link."
     },
     {
+      "id": "nist-airc-manage",
+      "kind": "verified_primary_source",
+      "title": "NIST AI RMF Playbook: Manage",
+      "url": "https://airc.nist.gov/airmf-resources/playbook/manage/",
+      "verifiedAt": "2026-08-22",
+      "supports": [
+        "Monitoring, incident response, recovery, override and decommissioning are documented AI risk-management controls.",
+        "Failure response and contingency procedures should be maintained and reviewed."
+      ],
+      "rights": "Link and original task-specific paraphrase only; no NIST endorsement or certification is implied."
+    },
+    {
+      "id": "first-party-seo-checkup-2026-08-22",
+      "kind": "implementation_evidence",
+      "title": "SEO check-up and live canonical crawl",
+      "location": "evidence/seo-checkup-2026-08-22.md and scripts/live-seo-audit.mjs",
+      "verifiedAt": "2026-08-22",
+      "supports": [
+        "The public canonical, redirect, sitemap, noindex, internal-link and security-header state was checked read-only.",
+        "The page-action matrix and hub-cluster map separate verified evidence from hypotheses and experiments."
+      ],
+      "rights": "Original First-Party audit and implementation evidence; no ranking or indexing outcome is implied."
+    },
+    {
       "id": "original-social-card",
       "kind": "original_project_asset",
       "title": "SEO AI Agent social card",

@@ -10,7 +10,8 @@ const pageRoutes = [
   "/aufgaben/technische-audit-triage", "/aufgaben/keyword-chancen-priorisieren",
   "/aufgaben/interne-links-begruenden", "/benchmarks",
   "/benchmarks/2026-08-22-technische-audit-triage", "/agenten-vergleich",
-  "/faehigkeiten", "/mcp-fuer-seo-agenten", "/methodik-und-konflikte",
+  "/faehigkeiten", "/mcp-fuer-seo-agenten", "/seo-agent-kosten",
+  "/fehlerbehandlung-seo-agenten", "/methodik-und-konflikte",
   "/quellen-und-rechte", "/impressum", "/datenschutz"
 ];
 const collectionRoutes = new Set(["/aufgaben", "/benchmarks", "/faehigkeiten"]);
@@ -107,6 +108,13 @@ check(builder.includes("disabled>Contextter MCP verbinden – bald verfügbar"),
 check(builder.includes('href="/faehigkeiten"') && builder.includes('href="/mcp-fuer-seo-agenten"'), "builder: informational cluster links missing");
 check(builder.includes('href="https://seo-mcp.de/capabilities"') && builder.includes('href="https://contextter.com/"'), "builder: external informational links missing");
 check((builder.match(/<label\b/g) ?? []).length >= 8, "builder: too few explicit labels");
+
+const costPage = pageHtml.get("/seo-agent-kosten");
+const failurePage = pageHtml.get("/fehlerbehandlung-seo-agenten");
+check(costPage.includes("data-cost-calculator") && costPage.includes("data-cost-form"), "cost calculator: local calculation surface missing");
+check(costPage.includes("Keine Übertragung") && costPage.includes("keine Preisbehauptung"), "cost calculator: local and non-market-price boundaries missing");
+check(failurePage.includes("Nicht jeder Fehler ist ein Retry") && failurePage.includes("max_retries_per_step"), "failure handling: decision matrix or contract missing");
+check(failurePage.includes("https://airc.nist.gov/airmf-resources/playbook/manage/"), "failure handling: primary source link missing");
 
 const benchmark = pageHtml.get("/benchmarks");
 const runPage = pageHtml.get(runRoute);

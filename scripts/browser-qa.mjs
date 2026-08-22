@@ -151,6 +151,21 @@ try {
     scrollWidth: document.documentElement.scrollWidth,
     primaryCta: document.querySelector('.hero .button-primary')?.textContent.trim()
   })`));
+  const performance = JSON.parse(await evaluate(`JSON.stringify((() => {
+    const navigation = performance.getEntriesByType('navigation')[0];
+    const resources = performance.getEntriesByType('resource');
+    return {
+      responseEndMs: Math.round(navigation.responseEnd),
+      domContentLoadedMs: Math.round(navigation.domContentLoadedEventEnd),
+      loadMs: Math.round(navigation.loadEventEnd),
+      firstContentfulPaintMs: Math.round(performance.getEntriesByName('first-contentful-paint')[0]?.startTime ?? 0),
+      resourceCount: resources.length,
+      encodedBytes: Math.round(resources.reduce((sum, item) => sum + (item.encodedBodySize || 0), 0))
+    };
+  })())`));
+  assert(performance.loadMs > 0 && performance.loadMs < 3000, "Local homepage load timing exceeded 3000 ms");
+  assert(performance.firstContentfulPaintMs > 0 && performance.firstContentfulPaintMs < 3000, "Local homepage FCP timing exceeded 3000 ms");
+  assert(performance.encodedBytes < 2_000_000, "Local homepage encoded resources exceeded 2 MB");
   assert(desktop.lang === "de", "Desktop document language is not de");
   assert(desktop.h1 === "Gib SEO-Agenten einen prüfbaren Auftrag.", "Desktop h1 mismatch");
   assert(desktop.noindex == null, "Indexable homepage still exposes a robots meta directive");
@@ -204,6 +219,59 @@ try {
   await runAxe("MCP desktop");
   const mcpScreenshot = await screenshot("mcp-desktop.png");
 
+  await navigate("/seo-agent-kosten", desktopViewport);
+  const costCalculator = JSON.parse(await evaluate(`(async () => {
+    const runs = document.querySelector('[name="runs"]');
+    const review = document.querySelector('[name="reviewMinutes"]');
+    runs.value = '20';
+    review.value = '15';
+    runs.dispatchEvent(new Event('input', { bubbles: true }));
+    review.dispatchEvent(new Event('input', { bubbles: true }));
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    return JSON.stringify({
+      h1: document.querySelector('h1')?.textContent.trim(),
+      total: document.querySelector('[data-total]')?.textContent.trim(),
+      fields: document.querySelectorAll('.cost-form input').length,
+      local: document.body.textContent.includes('Keine Übertragung'),
+      scrollWidth: document.documentElement.scrollWidth,
+      viewport: window.innerWidth
+    });
+  })()`));
+  assert(costCalculator.h1 === "SEO-Agent-Kosten beginnen vor dem ersten Lauf.", "Cost calculator h1 mismatch");
+  assert(costCalculator.total.includes("542,80"), "Cost calculator did not update the expected total");
+  assert(costCalculator.fields === 7 && costCalculator.local, "Cost calculator fields or local boundary missing");
+  assert(costCalculator.scrollWidth <= costCalculator.viewport, "Cost calculator horizontal overflow detected");
+  await runAxe("cost calculator desktop");
+  const costScreenshot = await screenshot("cost-calculator-desktop.png");
+
+  await navigate("/fehlerbehandlung-seo-agenten", desktopViewport);
+  const failureHandling = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector('h1')?.textContent.trim(),
+    rows: document.querySelectorAll('.failure-table article').length,
+    contract: document.body.textContent.includes('max_retries_per_step'),
+    primarySource: document.querySelector('a[href="https://airc.nist.gov/airmf-resources/playbook/manage/"]')?.href,
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(failureHandling.h1 === "Ein guter SEO-Agent weiß, wann er stoppen muss.", "Failure handling h1 mismatch");
+  assert(failureHandling.rows === 6 && failureHandling.contract && failureHandling.primarySource, "Failure handling matrix, contract, or source missing");
+  assert(failureHandling.scrollWidth <= failureHandling.viewport, "Failure handling horizontal overflow detected");
+  await runAxe("failure handling desktop");
+  const failureScreenshot = await screenshot("failure-handling-desktop.png");
+  await navigate("/agenten-vergleich", desktopViewport);
+  const comparison = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector('h1')?.textContent.trim(),
+    approaches: document.querySelectorAll('.approach-table article').length,
+    gates: document.querySelectorAll('.comparison-gates article').length,
+    selectionSteps: document.querySelectorAll('.selection-path li').length,
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(comparison.h1 === "Erst den Risikorahmen wählen. Dann das System.", "Comparison h1 mismatch");
+  assert(comparison.approaches === 3 && comparison.gates === 4 && comparison.selectionSteps === 3, "Comparison decision content is incomplete");
+  assert(comparison.scrollWidth <= comparison.viewport, "Comparison horizontal overflow detected");
+  await runAxe("comparison desktop");
+  const comparisonScreenshot = await screenshot("comparison-desktop.png");
   await navigate("/aufgaben", desktopViewport);
   const library = JSON.parse(await evaluate(`JSON.stringify({
     h1: document.querySelector("h1")?.textContent.trim(),
@@ -303,15 +371,29 @@ try {
     h1: document.querySelector('h1')?.textContent.trim(),
     noTracking: document.body.textContent.includes('Keine Analyse, Cookies oder Formulare'),
     localBuilder: document.body.textContent.includes('ausschließlich im Arbeitsspeicher des Browsers'),
+    localCalculator: document.body.textContent.includes('SEO-Agent-Kostenrechner'),
     scrollWidth: document.documentElement.scrollWidth,
     viewport: window.innerWidth
   })`));
   assert(legal.h1 === "Datenschutz", "Privacy page h1 mismatch");
-  assert(legal.noTracking && legal.localBuilder, "Privacy implementation truth is incomplete");
+  assert(legal.noTracking && legal.localBuilder && legal.localCalculator, "Privacy implementation truth is incomplete");
   assert(legal.scrollWidth <= legal.viewport, "Privacy page horizontal overflow detected");
   await runAxe("privacy desktop");
   const legalScreenshot = await screenshot("datenschutz-desktop.png");
 
+  await navigate("/seo-agent-kosten", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+  const costMobile = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector('h1')?.textContent.trim(),
+    fields: document.querySelectorAll('.cost-form input').length,
+    total: document.querySelector('[data-total]')?.textContent.trim(),
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(costMobile.h1 === "SEO-Agent-Kosten beginnen vor dem ersten Lauf.", "Mobile cost calculator h1 mismatch");
+  assert(costMobile.fields === 7 && costMobile.total, "Mobile cost calculator is incomplete");
+  assert(costMobile.scrollWidth <= costMobile.viewport, "Mobile cost calculator horizontal overflow detected");
+  await runAxe("cost calculator mobile");
+  const costMobileScreenshot = await screenshot("cost-calculator-mobile.png");
   await navigate("/task-spec-builder", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   const builderMobile = JSON.parse(await evaluate(`JSON.stringify({
     h1: document.querySelector('h1')?.textContent.trim(),
@@ -341,7 +423,7 @@ try {
   const mobileScreenshot = await screenshot("homepage-mobile.png");
 
   assert(errors.length === 0, `Browser console/runtime errors: ${errors.join(" | ")}`);
-  console.log(JSON.stringify({ browserExecutable, desktop, keyboard, capabilities, mcp, library, interaction, resultInteraction, runEvidence, legal, builderMobile, mobile, axeResults, screenshots: [desktopScreenshot, capabilitiesScreenshot, mcpScreenshot, libraryScreenshot, builderScreenshot, resultScreenshot, runScreenshot, legalScreenshot, builderMobileScreenshot, mobileScreenshot], errors }, null, 2));
+  console.log(JSON.stringify({ browserExecutable, desktop, performance, keyboard, capabilities, mcp, costCalculator, failureHandling, comparison, library, interaction, resultInteraction, runEvidence, legal, costMobile, builderMobile, mobile, axeResults, screenshots: [desktopScreenshot, capabilitiesScreenshot, mcpScreenshot, costScreenshot, failureScreenshot, comparisonScreenshot, libraryScreenshot, builderScreenshot, resultScreenshot, runScreenshot, legalScreenshot, costMobileScreenshot, builderMobileScreenshot, mobileScreenshot], errors }, null, 2));
 } finally {
   if (socket?.readyState === WebSocket.OPEN) socket.close();
   browserProcess.kill();

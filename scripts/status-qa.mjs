@@ -11,7 +11,7 @@ const routes = [
   "/aufgaben/technische-audit-triage", "/aufgaben/keyword-chancen-priorisieren",
   "/aufgaben/interne-links-begruenden", "/benchmarks",
   "/benchmarks/2026-08-22-technische-audit-triage", "/agenten-vergleich",
-  "/faehigkeiten", "/mcp-fuer-seo-agenten", "/methodik-und-konflikte", "/quellen-und-rechte", "/impressum", "/datenschutz",
+  "/faehigkeiten", "/mcp-fuer-seo-agenten", "/seo-agent-kosten", "/fehlerbehandlung-seo-agenten", "/methodik-und-konflikte", "/quellen-und-rechte", "/impressum", "/datenschutz",
   "/robots.txt", "/sitemap-index.xml", "/sitemap-0.xml",
   "/evidence/runs/2026-08-22-seo-ai-001-r1/input.v1.json",
   "/evidence/runs/2026-08-22-seo-ai-001-r1/raw-observations.v1.json",

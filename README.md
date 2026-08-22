@@ -30,6 +30,8 @@ seo-ai-agent.de is a newly registered domain. It is not an expired-domain rebuil
 - `/agenten-vergleich` — selection approaches without provider winner claims
 - `/faehigkeiten` — provider-neutral capability framework for data, analysis, evidence, and control
 - `/mcp-fuer-seo-agenten` — MCP's role in an agent workflow without duplicating seo-mcp.de implementation docs
+- `/seo-agent-kosten` — browser-local task-cost calculator for execution, data, review, retries, and reserve
+- `/fehlerbehandlung-seo-agenten` — task-level stop, retry, escalation, and rollback contract
 - `/methodik-und-konflikte` — rubric, ownership, corrections, and conflict rules
 - `/quellen-und-rechte` — source register and third-party rights boundaries
 - `/impressum` and `/datenschutz` — operator and actual processing truth
@@ -47,7 +49,7 @@ The committed raw artifact is a historical observation of the public Noindex pre
 
 The UI does not connect to a live MCP server. It never asks for raw tokens, never performs paid work, and keeps the connect action disabled until OAuth, scopes, and a read capability are verified in production.
 
-The site is statically hosted on Vercel. It has no analytics, cookies, consent manager, contact form, external font request, local or session storage, advertising, or embedded third-party media. Builder inputs stay in browser memory and are not transmitted. Clipboard access occurs only after an explicit copy action.
+The site is statically hosted on Vercel. It has no analytics, cookies, consent manager, contact form, external font request, local or session storage, advertising, or embedded third-party media. Builder and cost-calculator inputs stay in browser memory and are not transmitted. Clipboard access occurs only after an explicit copy action.
 
 ## Local development and verification
 
@@ -63,6 +65,7 @@ Optional Chromium interaction and responsive QA:
 ## Evidence and indexing
 
 - `evidence/rights-and-sources.v1.json` records sources, allowed use, and unresolved governance questions.
+- `evidence/seo-checkup-2026-08-22.md` contains the Evidence Register, Page-Action Matrix, Hub/Cluster Map, findings, and 30/60/90 sequence.
 - `evidence/runs/2026-08-22-seo-ai-001-r1/` contains frozen input, raw observations, and the evaluated result.
 - Public JSON mirrors are served from `/evidence/runs/2026-08-22-seo-ai-001-r1/`.
 - Search Console property, URL Inspection, manual-action, security-issue, and submitted-sitemap state require authenticated GSC evidence. Sitemap availability alone is not proof of indexing.

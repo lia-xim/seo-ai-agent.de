@@ -26,6 +26,8 @@ seo-ai-agent.de is a newly registered owned domain. It is not an expired-domain 
 - `/agenten-vergleich`: choose an approach by task, risk, access, and evidence need without a provider ranking.
 - `/faehigkeiten`: inspect provider-neutral data, analysis, evidence, and control capabilities by SEO task.
 - `/mcp-fuer-seo-agenten`: understand the MCP role in an agent workflow without duplicating the implementation reference on seo-mcp.de.
+- `/seo-agent-kosten`: calculate an explicit task budget from direct execution, data, review, retries, and reserve using browser-local inputs.
+- `/fehlerbehandlung-seo-agenten`: define task-level stop, retry, escalation, evidence, and rollback behavior before execution.
 - `/methodik-und-konflikte`: audit scoring dimensions, ownership, corrections, and limits.
 - `/quellen-und-rechte`, `/impressum`, `/datenschutz`: inspect provenance, rights, operator, and actual processing.
 
@@ -46,7 +48,7 @@ No second human reviewer was available. The result is explicitly marked as not i
 - Open Graph and Twitter cards use one original self-hosted 1200x630 image.
 - Enforced baseline security headers are paired with a report-only CSP whose inline-script hashes are build-checked.
 - No analytics, cookies, consent manager, advertising, contact form, external fonts, local/session storage, or embedded third-party media.
-- Task Recipe inputs remain in browser memory and are not sent to a server.
+- Task Recipe and cost-calculator inputs remain in browser memory and are not sent to a server.
 - No live MCP, provider API, login, upload, paid execution, or automated external write.
 - Vercel processes request and connection metadata to deliver and secure the site.
 
