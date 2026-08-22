@@ -14,7 +14,7 @@ Canonical HTML pages are indexable and generated automatically into `sitemap-ind
 
 Die Seite macht aus SEO-Fragen klare Task Recipes mit Freigaben, Budgets, Datenbedarf, erwarteten Ergebnissen und nachvollziehbaren Testkriterien.
 
-Contextter darf keinen automatischen Siegerstatus erhalten. Jede Bewertung braucht datierte Testevidenz und eine Eigentumsoffenlegung. Contextter is disclosed as the accepted primary portfolio relationship and as a possible future test participant, not as an independent source.
+Contextter darf keinen automatischen Siegerstatus erhalten. Jede Bewertung braucht datierte Testevidenz und eine Eigentumsoffenlegung. Contextter is disclosed as the accepted primary portfolio relationship and as a possible future test participant, not as an independent source. Contextter and seo-mcp.de are linked only inside relevant user flows with adjacent common-ownership disclosure; there is no cross-domain footer network.
 
 ## Fresh-domain boundary
 
@@ -28,10 +28,12 @@ seo-ai-agent.de is a newly registered domain. It is not an expired-domain rebuil
 - `/benchmarks` — published runs and transparent review state
 - `/benchmarks/2026-08-22-technische-audit-triage` — first real frozen First-Party task run
 - `/agenten-vergleich` — selection approaches without provider winner claims
+- `/faehigkeiten` — provider-neutral capability framework for data, analysis, evidence, and control
+- `/mcp-fuer-seo-agenten` — MCP's role in an agent workflow without duplicating seo-mcp.de implementation docs
 - `/methodik-und-konflikte` — rubric, ownership, corrections, and conflict rules
 - `/quellen-und-rechte` — source register and third-party rights boundaries
 - `/impressum` and `/datenschutz` — operator and actual processing truth
-- automatic XML sitemap, crawlable robots.txt, canonical control, and true 404
+- automatic XML sitemap, crawlable robots.txt, canonical control, true 404, no-slash normalization, page-specific schema, social cards, and tested security headers
 
 ## Reproduce the first task run
 

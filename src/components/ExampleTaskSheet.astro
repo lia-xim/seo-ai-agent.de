@@ -5,7 +5,7 @@ const steps = ["Aufgabe", "Evidenz", "Zugriff", "Budget", "Abnahme"];
 ---
 
 <article class="task-sheet" aria-labelledby="example-task-title" data-reveal>
-  <ol class="task-flow" aria-label="Task-Spec-Schritte">
+  <ol class="task-flow" aria-label="Task-Spec-Schritte" tabindex="0">
     {steps.map((step, index) => (
       <li class:list={{ active: index === 0 }} data-flow-node>
         <span>{String(index + 1).padStart(2, "0")}</span>

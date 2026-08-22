@@ -1,11 +1,12 @@
 import { spawn } from "node:child_process";
-import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { createServer } from "node:net";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
 const baseUrl = process.env.BROWSER_QA_BASE_URL ?? "http://127.0.0.1:4317";
 const outputDir = resolve(process.env.BROWSER_QA_OUTPUT_DIR ?? ".browser-qa");
+const axeSource = await readFile(resolve("node_modules", "axe-core", "axe.min.js"), "utf8");
 const chromeCandidates = [
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
   "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
@@ -61,6 +62,7 @@ const waitForDebugger = async () => {
 
 let socket;
 const errors = [];
+const axeResults = [];
 try {
   await waitForDebugger();
   const targetResponse = await fetch(`http://127.0.0.1:${debugPort}/json/new?${encodeURIComponent(baseUrl)}`, { method: "PUT" });
@@ -120,10 +122,22 @@ try {
   const assert = (condition, message) => {
     if (!condition) throw new Error(message);
   };
+  const pressKey = async (key, code = key) => {
+    await command("Input.dispatchKeyEvent", { type: "keyDown", key, code });
+    await command("Input.dispatchKeyEvent", { type: "keyUp", key, code });
+  };
+  const runAxe = async (label) => {
+    await evaluate(`${axeSource}\n;true`);
+    const result = JSON.parse(await evaluate(`(async () => JSON.stringify(await axe.run(document, { resultTypes: ["violations"] })))()`));
+    const violations = result.violations.map(({ id, impact, nodes }) => ({ id, impact, nodes: nodes.length, targets: nodes.map((node) => node.target.join(" ")) }));
+    axeResults.push({ label, violations });
+    assert(violations.length === 0, `${label}: Axe violations: ${violations.map((item) => `${item.id} (${item.impact}, ${item.nodes}: ${item.targets.join(" | ")})`).join(", ")}`);
+  };
 
   await command("Page.enable");
   await command("Runtime.enable");
   await command("Log.enable");
+  await command("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] });
 
   const desktopViewport = { width: 1536, height: 1024, deviceScaleFactor: 1, mobile: false };
 
@@ -141,7 +155,54 @@ try {
   assert(desktop.h1 === "Gib SEO-Agenten einen prüfbaren Auftrag.", "Desktop h1 mismatch");
   assert(desktop.noindex == null, "Indexable homepage still exposes a robots meta directive");
   assert(desktop.scrollWidth <= desktop.viewport, "Desktop horizontal overflow detected");
+  await runAxe("homepage desktop");
+  await evaluate("document.activeElement?.blur(); document.body.setAttribute('tabindex', '-1'); document.body.focus(); true");
+  await pressKey("Tab");
+  const firstKeyboardTarget = await evaluate("document.activeElement?.className ?? ''");
+  assert(String(firstKeyboardTarget).includes("skip-link"), "First keyboard target is not the skip link");
+  await pressKey("Enter");
+  const skipLinkTarget = await evaluate("document.activeElement?.id ?? ''");
+  assert(skipLinkTarget === "main-content", "Skip link did not move focus to main content");
+  const keyboard = { firstKeyboardTarget, skipLinkTarget };
   const desktopScreenshot = await screenshot("homepage-desktop.png");
+
+  await navigate("/faehigkeiten", desktopViewport);
+  const capabilities = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector("h1")?.textContent.trim(),
+    capabilityCards: document.querySelectorAll(".capability-grid article").length,
+    contextterDisclosure: document.body.textContent.includes("Contextter und diese Website werden gemeinsam betrieben"),
+    mcpDisclosure: document.body.textContent.includes("seo-mcp.de und seo-ai-agent.de werden im selben Contextter-Portfolio von Matthias Ramahi betrieben"),
+    contextterLink: document.querySelector('a[href="https://contextter.com/"]')?.href,
+    mcpLink: document.querySelector('a[href="https://seo-mcp.de/capabilities"]')?.href,
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(capabilities.h1 === "Fähigkeiten zählen erst mit Evidenz.", "Capabilities h1 mismatch");
+  assert(capabilities.capabilityCards === 5, "Capabilities page must expose five task-oriented fields");
+  assert(capabilities.contextterDisclosure && capabilities.mcpDisclosure, "Capabilities ownership disclosure is incomplete");
+  assert(capabilities.contextterLink && capabilities.mcpLink, "Capabilities contextual links are missing");
+  assert(capabilities.scrollWidth <= capabilities.viewport, "Capabilities horizontal overflow detected");
+  await runAxe("capabilities desktop");
+  const capabilitiesScreenshot = await screenshot("capabilities-desktop.png");
+
+  await navigate("/mcp-fuer-seo-agenten", desktopViewport);
+  const mcp = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector("h1")?.textContent.trim(),
+    principles: document.querySelectorAll(".mcp-principles li").length,
+    endpointUnavailable: document.body.textContent.includes("kein öffentlicher Contextter-MCP-Endpunkt"),
+    connectDisabled: document.body.textContent.includes("Connect-Aktionen im Task Recipe Builder bleiben deaktiviert"),
+    contextterLink: document.querySelector('a[href="https://contextter.com/"]')?.href,
+    mcpLink: document.querySelector('a[href="https://seo-mcp.de/capabilities"]')?.href,
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(mcp.h1 === "MCP macht Daten erreichbar. Nicht automatisch richtig.", "MCP page h1 mismatch");
+  assert(mcp.principles === 5, "MCP page must expose five principles");
+  assert(mcp.endpointUnavailable && mcp.connectDisabled, "MCP readiness boundary is incomplete");
+  assert(mcp.contextterLink && mcp.mcpLink, "MCP informational links are missing");
+  assert(mcp.scrollWidth <= mcp.viewport, "MCP page horizontal overflow detected");
+  await runAxe("MCP desktop");
+  const mcpScreenshot = await screenshot("mcp-desktop.png");
 
   await navigate("/aufgaben", desktopViewport);
   const library = JSON.parse(await evaluate(`JSON.stringify({
@@ -157,6 +218,7 @@ try {
   assert(library.openRows === 1, "Task library default expansion state changed");
   assert(library.ownerDisclosure, "Task library ownership boundary is missing");
   assert(library.scrollWidth <= library.viewport, "Task library horizontal overflow detected");
+  await runAxe("task library desktop");
   const libraryScreenshot = await screenshot("library-desktop.png");
 
   await navigate("/task-spec-builder", desktopViewport);
@@ -192,6 +254,7 @@ try {
   assert(interaction.markdownStartsCorrectly, "Builder Markdown did not render");
   assert(interaction.validation === "9 / 9 Felder", "Builder validation is incomplete");
   assert(interaction.scrollWidth <= interaction.viewport, "Builder horizontal overflow detected");
+  await runAxe("builder desktop");
   const builderScreenshot = await screenshot("builder-desktop.png");
 
   const resultInteraction = JSON.parse(await evaluate(`(async () => {
@@ -232,6 +295,7 @@ try {
   assert(runEvidence.owner && runEvidence.reviewMissing && runEvidence.noRanking, "Run evidence disclosure is incomplete");
   assert(runEvidence.rawRows === 14, "Run page does not expose 14 raw observations");
   assert(runEvidence.scrollWidth <= runEvidence.viewport, "Run page horizontal overflow detected");
+  await runAxe("run evidence desktop");
   const runScreenshot = await screenshot("run-evidence-desktop.png");
 
   await navigate("/datenschutz", desktopViewport);
@@ -245,6 +309,7 @@ try {
   assert(legal.h1 === "Datenschutz", "Privacy page h1 mismatch");
   assert(legal.noTracking && legal.localBuilder, "Privacy implementation truth is incomplete");
   assert(legal.scrollWidth <= legal.viewport, "Privacy page horizontal overflow detected");
+  await runAxe("privacy desktop");
   const legalScreenshot = await screenshot("datenschutz-desktop.png");
 
   await navigate("/task-spec-builder", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
@@ -258,6 +323,7 @@ try {
   assert(builderMobile.h1 === "Baue einen prüfbaren SEO-Agent-Auftrag.", "Mobile builder h1 mismatch");
   assert(builderMobile.scrollWidth <= builderMobile.viewport, "Mobile builder horizontal overflow detected");
   assert(builderMobile.modeVisible && builderMobile.connectDisabled, "Mobile Recipe or MCP readiness state missing");
+  await runAxe("builder mobile");
   const builderMobileScreenshot = await screenshot("builder-mobile.png");
 
   await navigate("/", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
@@ -271,10 +337,11 @@ try {
   assert(mobile.viewport === 390, "Mobile viewport mismatch");
   assert(mobile.scrollWidth <= mobile.viewport, "Mobile horizontal overflow detected");
   assert(mobile.mobileMenuVisible && mobile.desktopNavHidden, "Mobile navigation breakpoint failed");
+  await runAxe("homepage mobile");
   const mobileScreenshot = await screenshot("homepage-mobile.png");
 
   assert(errors.length === 0, `Browser console/runtime errors: ${errors.join(" | ")}`);
-  console.log(JSON.stringify({ browserExecutable, desktop, library, interaction, resultInteraction, runEvidence, legal, builderMobile, mobile, screenshots: [desktopScreenshot, libraryScreenshot, builderScreenshot, resultScreenshot, runScreenshot, legalScreenshot, builderMobileScreenshot, mobileScreenshot], errors }, null, 2));
+  console.log(JSON.stringify({ browserExecutable, desktop, keyboard, capabilities, mcp, library, interaction, resultInteraction, runEvidence, legal, builderMobile, mobile, axeResults, screenshots: [desktopScreenshot, capabilitiesScreenshot, mcpScreenshot, libraryScreenshot, builderScreenshot, resultScreenshot, runScreenshot, legalScreenshot, builderMobileScreenshot, mobileScreenshot], errors }, null, 2));
 } finally {
   if (socket?.readyState === WebSocket.OPEN) socket.close();
   browserProcess.kill();

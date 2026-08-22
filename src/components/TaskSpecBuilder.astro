@@ -148,13 +148,20 @@ const initialTask = tasks[0];
         <p>Contextter wird gemeinsam betrieben. Keine automatische Bewertung.</p>
       </div>
       <p class="connection-help">Ein echter Connect wird erst aktiviert, wenn OAuth, Scopes und mindestens ein Read-Tool live nachgewiesen sind.</p>
+      <p class="connection-disclosure"><strong>Gemeinsamer Betrieb:</strong> Contextter, seo-mcp.de und diese Website gehören zum selben Portfolio. Die Links sind Informationswege, keine unabhängigen Empfehlungen.</p>
+      <nav class="connection-links" aria-label="Informationen zu Fähigkeiten und MCP">
+        <a href="/faehigkeiten">Benötigte Fähigkeiten einordnen</a>
+        <a href="/mcp-fuer-seo-agenten">MCP für SEO-Agenten verstehen</a>
+        <a href="https://seo-mcp.de/capabilities">SEO MCP Capability Explorer</a>
+        <a href="https://contextter.com/">Contextter-Produktkontext</a>
+      </nav>
     </aside>
 
     <aside class="spec-output" aria-label="Aktuelle Spezifikation">
       <header>
         <h2>TASK RECIPE / <span data-output-id>{initialTask.id}</span></h2>
         <label for="output-format">Format</label>
-        <select id="output-format" data-output-format>
+        <select id="output-format" data-output-format aria-label="Ausgabeformat">
           <option value="markdown">Markdown</option>
           <option value="json">JSON</option>
         </select>
@@ -243,7 +250,7 @@ HTTP-Status: 200</pre></section>
     <div class="result-connect">
       <div><span>Für einen echten Run verbinden</span><ul data-result-capabilities>{initialTask.requiredCapabilities.map((capability) => <li>{capability}</li>)}</ul></div>
       <button type="button" class="button button-disabled" disabled>Contextter MCP verbinden – bald verfügbar</button>
-      <p>Contextter wird gemeinsam betrieben.<br />Keine automatische Bewertung.</p>
+      <div class="result-ownership"><p><strong>Gemeinsamer Betrieb:</strong> Contextter, seo-mcp.de und seo-ai-agent.de gehören zum selben Portfolio. Keine unabhängige Empfehlung und keine automatische Bewertung.</p><a href="/mcp-fuer-seo-agenten">MCP-Status und Grenzen</a><a href="https://seo-mcp.de/capabilities">Capability-Referenz</a></div>
     </div>
 
     <footer class="result-actions">

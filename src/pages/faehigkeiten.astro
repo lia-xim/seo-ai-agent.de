@@ -1,0 +1,111 @@
+---
+import PageIntro from "../components/PageIntro.astro";
+import { site } from "../data/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const capabilities = [
+  {
+    id: "01",
+    title: "Crawl & Indexierung lesen",
+    question: "Kann der Agent Status, Robots, Canonicals, Sitemaps und Redirects als getrennte Signale prüfen?",
+    data: "HTTP-Antworten, gerendertes HTML, robots.txt, Sitemap und URL-Inventar",
+    evidence: "Status, Quell-URL, Ziel-URL, Zeitstempel und direkte Rohbeobachtung",
+    task: "/aufgaben/technische-audit-triage"
+  },
+  {
+    id: "02",
+    title: "Search Performance einordnen",
+    question: "Kann der Agent Klicks, Impressionen, CTR und Position mit Seite, Query, Zeitraum und Datenfrische verbinden?",
+    data: "Authentifizierte Search-Console-Daten oder ein klar gekennzeichneter Export",
+    evidence: "Property, Zeitraum, Dimensionen, Filter, Zeitzone und unveränderte Rohwerte",
+    task: "/aufgaben/keyword-chancen-priorisieren"
+  },
+  {
+    id: "03",
+    title: "Keyword-Chancen priorisieren",
+    question: "Kann der Agent Nachfrage, Intent, bestehende Seiten und technische Eignung gemeinsam bewerten?",
+    data: "Keyword-Inventar, SERP-Kontext, Seitenbestand und definierte Priorisierungsregeln",
+    evidence: "Eingabedaten, Regelversion, Ausschlüsse, Unsicherheit und begründete Reihenfolge",
+    task: "/aufgaben/keyword-chancen-priorisieren"
+  },
+  {
+    id: "04",
+    title: "Interne Links begründen",
+    question: "Kann der Agent Quelle, Ziel, Anchor, Status und redaktionellen Zusammenhang belegen?",
+    data: "Linkgraph, Seiteninhalt, Canonicals, Redirects und Klicktiefe",
+    evidence: "Quellpassage, Zieljob, vorhandener Linkzustand und menschliche Freigabe",
+    task: "/aufgaben/interne-links-begruenden"
+  },
+  {
+    id: "05",
+    title: "Grenzen & Aktionen kontrollieren",
+    question: "Kann der Agent zwischen Lesen, Vorschlagen und Schreiben unterscheiden und bei Unsicherheit stoppen?",
+    data: "Scopes, Kostenlimit, Zeitlimit, Freigaben und Abbruchregeln",
+    evidence: "Toolaufrufe, Kosten, Fehlversuche, Rückfragen, Schreibaktionen und Endstatus",
+    task: "/task-spec-builder"
+  }
+];
+---
+
+<BaseLayout
+  title="Fähigkeiten von SEO-Agenten"
+  description="Ein prüfbarer Fähigkeitsrahmen für Datenzugriff, Analyse, Evidenz und kontrollierte SEO-Agent-Aktionen."
+  canonicalPath="/faehigkeiten"
+  pageType="CollectionPage"
+>
+  <PageIntro
+    section="04"
+    title="Fähigkeiten zählen erst mit Evidenz."
+    description="Eine Capability ist kein Marketinglabel. Sie beschreibt, welche Daten ein Agent lesen darf, welche Entscheidung er daraus ableitet und welchen Nachweis ein Mensch prüfen kann."
+    meta="5 FÄHIGKEITSFELDER / READ-FIRST / PROVIDER-NEUTRAL"
+  />
+
+  <section class="capability-framework" aria-labelledby="capability-title">
+    <header class="section-heading" data-reveal>
+      <div>
+        <h2 id="capability-title">Vom Datenzugriff zur überprüfbaren Entscheidung.</h2>
+        <p>Die Felder sind aufgabenbezogen. Sie behaupten nicht, dass ein bestimmter Anbieter oder ein derzeit deaktivierter MCP-Endpoint sie bereits liefert.</p>
+      </div>
+      <a class="text-link" href="/task-spec-builder">Recipe mit Capabilities bauen</a>
+    </header>
+    <div class="capability-grid">
+      {capabilities.map((capability) => (
+        <article data-reveal-item>
+          <span>{capability.id}</span>
+          <h3>{capability.title}</h3>
+          <p>{capability.question}</p>
+          <dl>
+            <div><dt>Benötigte Daten</dt><dd>{capability.data}</dd></div>
+            <div><dt>Prüfbare Evidenz</dt><dd>{capability.evidence}</dd></div>
+          </dl>
+          <a class="text-link" href={capability.task}>Passende Aufgabe öffnen</a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="relationship-section" aria-labelledby="relationship-title">
+    <header>
+      <span class="eyebrow">Fachlicher Übergang</span>
+      <h2 id="relationship-title">Capabilities beschreiben. Implementierungen separat prüfen.</h2>
+      <p>Diese Seite erklärt den aufgabenbezogenen Bedarf. Die technische MCP-Referenz dokumentiert Capability-Schemas, Berechtigungen und Integrationsgrenzen.</p>
+    </header>
+    <div class="relationship-cards">
+      <article>
+        <h3>SEO MCP Capability Explorer</h3>
+        <p><strong>Eigentumshinweis:</strong> seo-mcp.de und seo-ai-agent.de werden im selben Contextter-Portfolio von Matthias Ramahi betrieben. Der Link ist ein fachlicher Übergang, keine unabhängige Bestätigung.</p>
+        <a class="button button-secondary" href="https://seo-mcp.de/capabilities">Capability Explorer öffnen</a>
+      </article>
+      <article>
+        <h3>Contextter als möglicher Datenkontext</h3>
+        <p><strong>Eigentumshinweis:</strong> Contextter und diese Website werden gemeinsam betrieben. Contextter ist keine unabhängige Empfehlung und erhält keinen Siegerstatus; ein öffentlicher Contextter-MCP-Endpunkt wird hier nicht behauptet.</p>
+        <a class="button button-secondary" href="https://contextter.com/">Contextter ansehen</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="statement-band" data-reveal>
+    <p>{site.boundary}</p>
+    <a class="text-link" href="/mcp-fuer-seo-agenten">MCP-Rolle einordnen</a>
+  </section>
+</BaseLayout>

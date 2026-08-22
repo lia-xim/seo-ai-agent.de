@@ -10,13 +10,17 @@ const pageRoutes = [
   "/aufgaben/technische-audit-triage", "/aufgaben/keyword-chancen-priorisieren",
   "/aufgaben/interne-links-begruenden", "/benchmarks",
   "/benchmarks/2026-08-22-technische-audit-triage", "/agenten-vergleich",
-  "/methodik-und-konflikte", "/quellen-und-rechte", "/impressum", "/datenschutz"
+  "/faehigkeiten", "/mcp-fuer-seo-agenten", "/methodik-und-konflikte",
+  "/quellen-und-rechte", "/impressum", "/datenschutz"
 ];
+const collectionRoutes = new Set(["/aufgaben", "/benchmarks", "/faehigkeiten"]);
+const runRoute = "/benchmarks/2026-08-22-technische-audit-triage";
 
 const failures = [];
 const routeFile = (route) => route === "/" ? resolve(dist, "index.html") : resolve(dist, route.slice(1), "index.html");
 const check = (passed, message) => { if (!passed) failures.push(message); };
 const pageHtml = new Map();
+const schemaByRoute = new Map();
 
 for (const route of pageRoutes) {
   const file = routeFile(route);
@@ -31,6 +35,29 @@ for (const route of pageRoutes) {
   check((html.match(/<h1\b/g) ?? []).length === 1, `${route}: expected exactly one h1`);
   check(!/\{\{[^}]+\}\}|__[_A-Z]+__/.test(html), `${route}: unresolved template token found`);
   check(!/Testsieger|bester SEO-Agent|unabhängige Bewertung/i.test(html), `${route}: prohibited winner or independence claim found`);
+  for (const socialTag of [
+    `property="og:image" content="${origin}/social-card.png"`,
+    'property="og:image:width" content="1200"',
+    'property="og:image:height" content="630"',
+    'name="twitter:card" content="summary_large_image"',
+    `name="twitter:image" content="${origin}/social-card.png"`
+  ]) check(html.includes(socialTag), `${route}: social card metadata missing: ${socialTag}`);
+
+  const scripts = [...html.matchAll(/<script[^>]+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
+  check(scripts.length === 1, `${route}: expected exactly one JSON-LD block`);
+  if (scripts.length === 1) {
+    try {
+      const schema = JSON.parse(scripts[0][1]);
+      const graph = Array.isArray(schema["@graph"]) ? schema["@graph"] : [];
+      schemaByRoute.set(route, graph);
+      const pageType = collectionRoutes.has(route) ? "CollectionPage" : "WebPage";
+      check(graph.some((node) => node["@type"] === pageType && node.url === `${origin}${route === "/" ? "/" : route}`), `${route}: ${pageType} schema missing or URL mismatch`);
+      const websites = graph.filter((node) => node["@type"] === "WebSite");
+      check(route === "/" ? websites.length === 1 : websites.length === 0, `${route}: WebSite schema must exist only on root`);
+    } catch (error) {
+      failures.push(`${route}: invalid JSON-LD: ${error.message}`);
+    }
+  }
 }
 
 for (const [route, html] of pageHtml) {
@@ -49,6 +76,25 @@ for (const [route, html] of pageHtml) {
   }
 }
 
+const allSchemas = [...schemaByRoute.values()].flat();
+check(allSchemas.filter((node) => node["@type"] === "WebSite").length === 1, "schema: expected exactly one WebSite entity across the site");
+check(allSchemas.filter((node) => node["@type"] === "Dataset").length === 1, "schema: Dataset must exist only for the real reproducible run");
+check((schemaByRoute.get(runRoute) ?? []).some((node) => node["@type"] === "Dataset" && node.creator?.name === "Matthias Ramahi"), "schema: real run Dataset or creator missing");
+check(allSchemas.filter((node) => node["@type"] === "SoftwareApplication").length === 1, "schema: SoftwareApplication must exist only for the Builder");
+check((schemaByRoute.get("/task-spec-builder") ?? []).some((node) => node["@type"] === "SoftwareApplication"), "schema: Builder SoftwareApplication missing");
+
+const home = pageHtml.get("/");
+const capabilities = pageHtml.get("/faehigkeiten");
+const mcp = pageHtml.get("/mcp-fuer-seo-agenten");
+for (const [route, html] of [["/", home], ["/faehigkeiten", capabilities], ["/mcp-fuer-seo-agenten", mcp]]) {
+  check(html.includes('href="https://contextter.com/"'), `${route}: Contextter link missing`);
+  check(html.includes('href="https://seo-mcp.de/capabilities"'), `${route}: seo-mcp capability link missing`);
+  check(html.includes("Eigentumshinweis:"), `${route}: adjacent common-ownership disclosure missing`);
+  check(html.includes("keine unabhängige") || html.includes("keine unabhängigen"), `${route}: independence boundary missing`);
+}
+const footerSource = await readFile(resolve(root, "src", "components", "SiteFooter.astro"), "utf8");
+check(!footerSource.includes("contextter.com") && !footerSource.includes("seo-mcp.de"), "footer: cross-domain portfolio network link found");
+
 const builder = pageHtml.get("/task-spec-builder");
 check(builder.includes('class="spec-form"'), "builder: form is missing");
 check(builder.includes("data-download-json"), "builder: JSON download action is missing");
@@ -57,10 +103,13 @@ check(builder.includes("data-show-example"), "builder: synthetic result action i
 check(builder.includes("Beispielergebnis · keine Live-Daten"), "builder: synthetic result disclosure is missing");
 check(builder.includes("MCP-Pilot in Vorbereitung"), "builder: honest MCP readiness state is missing");
 check(builder.includes("disabled>MCP-Pilot in Vorbereitung"), "builder: MCP connect must remain disabled");
+check(builder.includes("disabled>Contextter MCP verbinden – bald verfügbar"), "builder: result connect must remain disabled");
+check(builder.includes('href="/faehigkeiten"') && builder.includes('href="/mcp-fuer-seo-agenten"'), "builder: informational cluster links missing");
+check(builder.includes('href="https://seo-mcp.de/capabilities"') && builder.includes('href="https://contextter.com/"'), "builder: external informational links missing");
 check((builder.match(/<label\b/g) ?? []).length >= 8, "builder: too few explicit labels");
 
 const benchmark = pageHtml.get("/benchmarks");
-const runPage = pageHtml.get("/benchmarks/2026-08-22-technische-audit-triage");
+const runPage = pageHtml.get(runRoute);
 check(benchmark.includes("Matthias Ramahi") && benchmark.includes("Nicht vorhanden · offengelegt"), "benchmark hub: owner or missing independent review disclosure is absent");
 check(runPage.includes("SEO-AI-001-2026-08-22-R1"), "run page: run ID missing");
 check(runPage.includes("Nicht unabhängig menschlich reviewed"), "run page: review status missing");
@@ -71,7 +120,12 @@ const imprint = pageHtml.get("/impressum");
 const privacy = pageHtml.get("/datenschutz");
 check(imprint.includes("Kempener Straße 44") && imprint.includes("info@matthiasramahi.de"), "imprint: verified operator details are missing");
 check(privacy.includes("Keine Analyse, Cookies oder Formulare"), "privacy: exact no-tracking section is missing");
+check(privacy.includes("ohne Reporting-Endpunkt") && privacy.includes("keine CSP-Berichte"), "privacy: CSP report-only behavior missing");
 check(privacy.includes("nicht an seo-ai-agent.de, Contextter, Vercel Functions, einen MCP-Server oder eine externe API übertragen"), "privacy: local builder boundary is missing");
+
+const socialCard = await readFile(resolve(root, "public", "social-card.png"));
+check(socialCard.length > 100_000, "social card PNG appears empty or under-rendered");
+check(socialCard.readUInt32BE(16) === 1200 && socialCard.readUInt32BE(20) === 630, "social card must be 1200x630");
 
 const robots = await readFile(resolve(dist, "robots.txt"), "utf8");
 const sitemapIndex = await readFile(resolve(dist, "sitemap-index.xml"), "utf8");
@@ -110,10 +164,17 @@ const rights = JSON.parse(await readFile(resolve(root, "evidence", "rights-and-s
 const vercel = JSON.parse(await readFile(resolve(root, "vercel.json"), "utf8"));
 const packageJson = JSON.parse(await readFile(resolve(root, "package.json"), "utf8"));
 check(rights.domain === domain, "rights manifest domain mismatch");
-check(rights.sources.some((source) => source.id === "first-real-task-run"), "rights manifest must register the real task run");
+for (const id of ["first-real-task-run", "contextter-product-context", "seo-mcp-capability-reference", "original-social-card"]) check(rights.sources.some((source) => source.id === id), `rights manifest source missing: ${id}`);
 check(rights.unknowns.some((item) => item.includes("Search Console")), "rights manifest must preserve authenticated GSC uncertainty");
 check(packageJson.dependencies?.["@astrojs/sitemap"], "official Astro sitemap integration is missing");
-const robotsHeaders = vercel.headers?.flatMap((entry) => entry.headers ?? []).filter((entry) => entry.key.toLowerCase() === "x-robots-tag") ?? [];
+check(packageJson.devDependencies?.["axe-core"], "axe-core dev dependency is missing");
+check(vercel.trailingSlash === false, "Vercel must normalize trailing slash variants to no-slash URLs");
+const headerMap = new Map((vercel.headers ?? []).flatMap((entry) => entry.headers ?? []).map((entry) => [entry.key.toLowerCase(), entry.value]));
+for (const [key, expected] of [["x-content-type-options", "nosniff"], ["referrer-policy", "strict-origin-when-cross-origin"], ["x-frame-options", "DENY"], ["cross-origin-opener-policy", "same-origin"], ["cross-origin-resource-policy", "same-origin"]]) check(headerMap.get(key) === expected, `security header mismatch: ${key}`);
+check(headerMap.has("content-security-policy-report-only"), "report-only CSP is missing");
+check(!headerMap.has("content-security-policy"), "CSP must remain report-only in this slice");
+check(headerMap.get("content-security-policy-report-only")?.includes("'sha256-") && !headerMap.get("content-security-policy-report-only")?.includes("'unsafe-inline'"), "CSP must use inline hashes without unsafe-inline");
+const robotsHeaders = [...headerMap].filter(([key]) => key === "x-robots-tag");
 check(robotsHeaders.length === 0, "Vercel must not emit an X-Robots-Tag noindex header at launch");
 const redirects = vercel.redirects ?? [];
 check(redirects.length === 2, "Vercel must define root and path canonical-host redirects");
@@ -127,4 +188,4 @@ if (failures.length > 0) {
   console.error(`QA failed with ${failures.length} issue(s):\n- ${failures.join("\n- ")}`);
   process.exit(1);
 }
-console.log(`QA passed: ${pageRoutes.length} canonical indexable pages, automatic sitemap, launch indexing, run evidence, legal pages, redirects, internal links, and true 404.`);
+console.log(`QA passed: ${pageRoutes.length} indexable pages, page-specific schema, disclosed contextual links, social card, security contract, automatic sitemap, run evidence, legal pages, internal links, and true 404.`);

@@ -24,6 +24,8 @@ seo-ai-agent.de is a newly registered owned domain. It is not an expired-domain 
 - `/benchmarks`: find dated real task runs and their review state.
 - `/benchmarks/2026-08-22-technische-audit-triage`: inspect the first real frozen First-Party task run and raw observations.
 - `/agenten-vergleich`: choose an approach by task, risk, access, and evidence need without a provider ranking.
+- `/faehigkeiten`: inspect provider-neutral data, analysis, evidence, and control capabilities by SEO task.
+- `/mcp-fuer-seo-agenten`: understand the MCP role in an agent workflow without duplicating the implementation reference on seo-mcp.de.
 - `/methodik-und-konflikte`: audit scoring dimensions, ownership, corrections, and limits.
 - `/quellen-und-rechte`, `/impressum`, `/datenschutz`: inspect provenance, rights, operator, and actual processing.
 
@@ -39,7 +41,10 @@ No second human reviewer was available. The result is explicitly marked as not i
 - Canonical HTML pages are indexable; automatic sitemap generation uses `@astrojs/sitemap`.
 - robots.txt allows crawling and references the sitemap index.
 - 404 stays noindex and outside the sitemap.
-- www root and subpaths permanently redirect to the path-equivalent apex URL.
+- www root and subpaths permanently redirect to the path-equivalent apex URL; Vercel normalizes trailing-slash variants to the canonical no-slash path.
+- Every indexable page emits page-specific schema; `WebSite` exists only on `/`, collection hubs use `CollectionPage`, the real run adds `Dataset`, and the Builder adds `SoftwareApplication`.
+- Open Graph and Twitter cards use one original self-hosted 1200x630 image.
+- Enforced baseline security headers are paired with a report-only CSP whose inline-script hashes are build-checked.
 - No analytics, cookies, consent manager, advertising, contact form, external fonts, local/session storage, or embedded third-party media.
 - Task Recipe inputs remain in browser memory and are not sent to a server.
 - No live MCP, provider API, login, upload, paid execution, or automated external write.

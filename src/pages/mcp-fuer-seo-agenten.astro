@@ -1,0 +1,85 @@
+---
+import PageIntro from "../components/PageIntro.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const principles = [
+  ["01", "Datenzugriff ist nicht Autonomie", "MCP kann beschreiben, welche Daten und Tools erreichbar sind. Ob ein Agent lesen, vorschlagen oder schreiben darf, bleibt eine eigene Scope- und Freigabeentscheidung."],
+  ["02", "Read-only zuerst", "Für Audit, Search Performance, Keyword- und Linkaufgaben beginnt ein belastbarer Pilot mit eng begrenzten Leserechten, festen Properties und sichtbarer Datenfrische."],
+  ["03", "Capability vor Anbieter", "Die Task Recipe nennt zuerst die benötigte Fähigkeit. Erst danach wird geprüft, ob ein konkreter Server sie mit passendem Schema, Auth und Evidenz tatsächlich bereitstellt."],
+  ["04", "Jeder Lauf bleibt protokolliert", "Tool, Version, Input, Scope, Kosten, Fehler, manuelle Eingriffe und Ergebnis gehören zum Run. Eine Verbindung allein beweist keine Qualität."],
+  ["05", "Schreiben braucht eine zweite Grenze", "Änderungen an Website, GSC, CMS oder Datenbestand benötigen explizite Freigabe, Vorschau, Rollback und eine benannte verantwortliche Person."]
+];
+---
+
+<BaseLayout
+  title="MCP für SEO-Agenten"
+  description="Wie MCP Daten- und Toolzugriff für SEO-Agenten beschreiben kann – mit Read-only-Scope, Evidenz und ehrlichem Prelaunch-Status."
+  canonicalPath="/mcp-fuer-seo-agenten"
+>
+  <PageIntro
+    section="05"
+    title="MCP macht Daten erreichbar. Nicht automatisch richtig."
+    description="Für SEO-Agenten kann MCP eine standardisierte Brücke zu Crawl-, Search-, Keyword- oder Linkdaten sein. Qualität entsteht aber erst durch begrenzte Scopes, überprüfbare Outputs und menschliche Freigaben."
+    meta="ERKLÄRUNG / KEIN LIVE-ENDPOINT / CONNECT DEAKTIVIERT"
+  />
+
+  <section class="mcp-principles" aria-labelledby="principles-title">
+    <header class="section-heading" data-reveal>
+      <div>
+        <h2 id="principles-title">Fünf Regeln für einen ehrlichen SEO-Agent-Connect.</h2>
+        <p>Diese Seite erklärt die Rolle im Agenten-Workflow. Sie dupliziert keine MCP-Implementierungsdokumentation.</p>
+      </div>
+    </header>
+    <ol>
+      {principles.map(([id, title, description]) => (
+        <li data-reveal-item>
+          <span>{id}</span>
+          <div><h3>{title}</h3><p>{description}</p></div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="mcp-flow" aria-labelledby="flow-title">
+    <header>
+      <span class="eyebrow">Task → Capability → Run</span>
+      <h2 id="flow-title">Der sinnvolle Ablauf.</h2>
+    </header>
+    <ol>
+      <li><span>1</span><strong>Task einfrieren</strong><p>Ziel, Scope, Budget, Quellen und Abbruchregel festlegen.</p></li>
+      <li><span>2</span><strong>Capabilities ableiten</strong><p>Nur Daten und Tools anfordern, die für diese Aufgabe wirklich benötigt werden.</p></li>
+      <li><span>3</span><strong>Verbindung prüfen</strong><p>Endpoint, Auth, Scopes, Datenfrische, Kosten und Fehlermodi technisch verifizieren.</p></li>
+      <li><span>4</span><strong>Read-only laufen lassen</strong><p>Rohbeobachtungen und Toolprotokoll erhalten; keine stillen Änderungen.</p></li>
+      <li><span>5</span><strong>Menschlich abnehmen</strong><p>Ergebnis, Unsicherheit und vorgeschlagene Aktion vor jeder Mutation prüfen.</p></li>
+    </ol>
+  </section>
+
+  <section class="relationship-section" aria-labelledby="mcp-links-title">
+    <header>
+      <span class="eyebrow">Getrennte Rollen</span>
+      <h2 id="mcp-links-title">Agentenaufgabe hier. MCP-Referenz dort.</h2>
+      <p>Die folgenden Links sind fachlich eingebettet. Gemeinsames Eigentum wird direkt am Link offengelegt und gilt nicht als unabhängige Empfehlung.</p>
+    </header>
+    <div class="relationship-cards">
+      <article>
+        <h3>Capability-Schemas und Integrationsgrenzen</h3>
+        <p><strong>Eigentumshinweis:</strong> seo-mcp.de ist eine gemeinsam betriebene Förderdomain im Contextter-Portfolio. Sie ist die separate technische Referenz; diese Verlinkung ist keine unabhängige Bestätigung.</p>
+        <a class="button button-secondary" href="https://seo-mcp.de/capabilities">SEO MCP Capabilities prüfen</a>
+      </article>
+      <article>
+        <h3>Möglicher späterer First-Party-Teilnehmer</h3>
+        <p><strong>Eigentumshinweis:</strong> Contextter und seo-ai-agent.de werden gemeinsam von Matthias Ramahi betrieben. Contextter ist kein automatischer Sieger; aktuell wird kein öffentlicher Contextter-MCP-Endpunkt behauptet.</p>
+        <a class="button button-secondary" href="https://contextter.com/">Contextter-Produktkontext öffnen</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="mcp-status-band" aria-labelledby="status-title">
+    <div>
+      <span class="status-dot" aria-hidden="true"></span>
+      <h2 id="status-title">Aktueller Status: Information, kein Connect.</h2>
+      <p>Alle MCP- und Connect-Aktionen im Task Recipe Builder bleiben deaktiviert, bis ein öffentlicher Endpoint mit Auth, Scopes und mindestens einer live geprüften Read-Capability existiert.</p>
+    </div>
+    <a class="button button-primary" href="/task-spec-builder">Task Recipe ohne Verbindung bauen</a>
+  </section>
+</BaseLayout>

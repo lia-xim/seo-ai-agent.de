@@ -97,6 +97,41 @@
         "The run has no independent human reviewer and does not establish a provider ranking."
       ],
       "rights": "Original First-Party run artifacts. No third-party model or provider output is reproduced."
+    },
+    {
+      "id": "contextter-product-context",
+      "kind": "verified_common_ownership_product_source",
+      "title": "Contextter product website",
+      "url": "https://contextter.com/",
+      "verifiedAt": "2026-08-22",
+      "supports": [
+        "Contextter is the commonly operated primary product relationship and a possible future First-Party data context.",
+        "The link is product context, not independent corroboration or a benchmark result."
+      ],
+      "rights": "Link and original factual description only; no independent endorsement is implied."
+    },
+    {
+      "id": "seo-mcp-capability-reference",
+      "kind": "verified_common_ownership_reference",
+      "title": "SEO MCP Capability Explorer",
+      "url": "https://seo-mcp.de/capabilities",
+      "verifiedAt": "2026-08-22",
+      "supports": [
+        "A separate commonly operated reference explains SEO MCP capability schemas and integration boundaries.",
+        "seo-ai-agent.de links to that implementation reference instead of duplicating its documentation."
+      ],
+      "rights": "Link and original factual description only; common ownership is disclosed beside the link."
+    },
+    {
+      "id": "original-social-card",
+      "kind": "original_project_asset",
+      "title": "SEO AI Agent social card",
+      "location": "public/social-card.svg and public/social-card.png",
+      "verifiedAt": "2026-08-22",
+      "supports": [
+        "Open Graph and Twitter card presentation for the current site."
+      ],
+      "rights": "Original project typography and vector composition; no third-party image or logo is included."
     }
   ],
   "unknowns": [

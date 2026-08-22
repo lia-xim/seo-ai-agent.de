@@ -14,8 +14,9 @@
     "check": "astro check",
     "qa": "node scripts/qa.mjs",
     "qa:browser": "node scripts/browser-qa.mjs",
+    "qa:csp": "node scripts/csp-contract.mjs --check",
     "qa:status": "node scripts/status-qa.mjs",
-    "verify": "pnpm build && pnpm qa && pnpm qa:status"
+    "verify": "pnpm build && pnpm qa && pnpm qa:csp && pnpm qa:status"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
+    "axe-core": "^4.13.0",
     "typescript": "5.9.3"
   },
   "packageManager": "pnpm@10.33.2"

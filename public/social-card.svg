@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">SEO AI Agent</title>
+  <desc id="desc">Prüfbare Aufgaben und reale Evidenz für SEO-Agenten</desc>
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#151c1a"/>
+      <stop offset="1" stop-color="#0b100f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="76%" cy="22%" r="64%">
+      <stop offset="0" stop-color="#b6ff5b" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#b6ff5b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#090d0c"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect x="44" y="44" width="1112" height="542" rx="28" fill="url(#panel)" stroke="#35413d"/>
+  <g transform="translate(88 86)" fill="none" stroke="#b6ff5b" stroke-width="5">
+    <path d="M0 28V0h28M68 0h28v28M96 68v28H68M28 96H0V68"/>
+    <circle cx="48" cy="48" r="10" fill="#b6ff5b" stroke="none"/>
+  </g>
+  <text x="216" y="135" fill="#b6ff5b" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" letter-spacing="4">SEO AI AGENT</text>
+  <text x="88" y="292" fill="#f4f7f5" font-family="Arial, Helvetica, sans-serif" font-size="78" font-weight="700" letter-spacing="-4">Prüfbare Aufgaben.</text>
+  <text x="88" y="382" fill="#f4f7f5" font-family="Arial, Helvetica, sans-serif" font-size="78" font-weight="700" letter-spacing="-4">Reale Evidenz.</text>
+  <text x="92" y="458" fill="#a8b3af" font-family="Arial, Helvetica, sans-serif" font-size="28">Task Recipes · Fähigkeiten · reproduzierbare Läufe</text>
+  <g transform="translate(88 516)" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">
+    <rect width="226" height="48" rx="24" fill="#b6ff5b"/>
+    <text x="26" y="31" fill="#090d0c">seo-ai-agent.de</text>
+    <rect x="246" width="262" height="48" rx="24" fill="none" stroke="#59665f"/>
+    <text x="272" y="31" fill="#c5ceca">Kein automatischer Sieger</text>
+  </g>
+</svg>

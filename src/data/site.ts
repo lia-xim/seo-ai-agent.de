@@ -46,8 +46,9 @@ export const site: SiteConfig = {
   navigation: [
     { href: "/task-spec-builder", label: "Task Recipe" },
     { href: "/aufgaben", label: "Aufgaben" },
+    { href: "/faehigkeiten", label: "Fähigkeiten" },
     { href: "/benchmarks", label: "Benchmarks" },
-    { href: "/methodik-und-konflikte", label: "Methodik" }
+    { href: "/mcp-fuer-seo-agenten", label: "MCP" }
   ],
   pages: [
     { path: "/", label: "Start", description: "Prüfbare SEO-Agent-Aufträge und ehrlicher Projektstatus.", indexableWhenLaunched: true },
@@ -59,6 +60,8 @@ export const site: SiteConfig = {
     { path: "/benchmarks", label: "Benchmarks", description: "Datierte Taskläufe, Kriterien, Rohbeobachtungen und Review-Status.", indexableWhenLaunched: true },
     { path: "/benchmarks/2026-08-22-technische-audit-triage", label: "Technische Audit-Triage vom 22.08.2026", description: "Eingefrorener First-Party-Tasklauf mit Rohbeobachtungen, Kriterien und Grenzen.", indexableWhenLaunched: true },
     { path: "/agenten-vergleich", label: "Agentenvergleich", description: "Einen Ansatz nach Aufgabe, Risiko und Nachweisbedarf auswählen.", indexableWhenLaunched: true },
+    { path: "/faehigkeiten", label: "Fähigkeiten", description: "Welche Daten-, Analyse-, Evidenz- und Kontrollfähigkeiten SEO-Agenten für klar begrenzte Aufgaben benötigen.", indexableWhenLaunched: true },
+    { path: "/mcp-fuer-seo-agenten", label: "MCP für SEO-Agenten", description: "Wie MCP Datenzugriff und Toolgrenzen für SEO-Agenten beschreiben kann, ohne einen aktiven Endpoint vorzutäuschen.", indexableWhenLaunched: true },
     { path: "/methodik-und-konflikte", label: "Methodik und Konflikte", description: "Rubrik, Eigentum, Korrekturen und Grenzen prüfen.", indexableWhenLaunched: true },
     { path: "/quellen-und-rechte", label: "Quellen und Rechte", description: "Quellenregister, Drittanbieterrechte und Evidenzgrenzen.", indexableWhenLaunched: true },
     { path: "/impressum", label: "Impressum", description: "Anbieterkennzeichnung und Kontakt für seo-ai-agent.de.", indexableWhenLaunched: true },
