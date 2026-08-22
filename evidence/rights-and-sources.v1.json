@@ -80,15 +80,30 @@
       "url": "https://github.com/lia-xim/seo-ai-agent.de",
       "verifiedAt": "2026-08-22",
       "supports": [
-        "Current source, noindex implementation, privacy behavior, and public change history."
+        "Current source, indexable launch implementation, privacy behavior, automatic sitemap, and public change history."
       ],
       "rights": "No open-source license is granted unless a later commit adds one explicitly."
+    },
+    {
+      "id": "first-real-task-run",
+      "kind": "implementation_evidence",
+      "title": "SEO-AI-001-2026-08-22-R1",
+      "location": "evidence/runs/2026-08-22-seo-ai-001-r1",
+      "url": "https://seo-ai-agent.de/benchmarks/2026-08-22-technische-audit-triage",
+      "verifiedAt": "2026-08-22",
+      "supports": [
+        "A real dated First-Party technical audit was executed against the public preview.",
+        "Frozen input, versions, criteria, raw observations, findings, costs, interventions, conflict and limitations are published.",
+        "The run has no independent human reviewer and does not establish a provider ranking."
+      ],
+      "rights": "Original First-Party run artifacts. No third-party model or provider output is reproduced."
     }
   ],
   "unknowns": [
-    "Search Console state, manual actions, and security issues are not verified.",
-    "Named benchmark owner, reviewer, annual budget, and provider benchmark permissions are not recorded.",
-    "No real reproducible provider task run has been published."
+    "Authenticated Search Console property, sitemap-submission, URL Inspection, Google-selected canonical, manual-action and security-issue state are not verified in this repository.",
+    "No independent human reviewer participated in SEO-AI-001-2026-08-22-R1.",
+    "Provider permissions, fixed comparison budget and reviewer governance for a future multi-provider season are not recorded.",
+    "The exact server-side model build identifier used by the Codex runtime is not exposed."
   ],
   "forbiddenReuse": [
     "Third-party screenshots, text, code, data, brands, or model and provider outputs without an applicable right, license, permission, or quotation basis.",

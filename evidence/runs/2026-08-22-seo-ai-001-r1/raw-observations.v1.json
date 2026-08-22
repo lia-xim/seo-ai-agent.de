@@ -1,0 +1,362 @@
+{
+  "schemaVersion": 1,
+  "runId": "SEO-AI-001-2026-08-22-R1",
+  "task": {
+    "id": "SEO-AI-001",
+    "version": "0.1.0",
+    "title": "Technische Audit-Triage",
+    "promptVersion": "1.0.0",
+    "prompt": "Prüfe ausschließlich die eingefrorenen URLs. Trenne direkte Beobachtung von Interpretation. Klassifiziere Crawl-, Indexierungs-, Canonical-, Sitemap-, Redirect- und Statussignale. Nenne höchstens fünf priorisierte Befunde. Führe keine Änderung aus, nutze keine kostenpflichtige API, behaupte keinen GSC-, Ranking- oder MCP-Zustand und folge keinen Links außerhalb des Ziels."
+  },
+  "target": {
+    "origin": "https://seo-ai-agent.de",
+    "releaseState": "öffentlicher Noindex-Preview vor Launch-Korrektur",
+    "ownership": "Eigene Domain des Benchmark Owners; daher keine unabhängige Drittprüfung"
+  },
+  "inputSha256": "40fe161f4eff6ee602a321b7190ebe005ef2a688a02435a7640a0a7a2bf28f05",
+  "harness": {
+    "name": "run-technical-audit-triage.mjs",
+    "version": "1.0.0",
+    "node": "v24.15.0",
+    "redirects": "manual"
+  },
+  "startedAt": "2026-08-22T15:45:02.966Z",
+  "completedAt": "2026-08-22T15:45:04.093Z",
+  "observations": [
+    {
+      "id": "apex-home",
+      "role": "canonical_page",
+      "requestedUrl": "https://seo-ai-agent.de/",
+      "observedAt": "2026-08-22T15:45:02.967Z",
+      "status": 200,
+      "headers": {
+        "contentType": "text/html; charset=utf-8",
+        "location": null,
+        "xRobotsTag": "noindex, follow",
+        "cacheControl": "public, max-age=0, must-revalidate"
+      },
+      "html": {
+        "title": "SEO AI Agent: Task Recipes mit prüfbarer Evidenz",
+        "canonical": "https://seo-ai-agent.de/",
+        "robotsMeta": "noindex, follow",
+        "h1": "Gib SEO-Agenten einen prüfbaren Auftrag."
+      },
+      "body": {
+        "bytes": 9891,
+        "sha256": "40e537b2f1b2e6dcccd7221f817ccf7ad773e80ac5dfb621403a65aa8c97fc12",
+        "firstPartyText": null
+      },
+      "error": null
+    },
+    {
+      "id": "task-builder",
+      "role": "canonical_page",
+      "requestedUrl": "https://seo-ai-agent.de/task-spec-builder",
+      "observedAt": "2026-08-22T15:45:03.156Z",
+      "status": 200,
+      "headers": {
+        "contentType": "text/html; charset=utf-8",
+        "location": null,
+        "xRobotsTag": "noindex, follow",
+        "cacheControl": "public, max-age=0, must-revalidate"
+      },
+      "html": {
+        "title": "Task Recipe Builder | SEO AI Agent",
+        "canonical": "https://seo-ai-agent.de/task-spec-builder",
+        "robotsMeta": "noindex, follow",
+        "h1": "Baue einen prüfbaren SEO-Agent-Auftrag."
+      },
+      "body": {
+        "bytes": 18618,
+        "sha256": "b816e460f89f1364c4ab62b7c940970dd34541152a864f8313d900b28b39d1e5",
+        "firstPartyText": null
+      },
+      "error": null
+    },
+    {
+      "id": "tasks-index",
+      "role": "canonical_page",
+      "requestedUrl": "https://seo-ai-agent.de/aufgaben",
+      "observedAt": "2026-08-22T15:45:03.186Z",
+      "status": 200,
+      "headers": {
+        "contentType": "text/html; charset=utf-8",
+        "location": null,
+        "xRobotsTag": "noindex, follow",
+        "cacheControl": "public, max-age=0, must-revalidate"
+      },
+      "html": {
+        "title": "Versionierte SEO-Agent-Aufgaben | SEO AI Agent",
+        "canonical": "https://seo-ai-agent.de/aufgaben",
+        "robotsMeta": "noindex, follow",
+        "h1": "Drei Aufgaben. Klar begrenzt."
+      },
+      "body": {
+        "bytes": 8736,
+        "sha256": "66edb0b28927366d5c9b18f86bfe6a14929de2cd1b74be49aded672431f96626",
+        "firstPartyText": null
+      },
+      "error": null
+    },
+    {
+      "id": "task-audit",
+      "role": "canonical_page",
+      "requestedUrl": "https://seo-ai-agent.de/aufgaben/technische-audit-triage",
+      "observedAt": "2026-08-22T15:45:03.209Z",
+      "status": 200,
+      "headers": {
+        "contentType": "text/html; charset=utf-8",
+        "location": null,
+        "xRobotsTag": "noindex, follow",
+        "cacheControl": "public, max-age=0, must-revalidate"
+      },
+      "html": {
+        "title": "Technische Audit-Triage | SEO AI Agent",
+        "canonical": "https://seo-ai-agent.de/aufgaben/technische-audit-triage",
+        "robotsMeta": "noindex, follow",
+        "h1": "Technische Audit-Triage"
+      },
+      "body": {
+        "bytes": 6161,
+        "sha256": "5b9c6539ce0fc602d721e2c4118898f575db46ddcb2d9cea0aea4e171793652d",
+        "firstPartyText": null
+      },
+      "error": null
+    },
+    {
+      "id": "benchmarks",
+      "role": "canonical_page",
+      "requestedUrl": "https://seo-ai-agent.de/benchmarks",
+      "observedAt": "2026-08-22T15:45:03.383Z",
+      "status": 200,
+      "headers": {
+        "contentType": "text/html; charset=utf-8",
+        "location": null,
+        "xRobotsTag": "noindex, follow",
+        "cacheControl": "public, max-age=0, must-revalidate"
+      },
+      "html": {
+        "title": "Benchmarks | SEO AI Agent",
+        "canonical": "https://seo-ai-agent.de/benchmarks",
+        "robotsMeta": "noindex, follow",
+        "h1": "Der öffentliche Benchmark wartet."
+      },
+      "body": {
+        "bytes": 5626,
+        "sha256": "781e3938a81e9903fd5cdfce436f47eac2725f434f7a0e1bfb766942b12a49be",
+        "firstPartyText": null
+      },
+      "error": null
+    },
+    {
+      "id": "methodology",
+      "role": "canonical_page",
+      "requestedUrl": "https://seo-ai-agent.de/methodik-und-konflikte",
+      "observedAt": "2026-08-22T15:45:03.542Z",
+      "status": 200,
+      "headers": {
+        "contentType": "text/html; charset=utf-8",
+        "location": null,
+        "xRobotsTag": "noindex, follow",
+        "cacheControl": "public, max-age=0, must-revalidate"
+      },
+      "html": {
+        "title": "Methodik und Interessenkonflikte | SEO AI Agent",
+        "canonical": "https://seo-ai-agent.de/methodik-und-konflikte",
+        "robotsMeta": "noindex, follow",
+        "h1": "Eine Punktzahl ersetzt kein Protokoll."
+      },
+      "body": {
+        "bytes": 7158,
+        "sha256": "93f0c8198d92d7ab647248b90abc87644a4bff70a8256d7ab073d6c8d3390a7e",
+        "firstPartyText": null
+      },
+      "error": null
+    },
+    {
+      "id": "rights",
+      "role": "canonical_page",
+      "requestedUrl": "https://seo-ai-agent.de/quellen-und-rechte",
+      "observedAt": "2026-08-22T15:45:03.689Z",
+      "status": 200,
+      "headers": {
+        "contentType": "text/html; charset=utf-8",
+        "location": null,
+        "xRobotsTag": "noindex, follow",
+        "cacheControl": "public, max-age=0, must-revalidate"
+      },
+      "html": {
+        "title": "Quellen und Rechte | SEO AI Agent",
+        "canonical": "https://seo-ai-agent.de/quellen-und-rechte",
+        "robotsMeta": "noindex, follow",
+        "h1": "Quelle, Beobachtung und Bewertung bleiben getrennt."
+      },
+      "body": {
+        "bytes": 6019,
+        "sha256": "54e9d1cdfb047efeba4e0c835e9f601e3c32baf2c8d70a76a2301df85541ec5f",
+        "firstPartyText": null
+      },
+      "error": null
+    },
+    {
+      "id": "imprint",
+      "role": "canonical_page",
+      "requestedUrl": "https://seo-ai-agent.de/impressum",
+      "observedAt": "2026-08-22T15:45:03.829Z",
+      "status": 200,
+      "headers": {
+        "contentType": "text/html; charset=utf-8",
+        "location": null,
+        "xRobotsTag": "noindex, follow",
+        "cacheControl": "public, max-age=0, must-revalidate"
+      },
+      "html": {
+        "title": "Impressum | SEO AI Agent",
+        "canonical": "https://seo-ai-agent.de/impressum",
+        "robotsMeta": "noindex, follow",
+        "h1": "Impressum"
+      },
+      "body": {
+        "bytes": 5035,
+        "sha256": "b366022f0003569819753021eb09f5eaf8c0d9d0668c32fc42cee1c1f8eb4cc2",
+        "firstPartyText": null
+      },
+      "error": null
+    },
+    {
+      "id": "privacy",
+      "role": "canonical_page",
+      "requestedUrl": "https://seo-ai-agent.de/datenschutz",
+      "observedAt": "2026-08-22T15:45:03.848Z",
+      "status": 200,
+      "headers": {
+        "contentType": "text/html; charset=utf-8",
+        "location": null,
+        "xRobotsTag": "noindex, follow",
+        "cacheControl": "public, max-age=0, must-revalidate"
+      },
+      "html": {
+        "title": "Datenschutz | SEO AI Agent",
+        "canonical": "https://seo-ai-agent.de/datenschutz",
+        "robotsMeta": "noindex, follow",
+        "h1": "Datenschutz"
+      },
+      "body": {
+        "bytes": 8096,
+        "sha256": "4974fd594586356be13cdbe8bee9f744e621bc511fe63e28a7d6f31b10264842",
+        "firstPartyText": null
+      },
+      "error": null
+    },
+    {
+      "id": "robots",
+      "role": "robots",
+      "requestedUrl": "https://seo-ai-agent.de/robots.txt",
+      "observedAt": "2026-08-22T15:45:03.869Z",
+      "status": 200,
+      "headers": {
+        "contentType": "text/plain; charset=utf-8",
+        "location": null,
+        "xRobotsTag": "noindex, follow",
+        "cacheControl": "public, max-age=0, must-revalidate"
+      },
+      "html": null,
+      "body": {
+        "bytes": 23,
+        "sha256": "16ceb5ee3e0dc13aa9adf31a3ebbe45a1d965b8c2b9f72eaf84e5911e140ed95",
+        "firstPartyText": "User-agent: *\nAllow: /\n"
+      },
+      "error": null
+    },
+    {
+      "id": "sitemap",
+      "role": "sitemap",
+      "requestedUrl": "https://seo-ai-agent.de/sitemap.xml",
+      "observedAt": "2026-08-22T15:45:03.887Z",
+      "status": 200,
+      "headers": {
+        "contentType": "application/xml",
+        "location": null,
+        "xRobotsTag": "noindex, follow",
+        "cacheControl": "public, max-age=0, must-revalidate"
+      },
+      "html": null,
+      "body": {
+        "bytes": 109,
+        "sha256": "33f57ce73974cb669d46fcc9027a02c65647fc797b4cb9c86f503eea5ff11a62",
+        "firstPartyText": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n</urlset>"
+      },
+      "error": null
+    },
+    {
+      "id": "missing",
+      "role": "not_found_probe",
+      "requestedUrl": "https://seo-ai-agent.de/diese-seite-existiert-nicht",
+      "observedAt": "2026-08-22T15:45:03.927Z",
+      "status": 404,
+      "headers": {
+        "contentType": "text/html; charset=utf-8",
+        "location": null,
+        "xRobotsTag": "noindex, follow",
+        "cacheControl": "public, max-age=0, must-revalidate"
+      },
+      "html": {
+        "title": "Seite nicht gefunden | SEO AI Agent",
+        "canonical": "https://seo-ai-agent.de/404",
+        "robotsMeta": "noindex, follow",
+        "h1": "Dieser Pfad hat keine Aufgabe."
+      },
+      "body": {
+        "bytes": 3906,
+        "sha256": "19f25db51695e89f6dfdb9b6556bb4244c527e787d5a7aa85edce5868eda29d6",
+        "firstPartyText": null
+      },
+      "error": null
+    },
+    {
+      "id": "www-home",
+      "role": "alternate_host",
+      "requestedUrl": "https://www.seo-ai-agent.de/",
+      "observedAt": "2026-08-22T15:45:03.946Z",
+      "status": 200,
+      "headers": {
+        "contentType": "text/html; charset=utf-8",
+        "location": null,
+        "xRobotsTag": "noindex, follow",
+        "cacheControl": "public, max-age=0, must-revalidate"
+      },
+      "html": {
+        "title": "SEO AI Agent: Task Recipes mit prüfbarer Evidenz",
+        "canonical": "https://seo-ai-agent.de/",
+        "robotsMeta": "noindex, follow",
+        "h1": "Gib SEO-Agenten einen prüfbaren Auftrag."
+      },
+      "body": {
+        "bytes": 9891,
+        "sha256": "40e537b2f1b2e6dcccd7221f817ccf7ad773e80ac5dfb621403a65aa8c97fc12",
+        "firstPartyText": null
+      },
+      "error": null
+    },
+    {
+      "id": "www-path",
+      "role": "alternate_host",
+      "requestedUrl": "https://www.seo-ai-agent.de/task-spec-builder?run=SEO-AI-001-2026-08-22-R1",
+      "observedAt": "2026-08-22T15:45:04.074Z",
+      "status": 308,
+      "headers": {
+        "contentType": "text/plain",
+        "location": "https://seo-ai-agent.de/task-spec-builder?run=SEO-AI-001-2026-08-22-R1",
+        "xRobotsTag": null,
+        "cacheControl": "public, max-age=0, must-revalidate"
+      },
+      "html": null,
+      "body": {
+        "bytes": 15,
+        "sha256": "7c040f8633b8823d72ed63da9b3b2dfe9846e912c66a64c9433ec9c4815d76c2",
+        "firstPartyText": null
+      },
+      "error": null
+    }
+  ]
+}

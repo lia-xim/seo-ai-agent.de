@@ -4,29 +4,29 @@ import { site } from "../data/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const gates = [
-  ["Benannter Testverantwortlicher", "Offen"],
-  ["Freigegebenes Saisonbudget", "Offen"],
-  ["Zwei Reviewer oder dokumentierte Adjudikation", "Offen"],
-  ["Rechteklare Testdaten", "Offen"],
-  ["Gleiche Aufgabe und Rubrik für alle Systeme", "Entwurf"],
-  ["Freigabe für öffentliche Anbieterergebnisse", "Offen"]
+  ["Benchmark Owner", "Matthias Ramahi · erfüllt"],
+  ["Eingefrorene Aufgabe", "SEO-AI-001@0.1.0 · erfüllt"],
+  ["Rohbeobachtungen", "14 Probes · veröffentlicht"],
+  ["Unabhängiger menschlicher Review", "Nicht vorhanden · offengelegt"],
+  ["Vergleichbare Anbieter-Saison", "Nicht durchgeführt"],
+  ["Live-MCP-Verbindung", "Deaktiviert"]
 ];
 ---
 
 <BaseLayout
-  title="Benchmarks"
-  description="Warum es noch keinen öffentlichen SEO-Agent-Benchmark gibt und welche Evidenz vor dem ersten Lauf fehlen darf."
+  title="Taskläufe"
+  description="Datierte, reproduzierbare SEO-Agent-Taskläufe mit eingefrorenem Input, Rohbeobachtungen, Kriterien und sichtbaren Grenzen."
   canonicalPath="/benchmarks"
 >
   <PageIntro
     section="03"
-    title="Der öffentliche Benchmark wartet."
-    description="Hier steht bewusst keine Rangliste. Ein Anbietername ohne gefrorene Aufgabe, Version, Kosten, Fehlversuche und Review wäre keine belastbare Entscheidungshilfe."
-    meta="NOINDEX / VORBEREITUNG"
+    title="Ein echter Lauf. Noch keine Rangliste."
+    description="Der erste veröffentlichte Lauf prüft den eigenen Noindex-Preview vor dem Launch. Er dokumentiert echte HTTP-Beobachtungen, aber weder ein Anbieter-Ranking noch eine unabhängige Review."
+    meta="TASKLAUF / 22.08.2026 / FIRST-PARTY"
   />
 
   <section class="gate-list" aria-labelledby="gate-title">
-    <h2 id="gate-title">Startbedingungen</h2>
+    <h2 id="gate-title">Transparenzstatus</h2>
     {gates.map(([label, status], index) => (
       <div>
         <span>{String(index + 1).padStart(2, "0")}</span>
@@ -36,27 +36,40 @@ const gates = [
     ))}
   </section>
 
+  <section class="published-run" aria-labelledby="published-run-title">
+    <div>
+      <span class="eyebrow">SEO-AI-001-2026-08-22-R1</span>
+      <h2 id="published-run-title">Technische Audit-Triage des Launch-Previews</h2>
+      <p>Vierzehn eingefrorene HTTP-Probes belegen drei damalige Launch-Blocker und zwei bestandene Kontrollen. Die Beobachtungen bleiben als datierte Momentaufnahme erhalten, auch nachdem die Blocker behoben wurden.</p>
+    </div>
+    <dl>
+      <div><dt>Owner</dt><dd>Matthias Ramahi</dd></div>
+      <div><dt>Review</dt><dd>Nicht unabhängig menschlich reviewed</dd></div>
+      <div><dt>Kosten</dt><dd>0,00 EUR</dd></div>
+      <div><dt>MCP</dt><dd>Nicht verbunden</dd></div>
+    </dl>
+    <a class="button button-primary" href="/benchmarks/2026-08-22-technische-audit-triage">Lauf und Rohdaten prüfen</a>
+  </section>
+
   <div class="two-column-section">
     <section>
-      <h2>Was später pro Lauf sichtbar sein muss</h2>
+      <h2>Was dieser Lauf belegt</h2>
       <ul class="rule-list">
-        <li>Aufgabe, Eingaben und erwartetes Ergebnis</li>
-        <li>Produkt, Version, Modell und Testdatum</li>
-        <li>Erlaubte Tools, Zugriffe und manuelle Eingriffe</li>
-        <li>Direkte Kosten, Zeitlimit, Laufzeit und Wartezeit</li>
-        <li>Fehlversuche, Timeouts, Abbrüche und Ausschlüsse</li>
-        <li>Reviewer, Begründung und nachträgliche Korrekturen</li>
+        <li>Der Task wurde vor der Launch-Korrektur gegen reale öffentliche Antworten ausgeführt.</li>
+        <li>Input, Prompt, Harness, Node-Version, Zeitstempel und Kriterien sind eingefroren.</li>
+        <li>Beobachtung, Interpretation und Grenze sind pro Befund getrennt.</li>
+        <li>Es wurde keine Website-, DNS-, GSC- oder MCP-Änderung innerhalb des Laufs ausgeführt.</li>
       </ul>
     </section>
     <aside class="disclosure-box">
       <span>OWNERSHIP DISCLOSURE</span>
       <p>{site.ownershipDisclosure}</p>
-      <p>Eine methodisch getrennte Prüfung ist möglich. Unabhängiges Eigentum wird nicht behauptet.</p>
+      <p>Matthias Ramahi betreibt die getestete Domain und ist Benchmark Owner. Der Lauf ist daher First-Party-Evidenz, keine unabhängige Empfehlung.</p>
     </aside>
   </div>
 
   <section class="statement-band">
-    <p>Bis die Gates erfüllt sind, bleibt der Task Spec Builder das veröffentlichungsfähige Kernprodukt.</p>
-    <a class="text-link" href="/task-spec-builder">Auftrag bauen</a>
+    <p>Ein einzelner technischer Lauf macht noch keine Vergleichssaison. Anbieter-Rankings benötigen gleiche Aufgaben, Rechte, Budget und offengelegten Review.</p>
+    <a class="text-link" href="/methodik-und-konflikte">Methodik lesen</a>
   </section>
 </BaseLayout>

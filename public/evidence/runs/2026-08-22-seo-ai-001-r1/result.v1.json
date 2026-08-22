@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "runId": "SEO-AI-001-2026-08-22-R1",
+  "evaluatedAt": "2026-08-22T17:48:00+02:00",
+  "status": "completed_with_launch_blockers",
+  "task": "SEO-AI-001@0.1.0",
+  "promptVersion": "1.0.0",
+  "benchmarkOwner": "Matthias Ramahi",
+  "runner": "OpenAI Codex Desktop",
+  "modelDisclosure": "GPT-5-basierter Codex-Agent; exakte serverseitige Modell-Build-ID nicht offengelegt",
+  "review": {
+    "independentHumanReviewer": null,
+    "status": "Nicht unabhängig menschlich reviewed",
+    "conflict": "Benchmark Owner und Betreiber kontrollieren die getestete Domain. Der Lauf ist First-Party-Evidenz und keine unabhängige Empfehlung."
+  },
+  "execution": {
+    "startedAt": "2026-08-22T15:45:02.966Z",
+    "completedAt": "2026-08-22T15:45:04.093Z",
+    "automatedProbeDurationMilliseconds": 1127,
+    "agentEvaluationDuration": "Nicht separat zuverlässig gemessen",
+    "directCostEuro": 0,
+    "manualInterventions": [
+      "Lauf durch Codex gestartet",
+      "Rohbeobachtungen nach dem automatisierten Abruf durch Codex ausgewertet"
+    ],
+    "writesDuringRun": false
+  },
+  "summary": {
+    "observations": 14,
+    "launchBlockers": 3,
+    "passedControls": 2,
+    "decision": "Der beobachtete Preview war zum Laufzeitpunkt nicht indexierbar. Vor dem Launch müssen Noindex, Sitemap und die www-Root-Kante gemeinsam korrigiert und anschließend live erneut geprüft werden."
+  },
+  "findings": [
+    {
+      "id": "F-001",
+      "priority": "P0",
+      "kind": "observed",
+      "title": "HTML-Seiten sind doppelt auf noindex gesetzt",
+      "observation": "Alle neun geprüften kanonischen HTML-Seiten lieferten X-Robots-Tag: noindex, follow und ein Meta-Robots noindex, follow.",
+      "evidenceRefs": ["apex-home", "task-builder", "tasks-index", "task-audit", "benchmarks", "methodology", "rights", "imprint", "privacy"],
+      "interpretation": "Die Seiten sind für einen indexierbaren Launch technisch ausgeschlossen.",
+      "limit": "Der Lauf beweist keine tatsächliche Google-Indexierung oder Deindexierung; Search Console wurde nicht abgefragt."
+    },
+    {
+      "id": "F-002",
+      "priority": "P0",
+      "kind": "observed",
+      "title": "Die veröffentlichte Sitemap enthält keine URL",
+      "observation": "https://seo-ai-agent.de/sitemap.xml lieferte 200 und ein leeres urlset. robots.txt erlaubte Crawling, referenzierte aber keine Sitemap.",
+      "evidenceRefs": ["sitemap", "robots"],
+      "interpretation": "Der Preview gibt Suchmaschinen keine kanonische Launch-URL-Liste mit.",
+      "limit": "Eine Sitemap ist ein Discovery-Signal und keine Indexierungsgarantie."
+    },
+    {
+      "id": "F-003",
+      "priority": "P1",
+      "kind": "observed",
+      "title": "www leitet die Startseite nicht konsistent um",
+      "observation": "https://www.seo-ai-agent.de/ lieferte 200 mit Apex-Canonical. Der geprüfte www-Unterpfad lieferte dagegen 308 und erhielt Pfad sowie Query beim Ziel auf dem Apex.",
+      "evidenceRefs": ["www-home", "www-path"],
+      "interpretation": "Die kanonische Hostregel ist an der Root-Kante inkonsistent und sollte als permanenter HTTP-Redirect vereinheitlicht werden.",
+      "limit": "Nur Root und ein repräsentativer Unterpfad wurden geprüft."
+    },
+    {
+      "id": "F-004",
+      "priority": "PASS",
+      "kind": "observed",
+      "title": "Geprüfte Apex-Seiten deklarieren sich selbst als Canonical",
+      "observation": "Alle neun geprüften kanonischen HTML-Seiten enthielten die jeweils erwartete vollständige Apex-Canonical-URL.",
+      "evidenceRefs": ["apex-home", "task-builder", "tasks-index", "task-audit", "benchmarks", "methodology", "rights", "imprint", "privacy"],
+      "interpretation": "Die deklarierte Canonical-Struktur ist für diese Stichprobe konsistent.",
+      "limit": "Google kann später dennoch eine andere Canonical wählen; das wurde nicht mit URL Inspection geprüft."
+    },
+    {
+      "id": "F-005",
+      "priority": "PASS",
+      "kind": "observed",
+      "title": "Unbekannter Pfad ist ein echter 404",
+      "observation": "Der eingefrorene unbekannte Pfad lieferte HTTP 404 und blieb mit noindex markiert.",
+      "evidenceRefs": ["missing"],
+      "interpretation": "Für die geprüfte URL liegt kein Soft-404- oder Catch-all-Redirect-Verhalten vor.",
+      "limit": "Ein einzelner Pfad beweist nicht das Verhalten jeder denkbaren Fehlerroute."
+    }
+  ],
+  "criteria": [
+    { "criterion": "Konkrete URL- oder Header-Evidenz", "status": "pass", "reason": "Jeder Befund verweist auf IDs im Rohartefakt." },
+    { "criterion": "Beobachtung und Interpretation getrennt", "status": "pass", "reason": "Beide Felder sind pro Befund separat dokumentiert." },
+    { "criterion": "Status, Canonical, Robots, Sitemap und www geprüft", "status": "pass", "reason": "14 eingefrorene Probes decken die vereinbarten Signale ab." },
+    { "criterion": "Fehlende GSC-, Modell- und Review-Evidenz sichtbar", "status": "pass", "reason": "Diese Grenzen sind ausdrücklich dokumentiert." },
+    { "criterion": "Keine Website-, DNS- oder GSC-Änderung während des Laufs", "status": "pass", "reason": "Der Harness verwendete ausschließlich öffentliche read-only HTTP-Aufrufe." }
+  ],
+  "limitations": [
+    "Kein unabhängiger menschlicher Reviewer war verfügbar.",
+    "Search Console, URL Inspection, manuelle Maßnahmen und Sicherheitsprobleme wurden im Lauf nicht abgefragt.",
+    "Die genaue serverseitige Modell-Build-ID der Codex-Laufumgebung ist nicht offengelegt.",
+    "Der Lauf testete First-Party-Inhalte des Benchmark Owners und ist keine unabhängige Anbieterbewertung.",
+    "Es wurde kein MCP verbunden und kein Ranking, Traffic oder Suchmaschinen-Ergebnis gemessen.",
+    "Die Beobachtungen sind eine datierte Momentaufnahme und können sich nach einem Deployment ändern."
+  ],
+  "artifacts": {
+    "input": "/evidence/runs/2026-08-22-seo-ai-001-r1/input.v1.json",
+    "rawObservations": "/evidence/runs/2026-08-22-seo-ai-001-r1/raw-observations.v1.json",
+    "result": "/evidence/runs/2026-08-22-seo-ai-001-r1/result.v1.json",
+    "harness": "scripts/run-technical-audit-triage.mjs"
+  }
+}

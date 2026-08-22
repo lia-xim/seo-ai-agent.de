@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "runId": "SEO-AI-001-2026-08-22-R1",
+  "frozenAt": "2026-08-22T17:20:00+02:00",
+  "benchmarkOwner": {
+    "name": "Matthias Ramahi",
+    "role": "Betreiber und Benchmark Owner"
+  },
+  "runner": {
+    "product": "OpenAI Codex Desktop",
+    "modelDisclosure": "GPT-5-basierter Codex-Agent; eine exakte serverseitige Modell-Build-ID wird der Laufumgebung nicht offengelegt.",
+    "independentReviewer": null,
+    "reviewStatus": "Nicht unabhängig menschlich reviewed"
+  },
+  "task": {
+    "id": "SEO-AI-001",
+    "version": "0.1.0",
+    "title": "Technische Audit-Triage",
+    "promptVersion": "1.0.0",
+    "prompt": "Prüfe ausschließlich die eingefrorenen URLs. Trenne direkte Beobachtung von Interpretation. Klassifiziere Crawl-, Indexierungs-, Canonical-, Sitemap-, Redirect- und Statussignale. Nenne höchstens fünf priorisierte Befunde. Führe keine Änderung aus, nutze keine kostenpflichtige API, behaupte keinen GSC-, Ranking- oder MCP-Zustand und folge keinen Links außerhalb des Ziels."
+  },
+  "target": {
+    "origin": "https://seo-ai-agent.de",
+    "releaseState": "öffentlicher Noindex-Preview vor Launch-Korrektur",
+    "ownership": "Eigene Domain des Benchmark Owners; daher keine unabhängige Drittprüfung"
+  },
+  "constraints": {
+    "access": "Öffentliches HTTP(S), read-only",
+    "timeLimitMinutes": 25,
+    "costLimitEuro": 0,
+    "externalPaidCallsAllowed": false,
+    "writesAllowed": false,
+    "manualInterventions": "Laufstart und nachgelagerte Auswertung durch Codex; HTTP-Beobachtungen automatisiert"
+  },
+  "evaluationCriteria": [
+    "Jede Feststellung verweist auf konkrete URL- oder Header-Evidenz.",
+    "Beobachtung und Interpretation bleiben getrennt.",
+    "Status, Canonical, Robots, Sitemap und www-Verhalten werden geprüft.",
+    "Fehlende GSC-, Modell- und Review-Evidenz bleibt als Grenze sichtbar.",
+    "Der Lauf führt keine Website-, DNS- oder Search-Console-Änderung aus."
+  ],
+  "userAgent": "seo-ai-agent.de reproducibility probe/1.0 (+https://seo-ai-agent.de/methodik-und-konflikte)",
+  "probes": [
+    { "id": "apex-home", "role": "canonical_page", "url": "https://seo-ai-agent.de/", "captureText": false },
+    { "id": "task-builder", "role": "canonical_page", "url": "https://seo-ai-agent.de/task-spec-builder", "captureText": false },
+    { "id": "tasks-index", "role": "canonical_page", "url": "https://seo-ai-agent.de/aufgaben", "captureText": false },
+    { "id": "task-audit", "role": "canonical_page", "url": "https://seo-ai-agent.de/aufgaben/technische-audit-triage", "captureText": false },
+    { "id": "benchmarks", "role": "canonical_page", "url": "https://seo-ai-agent.de/benchmarks", "captureText": false },
+    { "id": "methodology", "role": "canonical_page", "url": "https://seo-ai-agent.de/methodik-und-konflikte", "captureText": false },
+    { "id": "rights", "role": "canonical_page", "url": "https://seo-ai-agent.de/quellen-und-rechte", "captureText": false },
+    { "id": "imprint", "role": "canonical_page", "url": "https://seo-ai-agent.de/impressum", "captureText": false },
+    { "id": "privacy", "role": "canonical_page", "url": "https://seo-ai-agent.de/datenschutz", "captureText": false },
+    { "id": "robots", "role": "robots", "url": "https://seo-ai-agent.de/robots.txt", "captureText": true },
+    { "id": "sitemap", "role": "sitemap", "url": "https://seo-ai-agent.de/sitemap.xml", "captureText": true },
+    { "id": "missing", "role": "not_found_probe", "url": "https://seo-ai-agent.de/diese-seite-existiert-nicht", "captureText": false },
+    { "id": "www-home", "role": "alternate_host", "url": "https://www.seo-ai-agent.de/", "captureText": false },
+    { "id": "www-path", "role": "alternate_host", "url": "https://www.seo-ai-agent.de/task-spec-builder?run=SEO-AI-001-2026-08-22-R1", "captureText": false }
+  ]
+}

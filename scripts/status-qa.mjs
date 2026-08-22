@@ -8,11 +8,14 @@ const root = fileURLToPath(new URL("..", import.meta.url));
 const dist = resolve(root, "dist");
 const routes = [
   "/", "/task-spec-builder", "/aufgaben",
-  "/aufgaben/technische-audit-triage",
-  "/aufgaben/keyword-chancen-priorisieren",
-  "/aufgaben/interne-links-begruenden",
-  "/benchmarks", "/agenten-vergleich", "/methodik-und-konflikte",
-  "/quellen-und-rechte", "/impressum", "/datenschutz", "/robots.txt", "/sitemap.xml"
+  "/aufgaben/technische-audit-triage", "/aufgaben/keyword-chancen-priorisieren",
+  "/aufgaben/interne-links-begruenden", "/benchmarks",
+  "/benchmarks/2026-08-22-technische-audit-triage", "/agenten-vergleich",
+  "/methodik-und-konflikte", "/quellen-und-rechte", "/impressum", "/datenschutz",
+  "/robots.txt", "/sitemap-index.xml", "/sitemap-0.xml",
+  "/evidence/runs/2026-08-22-seo-ai-001-r1/input.v1.json",
+  "/evidence/runs/2026-08-22-seo-ai-001-r1/raw-observations.v1.json",
+  "/evidence/runs/2026-08-22-seo-ai-001-r1/result.v1.json"
 ];
 
 const contentType = (file) => {
@@ -20,6 +23,7 @@ const contentType = (file) => {
   if (extension === ".html") return "text/html; charset=utf-8";
   if (extension === ".xml") return "application/xml; charset=utf-8";
   if (extension === ".txt") return "text/plain; charset=utf-8";
+  if (extension === ".json") return "application/json; charset=utf-8";
   if (extension === ".css") return "text/css; charset=utf-8";
   if (extension === ".js") return "text/javascript; charset=utf-8";
   return "application/octet-stream";
@@ -27,10 +31,7 @@ const contentType = (file) => {
 
 const server = createServer(async (request, response) => {
   const pathname = decodeURIComponent(new URL(request.url ?? "/", "http://local.test").pathname);
-  if (pathname.includes("..")) {
-    response.writeHead(400).end("Bad request");
-    return;
-  }
+  if (pathname.includes("..")) return response.writeHead(400).end("Bad request");
   const clean = pathname.replace(/^\/+|\/+$/g, "");
   const file = pathname === "/"
     ? resolve(dist, "index.html")
@@ -60,10 +61,12 @@ try {
     const response = await fetch(`${base}${route}`, { redirect: "manual" });
     if (response.status !== 200) failures.push(`${route}: expected 200, got ${response.status}`);
   }
-  const missing = await fetch(`${base}/diese-seite-existiert-nicht`, { redirect: "manual" });
-  if (missing.status !== 404) failures.push(`/diese-seite-existiert-nicht: expected 404, got ${missing.status}`);
+  for (const route of ["/diese-seite-existiert-nicht", "/sitemap.xml"]) {
+    const response = await fetch(`${base}${route}`, { redirect: "manual" });
+    if (response.status !== 404) failures.push(`${route}: expected 404, got ${response.status}`);
+  }
   if (failures.length > 0) throw new Error(failures.join("\n"));
-  console.log(`Status QA passed: ${routes.length} expected artifacts return 200 and an unknown route returns 404.`);
+  console.log(`Status QA passed: ${routes.length} launch artifacts return 200 and both unknown and retired manual-sitemap paths return 404.`);
 } finally {
   await new Promise((resolveClose, reject) => server.close((error) => error ? reject(error) : resolveClose()));
 }

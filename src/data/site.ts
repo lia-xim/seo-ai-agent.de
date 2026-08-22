@@ -36,11 +36,11 @@ export const site: SiteConfig = {
   title: "SEO AI Agent: Task Recipes mit prüfbarer Evidenz",
   description: "Baue SEO-Agent-Recipes mit Datenbedarf, Zugriffen, Budget, Abbruchregeln und prüfbaren Ergebnissen.",
   purpose: "Die Seite macht aus SEO-Fragen prüfbare Agentenaufträge und zeigt, welche realen Daten, Freigaben und Nachweise dafür benötigt werden.",
-  status: "Vorbereitungsphase. Es sind noch keine Anbieter-Rankings oder öffentlich geprüften Benchmark-Ergebnisse verfügbar.",
+  status: "Indexierbarer Minimum-Viable-Launch mit einem datierten Einzel-Tasklauf. Es gibt keine Anbieter-Rangliste und keine unabhängige menschliche Review.",
   boundary: "Contextter darf keinen automatischen Siegerstatus erhalten. Jede spätere Bewertung braucht datierte Testevidenz und eine Eigentumsoffenlegung.",
   primaryProject: "Contextter (akzeptiert)",
   ownershipDisclosure: "seo-ai-agent.de wird im Umfeld von Contextter betrieben. Contextter ist ein offengelegter möglicher Testteilnehmer, keine unabhängige Quelle und erhält keinen automatischen Siegerstatus.",
-  indexing: "blocked",
+  indexing: "indexable",
   reviewedAt: "2026-08-22",
   githubUrl: "https://github.com/lia-xim/seo-ai-agent.de",
   navigation: [
@@ -56,15 +56,12 @@ export const site: SiteConfig = {
     { path: "/aufgaben/technische-audit-triage", label: "Technische Audit-Triage", description: "Technische Befunde für eine menschliche Prüfung priorisieren.", indexableWhenLaunched: true },
     { path: "/aufgaben/keyword-chancen-priorisieren", label: "Keyword-Chancen priorisieren", description: "Keyword-Chancen anhand offengelegter Daten und Regeln ordnen.", indexableWhenLaunched: true },
     { path: "/aufgaben/interne-links-begruenden", label: "Interne Links begründen", description: "Interne Linkvorschläge mit Quell- und Ziel-Evidenz belegen.", indexableWhenLaunched: true },
-    { path: "/benchmarks", label: "Benchmarks", description: "Startbedingungen und später datierte Benchmark-Saisons.", indexableWhenLaunched: true },
+    { path: "/benchmarks", label: "Benchmarks", description: "Datierte Taskläufe, Kriterien, Rohbeobachtungen und Review-Status.", indexableWhenLaunched: true },
+    { path: "/benchmarks/2026-08-22-technische-audit-triage", label: "Technische Audit-Triage vom 22.08.2026", description: "Eingefrorener First-Party-Tasklauf mit Rohbeobachtungen, Kriterien und Grenzen.", indexableWhenLaunched: true },
     { path: "/agenten-vergleich", label: "Agentenvergleich", description: "Einen Ansatz nach Aufgabe, Risiko und Nachweisbedarf auswählen.", indexableWhenLaunched: true },
     { path: "/methodik-und-konflikte", label: "Methodik und Konflikte", description: "Rubrik, Eigentum, Korrekturen und Grenzen prüfen.", indexableWhenLaunched: true },
     { path: "/quellen-und-rechte", label: "Quellen und Rechte", description: "Quellenregister, Drittanbieterrechte und Evidenzgrenzen.", indexableWhenLaunched: true },
     { path: "/impressum", label: "Impressum", description: "Anbieterkennzeichnung und Kontakt für seo-ai-agent.de.", indexableWhenLaunched: true },
-    { path: "/datenschutz", label: "Datenschutz", description: "Datenschutzinformationen zum statischen Vercel-Preview und lokalen Task Recipe Builder.", indexableWhenLaunched: true }
+    { path: "/datenschutz", label: "Datenschutz", description: "Datenschutzinformationen zur statischen Vercel-Website und zum lokalen Task Recipe Builder.", indexableWhenLaunched: true }
   ]
 };
-
-export const robotsMeta = site.indexing === "blocked"
-  ? "noindex, follow"
-  : "index, follow";

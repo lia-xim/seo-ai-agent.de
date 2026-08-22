@@ -139,7 +139,7 @@ try {
   })`));
   assert(desktop.lang === "de", "Desktop document language is not de");
   assert(desktop.h1 === "Gib SEO-Agenten einen prüfbaren Auftrag.", "Desktop h1 mismatch");
-  assert(desktop.noindex === "noindex, follow", "Desktop noindex boundary missing");
+  assert(desktop.noindex == null, "Indexable homepage still exposes a robots meta directive");
   assert(desktop.scrollWidth <= desktop.viewport, "Desktop horizontal overflow detected");
   const desktopScreenshot = await screenshot("homepage-desktop.png");
 
@@ -218,6 +218,22 @@ try {
   assert(resultInteraction.scrollWidth <= resultInteraction.viewport, "Result view horizontal overflow detected");
   const resultScreenshot = await screenshot("result-desktop.png");
 
+  await navigate("/benchmarks/2026-08-22-technische-audit-triage", desktopViewport);
+  const runEvidence = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector('h1')?.textContent.trim(),
+    owner: document.body.textContent.includes('Matthias Ramahi'),
+    reviewMissing: document.body.textContent.includes('Nicht unabhängig menschlich reviewed'),
+    noRanking: document.body.textContent.includes('Der Lauf misst keine Rankings'),
+    rawRows: document.querySelectorAll('.raw-observation-table > div:not(.raw-observation-head)').length,
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(runEvidence.h1 === "Technische Audit-Triage · R1", "Run page h1 mismatch");
+  assert(runEvidence.owner && runEvidence.reviewMissing && runEvidence.noRanking, "Run evidence disclosure is incomplete");
+  assert(runEvidence.rawRows === 14, "Run page does not expose 14 raw observations");
+  assert(runEvidence.scrollWidth <= runEvidence.viewport, "Run page horizontal overflow detected");
+  const runScreenshot = await screenshot("run-evidence-desktop.png");
+
   await navigate("/datenschutz", desktopViewport);
   const legal = JSON.parse(await evaluate(`JSON.stringify({
     h1: document.querySelector('h1')?.textContent.trim(),
@@ -258,7 +274,7 @@ try {
   const mobileScreenshot = await screenshot("homepage-mobile.png");
 
   assert(errors.length === 0, `Browser console/runtime errors: ${errors.join(" | ")}`);
-  console.log(JSON.stringify({ browserExecutable, desktop, library, interaction, resultInteraction, legal, builderMobile, mobile, screenshots: [desktopScreenshot, libraryScreenshot, builderScreenshot, resultScreenshot, legalScreenshot, builderMobileScreenshot, mobileScreenshot], errors }, null, 2));
+  console.log(JSON.stringify({ browserExecutable, desktop, library, interaction, resultInteraction, runEvidence, legal, builderMobile, mobile, screenshots: [desktopScreenshot, libraryScreenshot, builderScreenshot, resultScreenshot, runScreenshot, legalScreenshot, builderMobileScreenshot, mobileScreenshot], errors }, null, 2));
 } finally {
   if (socket?.readyState === WebSocket.OPEN) socket.close();
   browserProcess.kill();

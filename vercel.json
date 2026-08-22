@@ -4,18 +4,18 @@
   "installCommand": "corepack pnpm install --frozen-lockfile",
   "buildCommand": "corepack pnpm build",
   "outputDirectory": "dist",
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, follow"
-        }
-      ]
-    }
-  ],
   "redirects": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.seo-ai-agent.de"
+        }
+      ],
+      "destination": "https://seo-ai-agent.de/",
+      "permanent": true
+    },
     {
       "source": "/:path*",
       "has": [

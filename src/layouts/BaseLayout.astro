@@ -2,7 +2,7 @@
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteMotion from "../components/SiteMotion.astro";
-import { robotsMeta, site } from "../data/site";
+import { site } from "../data/site";
 import "@fontsource-variable/space-grotesk";
 import "@fontsource-variable/jetbrains-mono";
 import "../styles/tokens.css";
@@ -15,6 +15,7 @@ interface Props {
   description?: string;
   canonicalPath: string;
   bodyClass?: string;
+  robots?: "noindex, follow";
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
@@ -23,6 +24,7 @@ const {
   description = site.description,
   canonicalPath,
   bodyClass = "",
+  robots,
   structuredData
 } = Astro.props;
 
@@ -44,9 +46,10 @@ const jsonLd = structuredData ?? {
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content={robotsMeta} />
+    {robots && <meta name="robots" content={robots} />}
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={site.locale} />
     <meta property="og:title" content={pageTitle} />

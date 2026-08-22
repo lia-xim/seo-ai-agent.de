@@ -1,0 +1,136 @@
+---
+import input from "../../../evidence/runs/2026-08-22-seo-ai-001-r1/input.v1.json";
+import raw from "../../../evidence/runs/2026-08-22-seo-ai-001-r1/raw-observations.v1.json";
+import result from "../../../evidence/runs/2026-08-22-seo-ai-001-r1/result.v1.json";
+import PageIntro from "../../components/PageIntro.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const statusLabel = (status: number | null) => status === null ? "Fehler" : String(status);
+const rawUrl = "/evidence/runs/2026-08-22-seo-ai-001-r1/raw-observations.v1.json";
+---
+
+<BaseLayout
+  title="Technische Audit-Triage vom 22.08.2026"
+  description="Reproduzierbarer First-Party-Tasklauf SEO-AI-001 mit eingefrorenem Input, Rohbeobachtungen, Befunden, Kriterien und Grenzen."
+  canonicalPath="/benchmarks/2026-08-22-technische-audit-triage"
+  structuredData={{
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    name: "SEO-AI-001-2026-08-22-R1: Technische Audit-Triage",
+    description: "Datierter First-Party-Tasklauf des seo-ai-agent.de Launch-Previews.",
+    creator: { "@type": "Person", name: "Matthias Ramahi" },
+    datePublished: "2026-08-22",
+    inLanguage: "de",
+    license: "https://seo-ai-agent.de/quellen-und-rechte",
+    isAccessibleForFree: true
+  }}
+>
+  <PageIntro
+    section="03.1"
+    title="Technische Audit-Triage · R1"
+    description="Ein realer read-only Lauf gegen den damaligen öffentlichen Noindex-Preview. Die Seite zeigt den eingefrorenen Auftrag, die unveränderten Rohbeobachtungen und die Grenzen der Auswertung."
+    meta="22.08.2026 / FIRST-PARTY / NICHT UNABHÄNGIG REVIEWED"
+  />
+
+  <section class="run-summary" aria-labelledby="run-summary-title">
+    <div>
+      <span class="eyebrow">{result.runId}</span>
+      <h2 id="run-summary-title">Ergebnis des eingefrorenen Laufs</h2>
+      <p>{result.summary.decision}</p>
+    </div>
+    <dl>
+      <div><dt>Owner</dt><dd>{result.benchmarkOwner}</dd></div>
+      <div><dt>Task</dt><dd>{result.task}</dd></div>
+      <div><dt>Prompt</dt><dd>v{result.promptVersion}</dd></div>
+      <div><dt>Probes</dt><dd>{result.summary.observations}</dd></div>
+      <div><dt>Direkte Kosten</dt><dd>{result.execution.directCostEuro.toFixed(2)} EUR</dd></div>
+      <div><dt>Review</dt><dd>{result.review.status}</dd></div>
+    </dl>
+  </section>
+
+  <div class="two-column-section run-contract">
+    <section>
+      <h2>Eingefrorener Auftrag</h2>
+      <p>{input.task.prompt}</p>
+      <dl class="compact-definition-list">
+        <div><dt>Ziel</dt><dd>{input.target.origin}</dd></div>
+        <div><dt>Zugriff</dt><dd>{input.constraints.access}</dd></div>
+        <div><dt>Zeitlimit</dt><dd>{input.constraints.timeLimitMinutes} Minuten</dd></div>
+        <div><dt>Kostenlimit</dt><dd>{input.constraints.costLimitEuro.toFixed(2)} EUR</dd></div>
+        <div><dt>Harness</dt><dd>{raw.harness.name} v{raw.harness.version} · {raw.harness.node}</dd></div>
+        <div><dt>Input-Hash</dt><dd><code>{raw.inputSha256}</code></dd></div>
+      </dl>
+    </section>
+    <aside class="disclosure-box">
+      <span>REVIEW-GRENZE</span>
+      <p>{result.review.conflict}</p>
+      <p>Es wurde kein zweiter Reviewer erfunden. Die genaue serverseitige Modell-Build-ID war der Laufumgebung nicht zugänglich.</p>
+    </aside>
+  </div>
+
+  <section class="finding-ledger" aria-labelledby="findings-title">
+    <h2 id="findings-title">Fünf Befunde</h2>
+    {result.findings.map((finding) => (
+      <article>
+        <header><span>{finding.id}</span><strong data-priority={finding.priority}>{finding.priority}</strong></header>
+        <h3>{finding.title}</h3>
+        <dl>
+          <div><dt>Beobachtung</dt><dd>{finding.observation}</dd></div>
+          <div><dt>Interpretation</dt><dd>{finding.interpretation}</dd></div>
+          <div><dt>Grenze</dt><dd>{finding.limit}</dd></div>
+          <div><dt>Rohreferenzen</dt><dd>{finding.evidenceRefs.join(", ")}</dd></div>
+        </dl>
+      </article>
+    ))}
+  </section>
+
+  <section class="criteria-ledger" aria-labelledby="criteria-title">
+    <h2 id="criteria-title">Bewertungskriterien</h2>
+    {result.criteria.map((item, index) => (
+      <div>
+        <span>{String(index + 1).padStart(2, "0")}</span>
+        <p><strong>{item.criterion}</strong><br />{item.reason}</p>
+        <b>{item.status.toUpperCase()}</b>
+      </div>
+    ))}
+  </section>
+
+  <section class="raw-observation-section" aria-labelledby="raw-title">
+    <div class="section-heading">
+      <div><span class="eyebrow">ROHBEOBACHTUNGEN</span><h2 id="raw-title">14 Antworten, nicht geglättet.</h2></div>
+      <a class="text-link" href={rawUrl}>JSON herunterladen</a>
+    </div>
+    <div class="raw-observation-table">
+      <div class="raw-observation-head"><span>ID</span><span>Status</span><span>Robots / Redirect</span><span>Canonical</span></div>
+      {raw.observations.map((observation) => (
+        <div>
+          <code>{observation.id}</code>
+          <strong>{statusLabel(observation.status)}</strong>
+          <span>{observation.headers?.xRobotsTag ?? observation.headers?.location ?? "—"}</span>
+          <span>{observation.html?.canonical ?? "—"}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <div class="two-column-section">
+    <section>
+      <h2>Grenzen</h2>
+      <ul class="rule-list">{result.limitations.map((limitation) => <li>{limitation}</li>)}</ul>
+    </section>
+    <section>
+      <h2>Versionierte Artefakte</h2>
+      <ul class="rule-list">
+        <li><a class="text-link" href="/evidence/runs/2026-08-22-seo-ai-001-r1/input.v1.json">Eingefrorener Input</a></li>
+        <li><a class="text-link" href={rawUrl}>Rohbeobachtungen</a></li>
+        <li><a class="text-link" href="/evidence/runs/2026-08-22-seo-ai-001-r1/result.v1.json">Auswertung</a></li>
+        <li><a class="text-link" href="https://github.com/lia-xim/seo-ai-agent.de/blob/main/scripts/run-technical-audit-triage.mjs">Reproduktions-Harness</a></li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="statement-band">
+    <p>Der Lauf misst keine Rankings und behauptet keine aktive MCP-Verbindung. Er ist eine datierte technische First-Party-Prüfung.</p>
+    <a class="text-link" href="/benchmarks">Alle Taskläufe</a>
+  </section>
+</BaseLayout>

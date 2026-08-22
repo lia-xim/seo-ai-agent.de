@@ -3,7 +3,7 @@ export interface TaskDefinition {
   slug: string;
   title: string;
   version: string;
-  status: "draft_spec";
+  status: "draft_spec" | "executed_once";
   summary: string;
   goal: string;
   inScope: readonly string[];
@@ -25,7 +25,7 @@ export const tasks = [
     slug: "technische-audit-triage",
     title: "Technische Audit-Triage",
     version: "0.1.0",
-    status: "draft_spec",
+    status: "executed_once",
     summary: "Technische Crawl- und Indexierungsbefunde für eine menschliche Prüfung priorisieren.",
     goal: "Fünf technische Crawl- oder Indexierungsbefunde priorisieren und mit prüfbarer Evidenz für eine menschliche Entscheidung vorbereiten.",
     inScope: ["Crawlbarkeit und Indexierbarkeit", "robots.txt und Meta-Robots", "kanonische Signale und Weiterleitungen", "XML-Sitemaps", "technische interne Verlinkung"],

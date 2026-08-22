@@ -18,6 +18,7 @@
     "verify": "pnpm build && pnpm qa && pnpm qa:status"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
     "@fontsource-variable/space-grotesk": "^5.3.0",
     "astro": "7.2.1",

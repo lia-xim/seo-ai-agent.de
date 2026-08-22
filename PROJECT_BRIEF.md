@@ -4,13 +4,11 @@
 
 seo-ai-agent.de is a German Task Recipe, execution-readiness, and reproducible evaluation resource for SEO agents. It is organized by concrete SEO job, required evidence, data capabilities, permissions, budget, failure handling, and acceptance criteria rather than by generic provider list.
 
-The first useful product is a no-signup Task Recipe Builder with a clearly synthetic result view. It remains useful without Contextter; a future verified MCP connection upgrades the recipe from a reusable prompt contract to evidence-backed execution.
+The first useful product is a no-signup Task Recipe Builder with a clearly synthetic result view. It remains useful without Contextter; a future verified MCP connection may upgrade a recipe from a reusable prompt contract to evidence-backed execution.
 
-## Domain status
+## Domain status and rights
 
-seo-ai-agent.de is a newly registered owned domain. It is not an expired-domain rebuild and does not continue a former site, operator, archive, brand, audience, or historical URL inventory. No legacy recovery, historical identity, or trademark-continuation gate applies.
-
-Ordinary third-party rights remain binding for screenshots, text, code, data, brands, customer information, and model or provider outputs.
+seo-ai-agent.de is a newly registered owned domain. It is not an expired-domain rebuild and does not continue a former site, operator, archive, brand, audience, or historical URL inventory. Ordinary third-party rights remain binding for screenshots, text, code, data, brands, customer information, and model or provider outputs.
 
 ## Audience
 
@@ -19,63 +17,48 @@ Ordinary third-party rights remain binding for screenshots, text, code, data, br
 - Founders comparing automation approaches without delegating unbounded write access.
 - Developers implementing SEO agents, workflows, and review gates.
 
-## Visual thesis
-
-The site is a calm, modern SEO Agent Product Lab: a true deep-charcoal application canvas, near-white content, electric mint as the single primary action and workflow color, pale sky blue only for information states, Space Grotesk display typography, and JetBrains Mono metadata. The signature composition is a luminous five-step workflow rail attached to a live, editable task contract.
-
-The interface should feel like a focused professional tool rather than an editorial poster. Motion clarifies entry, selection, validation, and output updates; it never loops for decoration and always respects reduced-motion preferences.
-
 ## Initial architecture
 
-- /task-spec-builder/: build and export a bounded Task Recipe, inspect MCP data readiness, and preview an explicitly synthetic evidence result.
-- /aufgaben/: inspect the versioned launch-task library.
-- /benchmarks/: explain the benchmark gate and later hold dated seasonal runs.
-- /agenten-vergleich/: choose an approach by task, risk, access, and evidence need without a provider ranking.
-- /methodik-und-konflikte/: audit scoring dimensions, ownership, commercial conflicts, corrections, and limits.
-- /quellen-und-rechte/: inspect source provenance and normal third-party rights boundaries.
-- /impressum/: identify the operator.
-- /datenschutz/: document only the processing performed by the shipped site.
+- `/task-spec-builder`: build and export a bounded Task Recipe, inspect MCP data readiness, and preview an explicitly synthetic evidence result.
+- `/aufgaben`: inspect the versioned task library.
+- `/benchmarks`: find dated real task runs and their review state.
+- `/benchmarks/2026-08-22-technische-audit-triage`: inspect the first real frozen First-Party task run and raw observations.
+- `/agenten-vergleich`: choose an approach by task, risk, access, and evidence need without a provider ranking.
+- `/methodik-und-konflikte`: audit scoring dimensions, ownership, corrections, and limits.
+- `/quellen-und-rechte`, `/impressum`, `/datenschutz`: inspect provenance, rights, operator, and actual processing.
 
-## Evidence boundaries
+## Published evidence state
 
-- No public benchmark result, provider score, winner, testimonial, usage number, or customer result is currently proven.
-- Current public-product capabilities and pricing must be checked and dated at the time of every later benchmark.
-- Synthetic or permission-cleared inputs only; no client data in public runs.
-- Common ownership with Contextter is disclosed near relevant claims. Contextter is never independent corroboration and receives no automatic winner status.
-- Third-party screenshots, texts, datasets and provider or model outputs require an applicable right, permission, license, or quotation basis.
+`SEO-AI-001-2026-08-22-R1` is a real read-only technical audit of the public Noindex preview observed on 2026-08-22. Matthias Ramahi is Benchmark Owner and operator. The run publishes frozen input, task and prompt versions, harness and Node versions, 14 raw HTTP observations, five findings, criteria, cost, interventions, conflict disclosure, and limits.
+
+No second human reviewer was available. The result is explicitly marked as not independently reviewed. It is First-Party technical evidence, not an independent recommendation and not an agent or provider ranking.
 
 ## Technical and privacy truth
 
 - Static Astro site hosted on Vercel.
-- No analytics, cookies, consent manager, advertising, contact form, external font request, local storage or session storage.
+- Canonical HTML pages are indexable; automatic sitemap generation uses `@astrojs/sitemap`.
+- robots.txt allows crawling and references the sitemap index.
+- 404 stays noindex and outside the sitemap.
+- www root and subpaths permanently redirect to the path-equivalent apex URL.
+- No analytics, cookies, consent manager, advertising, contact form, external fonts, local/session storage, or embedded third-party media.
 - Task Recipe inputs remain in browser memory and are not sent to a server.
-- Clipboard access occurs only after an explicit copy action.
 - No live MCP, provider API, login, upload, paid execution, or automated external write.
-- External sites receive request data only when a visitor follows an external link.
-- Vercel necessarily processes request and connection metadata to deliver and secure the site.
+- Vercel processes request and connection metadata to deliver and secure the site.
 
-## Non-goals
+## Hard boundaries
 
-- No monthly all-provider leaderboard.
-- No mass-produced best-agent or alternatives pages.
-- No MCP implementation documentation that duplicates seo-mcp.de.
-- No enabled connect button, live-data claim, raw-token form, or paid execution before the real OAuth/scopes/read-tool path is verified.
+- No automatic Contextter winner status and no commonly owned site as independent corroboration.
+- No synthetic example presented as a real result.
+- No live MCP or model-API claim while the connection remains disabled.
 - No hidden weights, post-hoc rubric changes, unreported manual intervention, invented rankings, or fabricated test runs.
+- No public provider comparison season without comparable frozen tasks, rights, budget, versions, interventions, and explicit review status.
 
-## Preview and indexing gates
+## Indexable launch decision
 
-The custom domain may serve a public noindex preview. Search indexing remains blocked until:
+Matthias Ramahi explicitly approved indexing once the site reached an honest, legally clean, technically verified minimum-viable launch. The named owner, real task run, ownership disclosure, legal pages, automatic canonical sitemap, crawlable robots, canonical host redirects, status handling, responsive browser QA, and production verification form that release gate.
 
-1. The owner explicitly approves indexing.
-2. A named benchmark owner is recorded.
-3. At least one real frozen task run is reproducible and published with dated evidence.
-4. Ownership, tested version, task input, rubric, cost, limitations and manual interventions are disclosed.
-5. Legal/contact pages and a correction/vendor-response route are current.
-6. Production canonicals, robots, sitemap, status codes, accessibility and performance are reverified.
-7. The Vercel X-Robots-Tag and page-level noindex are removed in the same reviewed release.
-
-A public comparison season additionally requires a reviewer, provider permissions and a fixed budget.
+Search Console submission, URL Inspection, Google-selected canonical, manual-action state, security-issue state, crawling, indexing, rankings, impressions, and clicks remain separate evidence states. They must not be inferred from technical indexability.
 
 ## Stop condition
 
-If a named owner, review budget, reproducible run evidence, or quarterly retest capacity is missing, the site remains the Task Recipe Builder and versioned task reference. It must not imply that a current public benchmark exists.
+If task evidence becomes stale, ownership or corrections disappear, privacy behavior changes without updated disclosure, or maintenance capacity is missing, stop publishing new comparison claims. Existing dated runs remain historical records with visible limitations. Provider rankings remain blocked until comparable evidence and review governance exist.
