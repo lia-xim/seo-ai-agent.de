@@ -5,6 +5,7 @@ export const routePairs = [
   ["/workflows", "/en/workflows"],
   ["/skill-packs", "/en/skill-packs"],
   ["/seo-agent-skill", "/en/seo-agent-skill"],
+  ["/seo-agent-skill-check", "/en/seo-agent-skill-check"],
   ["/seo-agent-policy-generator", "/en/seo-agent-policy-generator"],
   ["/agent-skill-vergleich", "/en/agent-skill-comparison"],
   ["/aufgaben", "/en/tasks"],
@@ -36,14 +37,14 @@ export const navigation = {
   de: [
     { href: "/skill-packs", label: "Skill Packs" },
     { href: "/seo-agent-skill", label: "Skill erstellen" },
+    { href: "/seo-agent-skill-check", label: "Skill Check" },
     { href: "/seo-agent-policy-generator", label: "Policy" },
-    { href: "/agent-skill-vergleich", label: "Vergleich" }
   ],
   en: [
     { href: "/en/skill-packs", label: "Skill Packs" },
     { href: "/en/seo-agent-skill", label: "Create skill" },
+    { href: "/en/seo-agent-skill-check", label: "Skill Check" },
     { href: "/en/seo-agent-policy-generator", label: "Policy" },
-    { href: "/en/agent-skill-comparison", label: "Compare" }
   ]
 } as const;
 

@@ -1,8 +1,8 @@
 # seo-ai-agent.de
 
-Public source repository for seo-ai-agent.de: bilingual, browser-local SEO Agent Skill Packs, generators, bounded tasks, and reproducible evidence without generic winner claims.
+Public source repository for seo-ai-agent.de: bilingual, browser-local SEO Agent Skill Packs, generators, deterministic skill checks, bounded tasks, and reproducible evidence without generic winner claims.
 
-The website is bilingual. German remains the default at `/`; English equivalents live under `/en` with explicit hreflang pairs. The product role is deliberately simple: choose a maintained SEO job, choose the target agent, and download the ready local package. A three-input general skill and a four-input safety policy remain available as smaller tools.
+The website is bilingual. German remains the default at `/`; English equivalents live under `/en` with explicit hreflang pairs. The product role is deliberately simple: choose a maintained SEO job, choose the target agent, and download the ready local package. A three-input general skill, a deterministic twelve-rule Skill Check, and a four-input safety policy remain available as smaller tools.
 
 ## Current state
 
@@ -14,7 +14,7 @@ Canonical HTML pages are indexable and generated automatically into `sitemap-ind
 
 ## Purpose and boundary
 
-Die Seite verpackt acht gepflegte SEO-Fachmethoden lokal für Codex, Claude Code, Gemini CLI, Cursor oder als universellen Prompt. Der einfache Generator und der Policy Generator ergänzen diese Packs mit Quellenpflicht, Read-only-Grenzen und klaren Stop-Regeln.
+Die Seite verpackt acht gepflegte SEO-Fachmethoden lokal für Codex, Claude Code, Gemini CLI, Cursor oder als universellen Prompt. Der einfache Generator, der lokale Skill Check und der Policy Generator ergänzen diese Packs mit Quellenpflicht, Read-only-Grenzen und klaren Stop-Regeln.
 
 Contextter darf keinen automatischen Siegerstatus erhalten. Jede Bewertung braucht datierte Testevidenz und eine Eigentumsoffenlegung. Contextter is disclosed as the accepted primary portfolio relationship and as a possible future test participant, not as an independent source. Contextter and seo-mcp.de are linked only inside relevant user flows with adjacent common-ownership disclosure; there is no cross-domain footer network.
 
@@ -27,12 +27,13 @@ seo-ai-agent.de is a newly registered domain. It is not an expired-domain rebuil
 - `/` — purpose, task workflow, measurement dimensions, and launch status
 - `/skill-packs` — eight curated SEO Agent Skill Packs packaged locally for five target formats, including a complete ZIP
 - `/seo-agent-skill` — local three-input SEO Agent Skill Generator with copy and `SKILL.md` download
+- `/seo-agent-skill-check` — deterministic local twelve-rule review with copyable and downloadable QA report
 - `/seo-agent-policy-generator` — local four-input scope, action, data, cost, security, and stop-rule generator
 - `/agent-skill-vergleich` — source-linked format comparison for Codex, Claude Code, Gemini CLI, Cursor, prompts, and MCP
 - `/workflows` — four task-first paths from a real SEO job to a reviewable run
 - `/en` — English product home with equivalent workflows, tasks, capabilities, runs, method, rights, and legal information
 - `/en/seo-agent-skill` — English localized SEO Agent Skill Generator
-- `/en/skill-packs`, `/en/seo-agent-policy-generator`, and `/en/agent-skill-comparison` — English equivalents of the new product surfaces
+- `/en/skill-packs`, `/en/seo-agent-skill-check`, `/en/seo-agent-policy-generator`, and `/en/agent-skill-comparison` — English equivalents of the product surfaces
 - `/aufgaben` plus three versioned task definitions
 - `/benchmarks` — published runs and transparent review state
 - `/benchmarks/2026-08-22-technische-audit-triage` — frozen technical First-Party task run
@@ -66,7 +67,7 @@ The second harness replays the frozen, HTTP-derived page fixture from the histor
 
 The UI does not connect to a live MCP server. It never asks for raw tokens and never performs paid work. The generated files explain MCP as a possible data capability but do not claim a live connection.
 
-The site is statically hosted on Vercel. It has no analytics, cookies, consent manager, contact form, external font request, local or session storage, advertising, or embedded third-party media. Skill Generator, Skill Packager, Policy Generator, and cost-calculator inputs stay in browser memory and are not transmitted. ZIP files are created on-device from static templates. Clipboard access occurs only after an explicit copy action.
+The site is statically hosted on Vercel. It has no analytics, cookies, consent manager, contact form, external font request, local or session storage, advertising, or embedded third-party media. Skill Generator, Skill Packager, Skill Check, Policy Generator, and cost-calculator inputs stay in browser memory and are not transmitted. ZIP files and QA reports are created on-device from static templates and rules. Clipboard access occurs only after an explicit copy action.
 
 ## Local development and verification
 

@@ -6,7 +6,7 @@ const dist = resolve(root, "dist");
 const domain = "seo-ai-agent.de";
 const origin = `https://${domain}`;
 const pageRoutes = [
-  "/", "/workflows", "/skill-packs", "/seo-agent-skill", "/seo-agent-policy-generator", "/agent-skill-vergleich", "/aufgaben",
+  "/", "/workflows", "/skill-packs", "/seo-agent-skill", "/seo-agent-skill-check", "/seo-agent-policy-generator", "/agent-skill-vergleich", "/aufgaben",
   "/aufgaben/technische-audit-triage", "/aufgaben/keyword-chancen-priorisieren",
   "/aufgaben/interne-links-begruenden", "/benchmarks",
   "/benchmarks/2026-08-22-technische-audit-triage",
@@ -14,7 +14,7 @@ const pageRoutes = [
   "/faehigkeiten", "/mcp-fuer-seo-agenten", "/seo-agent-kosten",
   "/fehlerbehandlung-seo-agenten", "/methodik-und-konflikte",
   "/quellen-und-rechte", "/impressum", "/datenschutz",
-  "/en", "/en/workflows", "/en/skill-packs", "/en/seo-agent-skill", "/en/seo-agent-policy-generator", "/en/agent-skill-comparison", "/en/tasks",
+  "/en", "/en/workflows", "/en/skill-packs", "/en/seo-agent-skill", "/en/seo-agent-skill-check", "/en/seo-agent-policy-generator", "/en/agent-skill-comparison", "/en/tasks",
   "/en/tasks/technical-audit-triage", "/en/tasks/prioritize-keyword-opportunities",
   "/en/tasks/justify-internal-links", "/en/runs",
   "/en/runs/2026-08-22-technical-audit-triage",
@@ -27,7 +27,7 @@ const collectionRoutes = new Set(["/workflows", "/skill-packs", "/aufgaben", "/b
 const runRoute = "/benchmarks/2026-08-22-technische-audit-triage";
 const linkRunRoute = "/benchmarks/2026-08-22-interne-link-evidenz";
 const languagePairs = [
-  ["/", "/en"], ["/workflows", "/en/workflows"], ["/skill-packs", "/en/skill-packs"], ["/seo-agent-skill", "/en/seo-agent-skill"], ["/seo-agent-policy-generator", "/en/seo-agent-policy-generator"], ["/agent-skill-vergleich", "/en/agent-skill-comparison"], ["/aufgaben", "/en/tasks"],
+  ["/", "/en"], ["/workflows", "/en/workflows"], ["/skill-packs", "/en/skill-packs"], ["/seo-agent-skill", "/en/seo-agent-skill"], ["/seo-agent-skill-check", "/en/seo-agent-skill-check"], ["/seo-agent-policy-generator", "/en/seo-agent-policy-generator"], ["/agent-skill-vergleich", "/en/agent-skill-comparison"], ["/aufgaben", "/en/tasks"],
   ["/aufgaben/technische-audit-triage", "/en/tasks/technical-audit-triage"], ["/aufgaben/keyword-chancen-priorisieren", "/en/tasks/prioritize-keyword-opportunities"], ["/aufgaben/interne-links-begruenden", "/en/tasks/justify-internal-links"],
   ["/benchmarks", "/en/runs"], [runRoute, "/en/runs/2026-08-22-technical-audit-triage"], [linkRunRoute, "/en/runs/2026-08-22-internal-link-evidence"],
   ["/faehigkeiten", "/en/capabilities"], ["/mcp-fuer-seo-agenten", "/en/mcp-for-seo-agents"], ["/agenten-vergleich", "/en/agent-comparison"], ["/seo-agent-kosten", "/en/seo-agent-costs"], ["/fehlerbehandlung-seo-agenten", "/en/failure-handling"],
@@ -112,13 +112,15 @@ check(allSchemas.filter((node) => node["@type"] === "WebSite").length === 1, "sc
 check(allSchemas.filter((node) => node["@type"] === "Dataset").length === 2, "schema: Dataset must exist only for the two real reproducible runs");
 check((schemaByRoute.get(runRoute) ?? []).some((node) => node["@type"] === "Dataset" && node.creator?.name === "Matthias Ramahi"), "schema: technical run Dataset or creator missing");
 check((schemaByRoute.get(linkRunRoute) ?? []).some((node) => node["@type"] === "Dataset" && node.creator?.name === "Matthias Ramahi"), "schema: link run Dataset or creator missing");
-check(allSchemas.filter((node) => node["@type"] === "SoftwareApplication").length === 6, "schema: SoftwareApplication must exist only for the three localized browser tools");
+check(allSchemas.filter((node) => node["@type"] === "SoftwareApplication").length === 8, "schema: SoftwareApplication must exist only for the four localized browser tools");
 check((schemaByRoute.get("/seo-agent-skill") ?? []).some((node) => node["@type"] === "SoftwareApplication"), "schema: German Skill Generator SoftwareApplication missing");
 check((schemaByRoute.get("/en/seo-agent-skill") ?? []).some((node) => node["@type"] === "SoftwareApplication"), "schema: English Skill Generator SoftwareApplication missing");
 check((schemaByRoute.get("/skill-packs") ?? []).some((node) => node["@type"] === "SoftwareApplication"), "schema: German Skill Packager SoftwareApplication missing");
 check((schemaByRoute.get("/en/skill-packs") ?? []).some((node) => node["@type"] === "SoftwareApplication"), "schema: English Skill Packager SoftwareApplication missing");
 check((schemaByRoute.get("/seo-agent-policy-generator") ?? []).some((node) => node["@type"] === "SoftwareApplication"), "schema: German Policy Generator SoftwareApplication missing");
 check((schemaByRoute.get("/en/seo-agent-policy-generator") ?? []).some((node) => node["@type"] === "SoftwareApplication"), "schema: English Policy Generator SoftwareApplication missing");
+check((schemaByRoute.get("/seo-agent-skill-check") ?? []).some((node) => node["@type"] === "SoftwareApplication"), "schema: German Skill Check SoftwareApplication missing");
+check((schemaByRoute.get("/en/seo-agent-skill-check") ?? []).some((node) => node["@type"] === "SoftwareApplication"), "schema: English Skill Check SoftwareApplication missing");
 
 const capabilities = pageHtml.get("/faehigkeiten");
 const mcp = pageHtml.get("/mcp-fuer-seo-agenten");
@@ -169,6 +171,14 @@ for (const route of ["/agent-skill-vergleich", "/en/agent-skill-comparison"]) {
   check(html.includes("Kein „bester Agent“-Ranking") || html.includes("No “best agent” ranking"), `${route}: no-ranking boundary missing`);
 }
 
+for (const route of ["/seo-agent-skill-check", "/en/seo-agent-skill-check"]) {
+  const html = pageHtml.get(route);
+  check(html.includes("data-skill-checker") && html.includes("data-checker-input") && html.includes("data-checker-results"), `${route}: deterministic Skill Check surface missing`);
+  check(html.includes("data-copy-report") && html.includes("data-download-report"), `${route}: Skill Check report actions missing`);
+  check(html.includes("12 PRÜFPUNKTE") || html.includes("12 CHECKS"), `${route}: twelve-check contract missing`);
+  check(html.includes("Keine Zertifizierung") || html.includes("Not a certification"), `${route}: non-certification boundary missing`);
+}
+
 const costPage = pageHtml.get("/seo-agent-kosten");
 const failurePage = pageHtml.get("/fehlerbehandlung-seo-agenten");
 check(costPage.includes("data-cost-calculator") && costPage.includes("data-cost-form"), "cost calculator: local calculation surface missing");
@@ -195,12 +205,12 @@ check(imprint.includes("Kempener Straße 44") && imprint.includes("info@matthias
 check(privacy.includes("Keine Analyse, Cookies oder Formulare"), "privacy: exact no-tracking section is missing");
 check(privacy.includes("ohne Reporting-Endpunkt") && privacy.includes("keine CSP-Berichte"), "privacy: CSP report-only behavior missing");
 check(privacy.includes("nicht an seo-ai-agent.de, Contextter, Vercel Functions, einen MCP-Server oder eine externe API übertragen"), "privacy: local skill-generator boundary is missing");
-check(privacy.includes("Skill Packager, Policy Generator") && privacy.includes("kein Upload, Modellaufruf oder serverseitiger Generierungsschritt"), "privacy: new local generators or ZIP boundary missing");
+check(privacy.includes("Skill Packager, Skill Check, Policy Generator") && privacy.includes("Markdown-QA-Report") && privacy.includes("kein Upload, Modellaufruf oder serverseitiger Generierungsschritt"), "privacy: new local generators, report, or ZIP boundary missing");
 const englishLegal = pageHtml.get("/en/legal-notice");
 const englishPrivacy = pageHtml.get("/en/privacy");
 check(englishLegal.includes("Kempener Straße 44") && englishLegal.includes("info@matthiasramahi.de"), "English legal notice: verified operator details are missing");
 check(englishPrivacy.includes("No analytics, cookies, forms, or live APIs") && englishPrivacy.includes("not sent to seo-ai-agent.de, Contextter, Vercel Functions, an MCP server, or an external API"), "English privacy: exact local/no-tracking boundary missing");
-check(englishPrivacy.includes("Skill Packager, Policy Generator") && englishPrivacy.includes("There is no upload, model call, or server-side generation step"), "English privacy: new local generators or ZIP boundary missing");
+check(englishPrivacy.includes("Skill Packager, Skill Check, Policy Generator") && englishPrivacy.includes("Markdown QA report") && englishPrivacy.includes("There is no upload, model call, or server-side generation step"), "English privacy: new local generators, report, or ZIP boundary missing");
 
 const socialCard = await readFile(resolve(root, "public", "social-card.png"));
 check(socialCard.length > 100_000, "social card PNG appears empty or under-rendered");

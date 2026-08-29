@@ -5,13 +5,15 @@ import type { Language } from "../data/i18n";
 interface Props { lang?: Language; }
 const { lang = "de" } = Astro.props;
 const links = lang === "de" ? [
-  ["/seo-agent-skill", "SEO Agent Skill"], ["/workflows", "Workflows"], ["/aufgaben", "Aufgaben"],
+  ["/skill-packs", "Skill Packs"], ["/seo-agent-skill", "Skill erstellen"], ["/seo-agent-skill-check", "Skill Check"], ["/seo-agent-policy-generator", "Policy"],
+  ["/agent-skill-vergleich", "Formatvergleich"], ["/workflows", "Workflows"], ["/aufgaben", "Aufgaben"],
   ["/faehigkeiten", "Fähigkeiten"], ["/benchmarks", "Runs"], ["/mcp-fuer-seo-agenten", "MCP für Agenten"],
   ["/agenten-vergleich", "Vergleich"], ["/seo-agent-kosten", "Kosten"], ["/fehlerbehandlung-seo-agenten", "Fehlerbehandlung"],
   ["/methodik-und-konflikte", "Methodik"], ["/quellen-und-rechte", "Quellen & Rechte"],
   ["/impressum", "Impressum"], ["/datenschutz", "Datenschutz"]
 ] : [
-  ["/en/seo-agent-skill", "SEO Agent Skill"], ["/en/workflows", "Workflows"], ["/en/tasks", "Tasks"],
+  ["/en/skill-packs", "Skill Packs"], ["/en/seo-agent-skill", "Create skill"], ["/en/seo-agent-skill-check", "Skill Check"], ["/en/seo-agent-policy-generator", "Policy"],
+  ["/en/agent-skill-comparison", "Format comparison"], ["/en/workflows", "Workflows"], ["/en/tasks", "Tasks"],
   ["/en/capabilities", "Capabilities"], ["/en/runs", "Runs"], ["/en/mcp-for-seo-agents", "MCP for agents"],
   ["/en/agent-comparison", "Comparison"], ["/en/seo-agent-costs", "Costs"], ["/en/failure-handling", "Failure handling"],
   ["/en/methodology", "Methodology"], ["/en/sources-and-rights", "Sources & rights"],

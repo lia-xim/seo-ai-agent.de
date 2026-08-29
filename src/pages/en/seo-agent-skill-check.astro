@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SeoAgentSkillChecker from "../../components/SeoAgentSkillChecker.astro";
+---
+
+<BaseLayout
+  lang="en"
+  title="SEO Agent Skill Check: Review a skill locally"
+  description="Check an SEO Agent Skill locally for frontmatter, triggers, expert method, evidence, data claims, write permissions, prompt injection, and stop rules."
+  canonicalPath="/en/seo-agent-skill-check"
+  bodyClass="skill-check-page"
+  structuredData={{ "@context": "https://schema.org", "@type": "SoftwareApplication", name: "SEO Agent Skill Check", url: "https://seo-ai-agent.de/en/seo-agent-skill-check", applicationCategory: "DeveloperApplication", operatingSystem: "Web", inLanguage: "en", description: "Browser-local deterministic check for SEO Agent Skills and prompts.", offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" } }}
+>
+  <section class="checker-hero"><div><h1>Is your SEO Agent Skill actually robust?</h1><p>Paste a skill or prompt. Twelve explicit rules check structure, evidence, action boundaries, and safety — without an upload or LLM.</p></div><p>12 checks · local · reproducible</p></section>
+  <SeoAgentSkillChecker lang="en" />
+  <section class="checker-explainer"><div><h2>The check reviews rules. Not outcomes.</h2><p>A complete skill can still be applied incorrectly. Real quality requires a frozen task run with real inputs, versions, raw observations, and review status.</p></div><div><a class="button button-secondary" href="/en/skill-packs">Open reviewed packs</a><a class="text-link" href="/en/runs">Review real task runs</a></div></section>
+</BaseLayout>

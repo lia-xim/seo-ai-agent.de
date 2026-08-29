@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SeoAgentSkillChecker from "../components/SeoAgentSkillChecker.astro";
+---
+
+<BaseLayout
+  title="SEO Agent Skill Check: Skill lokal prüfen"
+  description="Prüfe einen SEO Agent Skill lokal auf Frontmatter, Trigger, Fachmethode, Evidenzpflicht, Datenclaims, Schreibrechte, Prompt Injection und Stop-Regeln."
+  canonicalPath="/seo-agent-skill-check"
+  bodyClass="skill-check-page"
+  structuredData={{ "@context": "https://schema.org", "@type": "SoftwareApplication", name: "SEO Agent Skill Check", url: "https://seo-ai-agent.de/seo-agent-skill-check", applicationCategory: "DeveloperApplication", operatingSystem: "Web", inLanguage: "de", description: "Browser-lokaler deterministischer Check für SEO Agent Skills und Prompts.", offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" } }}
+>
+  <section class="checker-hero"><div><h1>Ist dein SEO Agent Skill wirklich belastbar?</h1><p>Skill oder Prompt einfügen. Zwölf klare Regeln prüfen Struktur, Evidenz, Aktionsgrenzen und Sicherheit – ohne Upload und ohne LLM.</p></div><p>12 Checks · lokal · reproduzierbar</p></section>
+  <SeoAgentSkillChecker />
+  <section class="checker-explainer"><div><h2>Der Check prüft Regeln. Nicht Ergebnisse.</h2><p>Ein vollständiger Skill kann trotzdem fachlich falsch angewendet werden. Reale Qualität braucht einen eingefrorenen Tasklauf mit echten Inputs, Versionen, Rohbeobachtungen und Review-Status.</p></div><div><a class="button button-secondary" href="/skill-packs">Geprüfte Packs öffnen</a><a class="text-link" href="/benchmarks">Reale Taskläufe ansehen</a></div></section>
+</BaseLayout>

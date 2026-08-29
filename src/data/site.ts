@@ -35,7 +35,7 @@ export const site: SiteConfig = {
   locale: "de_DE",
   title: "SEO Agent Skill: Kostenlos erstellen und direkt nutzen",
   description: "Professionelle SEO Agent Skill Packs für Codex, Claude Code, Gemini CLI und Cursor – lokal verpackt, kostenlos und ohne Anmeldung.",
-  purpose: "Die Seite bietet gepflegte SEO Agent Skill Packs, einen einfachen Skill Generator, einen Policy Generator und reproduzierbare Aufgaben als belastbare Arbeitsgrundlage.",
+  purpose: "Die Seite bietet gepflegte SEO Agent Skill Packs, einen einfachen Skill Generator, einen lokalen Skill Check, einen Policy Generator und reproduzierbare Aufgaben als belastbare Arbeitsgrundlage.",
   status: "Indexierbarer Launch mit zwei datierten First-Party-Taskläufen. Der zweite Lauf ist wegen fehlender unabhängiger menschlicher Review ausdrücklich nur teilweise abgenommen. Es gibt keine Anbieter-Rangliste.",
   boundary: "Contextter darf keinen automatischen Siegerstatus erhalten. Jede spätere Bewertung braucht datierte Testevidenz und eine Eigentumsoffenlegung.",
   primaryProject: "Contextter (akzeptiert)",
@@ -46,13 +46,14 @@ export const site: SiteConfig = {
   navigation: [
     { href: "/skill-packs", label: "Skill Packs" },
     { href: "/seo-agent-skill", label: "Skill erstellen" },
+    { href: "/seo-agent-skill-check", label: "Skill Check" },
     { href: "/seo-agent-policy-generator", label: "Policy" },
-    { href: "/agent-skill-vergleich", label: "Vergleich" }
   ],
   pages: [
     { path: "/", label: "Start", description: "SEO Agent Skill erstellen und direkt verwenden.", indexableWhenLaunched: true },
     { path: "/skill-packs", label: "SEO Agent Skill Packs", description: "Acht kuratierte SEO-Skill-Packs in fünf Agentenformaten lokal herunterladen.", indexableWhenLaunched: true },
     { path: "/seo-agent-skill", label: "SEO Agent Skill Generator", description: "Einen evidenzbasierten SEO Agent Skill als Prompt oder SKILL.md erstellen.", indexableWhenLaunched: true },
+    { path: "/seo-agent-skill-check", label: "SEO Agent Skill Check", description: "SEO Agent Skills lokal anhand von zwölf Struktur-, Evidenz- und Sicherheitsregeln prüfen.", indexableWhenLaunched: true },
     { path: "/seo-agent-policy-generator", label: "SEO Agent Policy Generator", description: "Scope, Daten, Aktionen, Kosten und Stop-Regeln für einen SEO-Agenten festlegen.", indexableWhenLaunched: true },
     { path: "/agent-skill-vergleich", label: "Agent-Skill-Formatvergleich", description: "Codex, Claude Code, Gemini CLI und Cursor anhand ihrer dokumentierten Skill-Formate vergleichen.", indexableWhenLaunched: true },
     { path: "/workflows", label: "Workflows", description: "Vier begrenzte SEO-Agent-Workflows vom Auftrag bis zum prüfbaren Run.", indexableWhenLaunched: true },
@@ -75,6 +76,7 @@ export const site: SiteConfig = {
     { path: "/en", label: "English home", description: "Create and use an evidence-led SEO Agent Skill.", indexableWhenLaunched: true },
     { path: "/en/skill-packs", label: "SEO Agent Skill Packs", description: "Download eight curated SEO skill packs in five agent formats locally.", indexableWhenLaunched: true },
     { path: "/en/seo-agent-skill", label: "SEO Agent Skill Generator", description: "Create an evidence-led SEO Agent Skill as a prompt or SKILL.md.", indexableWhenLaunched: true },
+    { path: "/en/seo-agent-skill-check", label: "SEO Agent Skill Check", description: "Review SEO Agent Skills locally against twelve structure, evidence, and safety rules.", indexableWhenLaunched: true },
     { path: "/en/seo-agent-policy-generator", label: "SEO Agent Policy Generator", description: "Define scope, data, actions, cost, and stop rules for an SEO agent.", indexableWhenLaunched: true },
     { path: "/en/agent-skill-comparison", label: "Agent skill format comparison", description: "Compare Codex, Claude Code, Gemini CLI, and Cursor by documented skill format.", indexableWhenLaunched: true },
     { path: "/en/workflows", label: "Workflows", description: "Four bounded SEO-agent workflows.", indexableWhenLaunched: true },
