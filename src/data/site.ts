@@ -34,25 +34,27 @@ export const site: SiteConfig = {
   language: "de",
   locale: "de_DE",
   title: "SEO Agent Skill: Kostenlos erstellen und direkt nutzen",
-  description: "Erstelle einen evidenzbasierten SEO Agent Skill als Prompt oder SKILL.md – kostenlos und ohne Anmeldung.",
-  purpose: "Die Seite erzeugt mit drei einfachen Eingaben einen sofort nutzbaren SEO Agent Skill und belegt die zugrunde liegenden Arbeitsregeln mit reproduzierbaren Aufgaben.",
+  description: "Professionelle SEO Agent Skill Packs für Codex, Claude Code, Gemini CLI und Cursor – lokal verpackt, kostenlos und ohne Anmeldung.",
+  purpose: "Die Seite bietet gepflegte SEO Agent Skill Packs, einen einfachen Skill Generator, einen Policy Generator und reproduzierbare Aufgaben als belastbare Arbeitsgrundlage.",
   status: "Indexierbarer Launch mit zwei datierten First-Party-Taskläufen. Der zweite Lauf ist wegen fehlender unabhängiger menschlicher Review ausdrücklich nur teilweise abgenommen. Es gibt keine Anbieter-Rangliste.",
   boundary: "Contextter darf keinen automatischen Siegerstatus erhalten. Jede spätere Bewertung braucht datierte Testevidenz und eine Eigentumsoffenlegung.",
   primaryProject: "Contextter (akzeptiert)",
   ownershipDisclosure: "seo-ai-agent.de wird im Umfeld von Contextter betrieben. Contextter ist ein offengelegter möglicher Testteilnehmer, keine unabhängige Quelle und erhält keinen automatischen Siegerstatus.",
   indexing: "indexable",
-  reviewedAt: "2026-08-22",
+  reviewedAt: "2026-08-29",
   githubUrl: "https://github.com/lia-xim/seo-ai-agent.de",
   navigation: [
-    { href: "/seo-agent-skill", label: "SEO Agent Skill" },
-    { href: "/aufgaben", label: "Aufgaben" },
-    { href: "/faehigkeiten", label: "Fähigkeiten" },
-    { href: "/benchmarks", label: "Benchmarks" },
-    { href: "/mcp-fuer-seo-agenten", label: "MCP" }
+    { href: "/skill-packs", label: "Skill Packs" },
+    { href: "/seo-agent-skill", label: "Skill erstellen" },
+    { href: "/seo-agent-policy-generator", label: "Policy" },
+    { href: "/agent-skill-vergleich", label: "Vergleich" }
   ],
   pages: [
     { path: "/", label: "Start", description: "SEO Agent Skill erstellen und direkt verwenden.", indexableWhenLaunched: true },
+    { path: "/skill-packs", label: "SEO Agent Skill Packs", description: "Acht kuratierte SEO-Skill-Packs in fünf Agentenformaten lokal herunterladen.", indexableWhenLaunched: true },
     { path: "/seo-agent-skill", label: "SEO Agent Skill Generator", description: "Einen evidenzbasierten SEO Agent Skill als Prompt oder SKILL.md erstellen.", indexableWhenLaunched: true },
+    { path: "/seo-agent-policy-generator", label: "SEO Agent Policy Generator", description: "Scope, Daten, Aktionen, Kosten und Stop-Regeln für einen SEO-Agenten festlegen.", indexableWhenLaunched: true },
+    { path: "/agent-skill-vergleich", label: "Agent-Skill-Formatvergleich", description: "Codex, Claude Code, Gemini CLI und Cursor anhand ihrer dokumentierten Skill-Formate vergleichen.", indexableWhenLaunched: true },
     { path: "/workflows", label: "Workflows", description: "Vier begrenzte SEO-Agent-Workflows vom Auftrag bis zum prüfbaren Run.", indexableWhenLaunched: true },
     { path: "/aufgaben", label: "Aufgaben", description: "Versionierte SEO-Aufgaben mit Evidenz- und Abnahmegrenzen.", indexableWhenLaunched: true },
     { path: "/aufgaben/technische-audit-triage", label: "Technische Audit-Triage", description: "Technische Befunde für eine menschliche Prüfung priorisieren.", indexableWhenLaunched: true },
@@ -69,9 +71,12 @@ export const site: SiteConfig = {
     { path: "/methodik-und-konflikte", label: "Methodik und Konflikte", description: "Rubrik, Eigentum, Korrekturen und Grenzen prüfen.", indexableWhenLaunched: true },
     { path: "/quellen-und-rechte", label: "Quellen und Rechte", description: "Quellenregister, Drittanbieterrechte und Evidenzgrenzen.", indexableWhenLaunched: true },
     { path: "/impressum", label: "Impressum", description: "Anbieterkennzeichnung und Kontakt für seo-ai-agent.de.", indexableWhenLaunched: true },
-    { path: "/datenschutz", label: "Datenschutz", description: "Datenschutzinformationen zur statischen Vercel-Website, zum lokalen SEO Agent Skill Generator und zum lokalen Kostenrechner.", indexableWhenLaunched: true },
+    { path: "/datenschutz", label: "Datenschutz", description: "Datenschutzinformationen zur statischen Vercel-Website und zu den browser-lokalen Generatoren.", indexableWhenLaunched: true },
     { path: "/en", label: "English home", description: "Create and use an evidence-led SEO Agent Skill.", indexableWhenLaunched: true },
+    { path: "/en/skill-packs", label: "SEO Agent Skill Packs", description: "Download eight curated SEO skill packs in five agent formats locally.", indexableWhenLaunched: true },
     { path: "/en/seo-agent-skill", label: "SEO Agent Skill Generator", description: "Create an evidence-led SEO Agent Skill as a prompt or SKILL.md.", indexableWhenLaunched: true },
+    { path: "/en/seo-agent-policy-generator", label: "SEO Agent Policy Generator", description: "Define scope, data, actions, cost, and stop rules for an SEO agent.", indexableWhenLaunched: true },
+    { path: "/en/agent-skill-comparison", label: "Agent skill format comparison", description: "Compare Codex, Claude Code, Gemini CLI, and Cursor by documented skill format.", indexableWhenLaunched: true },
     { path: "/en/workflows", label: "Workflows", description: "Four bounded SEO-agent workflows.", indexableWhenLaunched: true },
     { path: "/en/tasks", label: "Tasks", description: "Versioned SEO-agent tasks.", indexableWhenLaunched: true },
     { path: "/en/tasks/technical-audit-triage", label: "Technical audit triage", description: "Prioritize technical findings with evidence.", indexableWhenLaunched: true },
@@ -88,6 +93,6 @@ export const site: SiteConfig = {
     { path: "/en/methodology", label: "Methodology", description: "Evidence, review, cost, and conflict rules.", indexableWhenLaunched: true },
     { path: "/en/sources-and-rights", label: "Sources and rights", description: "Source register and rights boundaries.", indexableWhenLaunched: true },
     { path: "/en/legal-notice", label: "Legal notice", description: "Provider identification and contact.", indexableWhenLaunched: true },
-    { path: "/en/privacy", label: "Privacy", description: "Privacy information for the static site and local skill generator.", indexableWhenLaunched: true }
+    { path: "/en/privacy", label: "Privacy", description: "Privacy information for the static site and browser-local generators.", indexableWhenLaunched: true }
   ]
 };

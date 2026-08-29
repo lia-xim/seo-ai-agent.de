@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { readdir, readFile } from "node:fs/promises";
+import { readdir, readFile, writeFile } from "node:fs/promises";
 import { extname, join, resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
@@ -36,7 +36,15 @@ if (process.argv.includes("--print")) {
 
 const vercel = JSON.parse(await readFile(vercelPath, "utf8"));
 const headers = (vercel.headers ?? []).flatMap((entry) => entry.headers ?? []);
-const csp = headers.find((entry) => entry.key.toLowerCase() === "content-security-policy-report-only")?.value ?? "";
+const cspHeader = headers.find((entry) => entry.key.toLowerCase() === "content-security-policy-report-only");
+if (process.argv.includes("--write")) {
+  if (!cspHeader) throw new Error("Content-Security-Policy-Report-Only header is missing");
+  cspHeader.value = cspHeader.value.replace(/script-src 'self'(?: 'sha256-[^']+')*;/, `script-src 'self' ${expectedHashes.join(" ")};`);
+  await writeFile(vercelPath, `${JSON.stringify(vercel, null, 2)}\n`, "utf8");
+  console.log(`CSP contract updated with ${expectedHashes.length} exact inline-script hashes.`);
+  process.exit(0);
+}
+const csp = cspHeader?.value ?? "";
 const configuredHashes = [...csp.matchAll(/'sha256-[^']+'/g)].map((match) => match[0]).sort();
 const failures = [];
 if (!csp) failures.push("Content-Security-Policy-Report-Only header is missing");

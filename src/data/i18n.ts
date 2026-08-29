@@ -3,7 +3,10 @@ export type Language = "de" | "en";
 export const routePairs = [
   ["/", "/en"],
   ["/workflows", "/en/workflows"],
+  ["/skill-packs", "/en/skill-packs"],
   ["/seo-agent-skill", "/en/seo-agent-skill"],
+  ["/seo-agent-policy-generator", "/en/seo-agent-policy-generator"],
+  ["/agent-skill-vergleich", "/en/agent-skill-comparison"],
   ["/aufgaben", "/en/tasks"],
   ["/aufgaben/technische-audit-triage", "/en/tasks/technical-audit-triage"],
   ["/aufgaben/keyword-chancen-priorisieren", "/en/tasks/prioritize-keyword-opportunities"],
@@ -31,16 +34,16 @@ export const alternatePathFor = (path: string) => alternateRoutes.get(path);
 
 export const navigation = {
   de: [
-    { href: "/seo-agent-skill", label: "SEO Agent Skill" },
-    { href: "/aufgaben", label: "Aufgaben" },
-    { href: "/benchmarks", label: "Runs" },
-    { href: "/mcp-fuer-seo-agenten", label: "MCP" }
+    { href: "/skill-packs", label: "Skill Packs" },
+    { href: "/seo-agent-skill", label: "Skill erstellen" },
+    { href: "/seo-agent-policy-generator", label: "Policy" },
+    { href: "/agent-skill-vergleich", label: "Vergleich" }
   ],
   en: [
-    { href: "/en/seo-agent-skill", label: "SEO Agent Skill" },
-    { href: "/en/tasks", label: "Tasks" },
-    { href: "/en/runs", label: "Runs" },
-    { href: "/en/mcp-for-seo-agents", label: "MCP" }
+    { href: "/en/skill-packs", label: "Skill Packs" },
+    { href: "/en/seo-agent-skill", label: "Create skill" },
+    { href: "/en/seo-agent-policy-generator", label: "Policy" },
+    { href: "/en/agent-skill-comparison", label: "Compare" }
   ]
 } as const;
 

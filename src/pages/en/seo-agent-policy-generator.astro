@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SeoAgentPolicyGenerator from "../../components/SeoAgentPolicyGenerator.astro";
+---
+
+<BaseLayout
+  lang="en"
+  title="SEO Agent Policy Generator: Scope, Cost, and Safety"
+  description="Generate a clear SEO Agent Policy for domains, data, actions, cost, prompt injection, and stop rules — locally and without an LLM."
+  canonicalPath="/en/seo-agent-policy-generator"
+  bodyClass="policy-page"
+  structuredData={{ "@context": "https://schema.org", "@type": "SoftwareApplication", name: "SEO Agent Policy Generator", url: "https://seo-ai-agent.de/en/seo-agent-policy-generator", applicationCategory: "DeveloperApplication", operatingSystem: "Web", inLanguage: "en", description: "Browser-local generator for SEO-agent permissions and stop rules.", offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" } }}
+>
+  <section class="policy-hero"><div><h1>Give your SEO agent clear boundaries.</h1><p>Choose domain, actions, data, and cost. Get a ready policy for a skill, prompt, or repository — without a model call.</p></div><p>Scope · Permissions · Stop rules</p></section>
+  <SeoAgentPolicyGenerator lang="en" />
+  <section class="policy-explainer"><div><h2>A policy does not replace a skill.</h2><p>The skill describes expertise and workflow. The policy defines what the agent may access and change. Together they make an agent easier to control.</p></div><a class="button button-secondary" href="/en/skill-packs">Choose a skill pack</a></section>
+</BaseLayout>

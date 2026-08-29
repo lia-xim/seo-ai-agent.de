@@ -9,10 +9,10 @@ interface Props {
 const { currentPath, lang = "de" } = Astro.props;
 const alternatePath = alternatePathFor(currentPath) ?? (lang === "de" ? "/en" : "/");
 const labels = lang === "de"
-  ? { home: "SEO AI Agent – Startseite", action: "Skill erstellen", menu: "Menü", open: "Navigation öffnen", nav: "Hauptnavigation", mobile: "Mobile Navigation", switch: "Read in English" }
-  : { home: "SEO AI Agent – Home", action: "Create skill", menu: "Menu", open: "Open navigation", nav: "Main navigation", mobile: "Mobile navigation", switch: "Auf Deutsch lesen" };
+  ? { home: "SEO AI Agent – Startseite", action: "Packs wählen", menu: "Menü", open: "Navigation öffnen", nav: "Hauptnavigation", mobile: "Mobile Navigation", switch: "Read in English" }
+  : { home: "SEO AI Agent – Home", action: "Choose packs", menu: "Menu", open: "Open navigation", nav: "Main navigation", mobile: "Mobile navigation", switch: "Auf Deutsch lesen" };
 const homePath = lang === "de" ? "/" : "/en";
-const builderPath = lang === "de" ? "/seo-agent-skill" : "/en/seo-agent-skill";
+const builderPath = lang === "de" ? "/skill-packs" : "/en/skill-packs";
 const isActive = (href: string) =>
   currentPath === href || currentPath.startsWith(href + "/");
 ---
@@ -50,6 +50,9 @@ const isActive = (href: string) =>
         <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</a>
       ))}
       <a href={lang === "de" ? "/faehigkeiten" : "/en/capabilities"}>{lang === "de" ? "Fähigkeiten" : "Capabilities"}</a>
+      <a href={lang === "de" ? "/aufgaben" : "/en/tasks"}>{lang === "de" ? "Aufgaben" : "Tasks"}</a>
+      <a href={lang === "de" ? "/benchmarks" : "/en/runs"}>{lang === "de" ? "Taskläufe" : "Task runs"}</a>
+      <a href={lang === "de" ? "/mcp-fuer-seo-agenten" : "/en/mcp-for-seo-agents"}>MCP</a>
       <a href={lang === "de" ? "/methodik-und-konflikte" : "/en/methodology"}>{lang === "de" ? "Methodik" : "Methodology"}</a>
       <a href={alternatePath} hreflang={lang === "de" ? "en" : "de"}>{labels.switch}</a>
     </nav>

@@ -1,8 +1,9 @@
 import { spawn } from "node:child_process";
-import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { createServer } from "node:net";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
+import { strFromU8, unzipSync } from "fflate";
 
 const baseUrl = process.env.BROWSER_QA_BASE_URL ?? "http://127.0.0.1:4317";
 const outputDir = resolve(process.env.BROWSER_QA_OUTPUT_DIR ?? ".browser-qa");
@@ -36,6 +37,7 @@ const debugPort = await new Promise((resolvePort, reject) => {
 });
 
 const profileDir = await mkdtemp(join(tmpdir(), "seo-ai-agent-browser-qa-"));
+const downloadDir = await mkdtemp(join(tmpdir(), "seo-ai-agent-download-qa-"));
 await mkdir(outputDir, { recursive: true });
 const browserProcess = spawn(browserExecutable, [
   "--headless=new",
@@ -333,6 +335,99 @@ try {
   await runAxe("skill generator desktop");
   const builderScreenshot = await screenshot("seo-agent-skill-desktop.png");
 
+  await navigate("/skill-packs?pack=website-migration-qa&agent=cursor", desktopViewport);
+  const packager = JSON.parse(await evaluate(`(async () => {
+    const root = document.querySelector('[data-skill-packager]');
+    const form = root.querySelector('[data-packager-form]');
+    const domain = form.querySelector('[name="domain"]');
+    domain.value = 'https://example.com';
+    domain.dispatchEvent(new Event('input', { bubbles: true }));
+    await new Promise((resolve) => setTimeout(resolve, 30));
+    const cursorOutput = root.querySelector('[data-pack-output]').textContent;
+    const agent = form.querySelector('[name="agent"]');
+    agent.value = 'codex';
+    agent.dispatchEvent(new Event('change', { bubbles: true }));
+    const codexOutput = root.querySelector('[data-pack-output]').textContent;
+    return JSON.stringify({
+      h1: document.querySelector('h1')?.textContent.trim(),
+      packs: document.querySelectorAll('.pack-library-list article').length,
+      labels: form.querySelectorAll('label').length,
+      cursorOutput,
+      codexOutput,
+      filetype: root.querySelector('[data-pack-filetype]')?.textContent,
+      zip: Boolean(root.querySelector('[data-download-zip]')),
+      local: document.body.textContent.includes('kein Modellaufruf') && document.body.textContent.includes('kein Upload'),
+      scrollWidth: document.documentElement.scrollWidth,
+      viewport: window.innerWidth
+    });
+  })()`));
+  assert(packager.h1 === "Professionelle SEO Agent Skill Packs.", "Skill Packager h1 mismatch");
+  assert(packager.packs === 8 && packager.labels === 3 && packager.zip, "Skill Packager pack, input, or ZIP contract failed");
+  assert(packager.cursorOutput.startsWith('---\ndescription:') && packager.cursorOutput.includes('Website: https://example.com') && packager.cursorOutput.includes('Rollback'), "Cursor migration pack output is incomplete");
+  assert(packager.codexOutput.startsWith('---\nname: website-migration-qa') && packager.filetype === 'SKILL.md', "Codex SKILL.md packaging failed");
+  assert(packager.local && packager.scrollWidth <= packager.viewport, "Skill Packager local boundary or desktop overflow failed");
+  await command("Browser.setDownloadBehavior", { behavior: "allow", downloadPath: downloadDir, eventsEnabled: true });
+  await evaluate("document.querySelector('[data-download-zip]').click(); true");
+  let downloadedZip;
+  for (let attempt = 0; attempt < 40; attempt += 1) {
+    const files = await readdir(downloadDir);
+    downloadedZip = files.find((file) => file.endsWith('.zip'));
+    if (downloadedZip) break;
+    await new Promise((resolveWait) => setTimeout(resolveWait, 100));
+  }
+  assert(downloadedZip, "Skill Packager did not create a downloadable ZIP");
+  const zipFiles = unzipSync(new Uint8Array(await readFile(resolve(downloadDir, downloadedZip))));
+  assert(Boolean(zipFiles['.codex/skills/website-migration-qa/SKILL.md']) && Boolean(zipFiles['INSTALL.md']) && Boolean(zipFiles['PACK-MANIFEST.json']), "Skill Packager ZIP structure is incomplete");
+  const zipManifest = JSON.parse(strFromU8(zipFiles['PACK-MANIFEST.json']));
+  assert(zipManifest.localGeneration === true && zipManifest.target === 'Codex', "Skill Packager ZIP manifest is incorrect");
+  packager.zipVerified = true;
+  await runAxe("skill packager desktop");
+  const packagerScreenshot = await screenshot("skill-packs-desktop.png");
+
+  await navigate("/seo-agent-policy-generator", desktopViewport);
+  const policyGenerator = JSON.parse(await evaluate(`(async () => {
+    const root = document.querySelector('[data-policy-generator]');
+    const form = root.querySelector('[data-policy-form]');
+    form.querySelector('[name="domain"]').value = 'example.com';
+    form.querySelector('[name="actions"]').value = 'approved-write';
+    form.querySelector('[name="data"]').value = 'provided';
+    form.querySelector('[name="cost"]').value = 'approval';
+    form.dispatchEvent(new Event('input', { bubbles: true }));
+    form.requestSubmit();
+    await new Promise((resolve) => setTimeout(resolve, 30));
+    return JSON.stringify({
+      h1: document.querySelector('h1')?.textContent.trim(),
+      labels: form.querySelectorAll('label').length,
+      output: root.querySelector('[data-policy-output]').textContent,
+      copy: Boolean(root.querySelector('[data-copy-policy]')),
+      download: Boolean(root.querySelector('[data-download-policy]')),
+      scrollWidth: document.documentElement.scrollWidth,
+      viewport: window.innerWidth
+    });
+  })()`));
+  assert(policyGenerator.h1 === "Gib deinem SEO-Agenten klare Grenzen.", "Policy Generator h1 mismatch");
+  assert(policyGenerator.labels === 4 && policyGenerator.copy && policyGenerator.download, "Policy Generator input or action contract failed");
+  assert(policyGenerator.output.includes('Erlaubtes Ziel: example.com') && policyGenerator.output.includes('Maximalbetrag') && policyGenerator.output.includes('nicht vertrauenswürdige Daten'), "Policy Generator did not apply scope, cost, or injection rules");
+  assert(policyGenerator.scrollWidth <= policyGenerator.viewport, "Policy Generator desktop overflow detected");
+  await runAxe("policy generator desktop");
+  const policyGeneratorScreenshot = await screenshot("policy-generator-desktop.png");
+
+  await navigate("/agent-skill-vergleich", desktopViewport);
+  const formatComparison = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector('h1')?.textContent.trim(),
+    rows: document.querySelectorAll('.format-table .format-row:not(.format-head)').length,
+    sources: document.querySelectorAll('.format-table a[href^="http"]').length,
+    decisions: document.querySelectorAll('.format-decisions article').length,
+    noRanking: document.body.textContent.includes('Kein „bester Agent“-Ranking'),
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(formatComparison.h1 === "Welches Skill-Format braucht dein Agent?", "Format comparison h1 mismatch");
+  assert(formatComparison.rows === 4 && formatComparison.sources === 4 && formatComparison.decisions === 4 && formatComparison.noRanking, "Format comparison evidence or boundary is incomplete");
+  assert(formatComparison.scrollWidth <= formatComparison.viewport, "Format comparison desktop overflow detected");
+  await runAxe("format comparison desktop");
+  const formatComparisonScreenshot = await screenshot("agent-skill-vergleich-desktop.png");
+
   await navigate("/benchmarks", desktopViewport);
   const benchmarkHub = JSON.parse(await evaluate(`JSON.stringify({
     h1: document.querySelector('h1')?.textContent.trim(),
@@ -452,6 +547,19 @@ try {
   await runAxe("skill generator mobile");
   const builderMobileScreenshot = await screenshot("seo-agent-skill-mobile.png");
 
+  await navigate("/skill-packs?pack=prompt-injection-safe-browser&agent=gemini", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+  const packagerMobile = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector('h1')?.textContent.trim(),
+    fields: document.querySelectorAll('[data-packager-form] label').length,
+    output: document.querySelector('[data-pack-output]')?.textContent,
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(packagerMobile.h1 === "Professionelle SEO Agent Skill Packs." && packagerMobile.fields === 3, "Mobile Skill Packager content is incomplete");
+  assert(packagerMobile.output.includes('Prompt Injection Safe Browser') && packagerMobile.scrollWidth <= packagerMobile.viewport, "Mobile Skill Packager output or overflow failed");
+  await runAxe("skill packager mobile");
+  const packagerMobileScreenshot = await screenshot("skill-packs-mobile.png");
+
   await navigate("/", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   const mobile = JSON.parse(await evaluate(`JSON.stringify({
     viewport: window.innerWidth,
@@ -531,10 +639,11 @@ try {
   const englishMobileScreenshot = await screenshot("homepage-en-mobile.png");
 
   assert(errors.length === 0, `Browser console/runtime errors: ${errors.join(" | ")}`);
-  console.log(JSON.stringify({ browserExecutable, desktop, performance, keyboard, capabilities, mcp, costCalculator, failureHandling, comparison, library, interaction, benchmarkHub, runEvidence, linkRunEvidence, legal, benchmarkHubMobile, linkRunMobile, costMobile, builderMobile, mobile, englishHome, englishWorkflows, englishBuilder, englishMobile, axeResults, screenshots: [desktopScreenshot, capabilitiesScreenshot, mcpScreenshot, costScreenshot, failureScreenshot, comparisonScreenshot, libraryScreenshot, builderScreenshot, benchmarkHubScreenshot, runScreenshot, linkRunScreenshot, legalScreenshot, benchmarkHubMobileScreenshot, linkRunMobileScreenshot, costMobileScreenshot, builderMobileScreenshot, mobileScreenshot, englishHomeScreenshot, englishWorkflowsScreenshot, englishBuilderScreenshot, englishMobileScreenshot], errors }, null, 2));
+  console.log(JSON.stringify({ browserExecutable, desktop, performance, keyboard, capabilities, mcp, costCalculator, failureHandling, comparison, library, interaction, packager, policyGenerator, formatComparison, benchmarkHub, runEvidence, linkRunEvidence, legal, benchmarkHubMobile, linkRunMobile, costMobile, builderMobile, packagerMobile, mobile, englishHome, englishWorkflows, englishBuilder, englishMobile, axeResults, screenshots: [desktopScreenshot, capabilitiesScreenshot, mcpScreenshot, costScreenshot, failureScreenshot, comparisonScreenshot, libraryScreenshot, builderScreenshot, packagerScreenshot, policyGeneratorScreenshot, formatComparisonScreenshot, benchmarkHubScreenshot, runScreenshot, linkRunScreenshot, legalScreenshot, benchmarkHubMobileScreenshot, linkRunMobileScreenshot, costMobileScreenshot, builderMobileScreenshot, packagerMobileScreenshot, mobileScreenshot, englishHomeScreenshot, englishWorkflowsScreenshot, englishBuilderScreenshot, englishMobileScreenshot], errors }, null, 2));
 } finally {
   if (socket?.readyState === WebSocket.OPEN) socket.close();
   browserProcess.kill();
   await new Promise((resolveWait) => setTimeout(resolveWait, 300));
   await rm(profileDir, { recursive: true, force: true, maxRetries: 4, retryDelay: 150 });
+  await rm(downloadDir, { recursive: true, force: true, maxRetries: 4, retryDelay: 150 });
 }

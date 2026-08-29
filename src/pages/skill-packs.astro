@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SkillPackager from "../components/SkillPackager.astro";
+import { categoryLabels, skillPacks } from "../data/skillPacks";
+---
+
+<BaseLayout
+  title="SEO Agent Skill Packs für Codex, Claude, Gemini und Cursor"
+  description="Acht professionelle SEO Agent Skill Packs auswählen und lokal für Codex, Claude Code, Gemini CLI, Cursor oder als Prompt herunterladen."
+  canonicalPath="/skill-packs"
+  bodyClass="packs-page"
+  pageType="CollectionPage"
+  structuredData={{ "@context": "https://schema.org", "@type": "SoftwareApplication", name: "SEO Agent Skill Packager", url: "https://seo-ai-agent.de/skill-packs", applicationCategory: "DeveloperApplication", operatingSystem: "Web", inLanguage: "de", description: "Browser-lokaler Packager für kuratierte SEO Agent Skills.", offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" } }}
+>
+  <section class="packs-hero">
+    <div><h1>Professionelle SEO Agent Skill Packs.</h1><p>Keine automatisch erzeugte Prompt-Sammlung. Acht gepflegte Fachpakete – für deinen Agenten korrekt verpackt und direkt als ZIP nutzbar.</p></div>
+    <p>8 Packs · 5 Formate · 0 Modellaufrufe</p>
+  </section>
+
+  <SkillPackager />
+
+  <section class="pack-library" aria-labelledby="pack-library-title">
+    <header><h2 id="pack-library-title">Acht Aufgaben. Acht klare Grenzen.</h2><p>Jedes Pack besitzt einen eigenen Trigger, benötigte Inputs, eine Fachmethode, ein Ausgabeformat und eine versionierte Review-Angabe.</p></header>
+    <div class="pack-library-list">
+      {skillPacks.map((pack, index) => (
+        <article>
+          <span>{String(index + 1).padStart(2, "0")} · {categoryLabels[pack.category].de}</span>
+          <h3>{pack.title.de}</h3>
+          <p>{pack.summary.de}</p>
+          <dl><div><dt>Version</dt><dd>v{pack.version}</dd></div><div><dt>Reviewed</dt><dd>{pack.updated}</dd></div></dl>
+          <a href={`/skill-packs?pack=${pack.id}`}>Pack konfigurieren <span aria-hidden="true">→</span></a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="pack-note">
+    <div><h2>Ein Fachkern. Passendes Agentenformat.</h2><p>Codex, Claude Code und Gemini CLI erhalten ein <code>SKILL.md</code>-Paket. Cursor erhält eine Project Rule im <code>.mdc</code>-Format. Der universelle Prompt funktioniert ohne Installation.</p></div>
+    <a class="button button-secondary" href="/agent-skill-vergleich">Formate vergleichen</a>
+  </section>
+</BaseLayout>

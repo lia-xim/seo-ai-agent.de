@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+const agents = [
+  { name: "Codex", format: "SKILL.md", path: ".codex/skills/<name>/", scope: "Persönlich oder Workspace", source: "https://developers.openai.com/codex/skills" },
+  { name: "Claude Code", format: "SKILL.md", path: ".claude/skills/<name>/", scope: "Persönlich, Projekt oder Plugin", source: "https://code.claude.com/docs/en/skills" },
+  { name: "Gemini CLI", format: "SKILL.md", path: ".gemini/skills/<name>/", scope: "User, Workspace oder Extension", source: "https://geminicli.com/docs/cli/using-agent-skills/" },
+  { name: "Cursor", format: ".mdc Project Rule", path: ".cursor/rules/", scope: "Projekt, User oder manuell", source: "https://docs.cursor.com/context/rules" }
+];
+---
+
+<BaseLayout title="Agent Skills vergleichen: Codex, Claude, Gemini und Cursor" description="Aktueller, quellenbasierter Vergleich von Skill- und Rule-Formaten für Codex, Claude Code, Gemini CLI und Cursor – ohne Qualitätsranking." canonicalPath="/agent-skill-vergleich" bodyClass="format-page">
+  <section class="format-hero"><div><h1>Welches Skill-Format braucht dein Agent?</h1><p>Die Fachlogik kann gleich bleiben. Installation, Dateiformat und Aktivierung unterscheiden sich. Dieser Vergleich ordnet die Formate ein – nicht die Modellqualität.</p></div><p>Quellen geprüft: 29.08.2026</p></section>
+
+  <section class="format-table" aria-labelledby="agent-format-title">
+    <header><h2 id="agent-format-title">Vier Agenten. Zwei Formatfamilien.</h2><p>Codex, Claude Code und Gemini CLI nutzen paketierte Agent Skills mit <code>SKILL.md</code>. Cursor verwendet Project Rules im <code>.mdc</code>-Format.</p></header>
+    <div role="table" aria-label="Agent-Skill-Formate">
+      <div class="format-row format-head" role="row"><span role="columnheader">Agent</span><span role="columnheader">Format</span><span role="columnheader">Projektpfad</span><span role="columnheader">Scope</span><span role="columnheader">Quelle</span></div>
+      {agents.map((agent) => <div class="format-row" role="row"><div role="cell"><strong>{agent.name}</strong></div><div role="cell"><code>{agent.format}</code></div><div role="cell"><code>{agent.path}</code></div><div role="cell">{agent.scope}</div><div role="cell"><a href={agent.source}>Offizielle Dokumentation ↗</a></div></div>)}
+    </div>
+  </section>
+
+  <section class="format-decisions" aria-labelledby="format-decision-title">
+    <header><h2 id="format-decision-title">Skill, Rule, Prompt oder MCP?</h2><p>Diese Dinge sind keine Synonyme. Wähle nach dem eigentlichen Nutzerjob.</p></header>
+    <div>
+      <article><span>01</span><h3>Skill</h3><p>Wiederverwendbares Fachwissen oder ein Workflow, der nur bei passenden Aufgaben geladen werden soll.</p></article>
+      <article><span>02</span><h3>Repository Rule</h3><p>Dauerhafte Projektkonvention für Codebasis, Sprache, Architektur oder Berechtigungsgrenzen.</p></article>
+      <article><span>03</span><h3>Prompt</h3><p>Einmalige Anweisung ohne Installation, Versionsordner oder progressive Ressourcen.</p></article>
+      <article><span>04</span><h3>MCP</h3><p>Verbindung zu Daten und Aktionen. MCP liefert Fähigkeiten; der Skill beschreibt, wann und wie sie sicher genutzt werden.</p></article>
+    </div>
+  </section>
+
+  <section class="format-boundary"><div><h2>Kein „bester Agent“-Ranking.</h2><p>Dokumentiert werden öffentlich belegte Formate und Installationsmodelle. Modellqualität, SEO-Qualität und Zuverlässigkeit wären eigene reproduzierbare Tests mit identischem Input, Versionen und Rubrik.</p></div><a class="button button-primary" href="/skill-packs">Skill-Pack konfigurieren</a></section>
+</BaseLayout>

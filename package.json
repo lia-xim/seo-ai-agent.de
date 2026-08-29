@@ -15,6 +15,7 @@
     "qa": "node scripts/qa.mjs",
     "qa:browser": "node scripts/browser-qa.mjs",
     "qa:csp": "node scripts/csp-contract.mjs --check",
+    "qa:csp:update": "node scripts/csp-contract.mjs --write",
     "qa:status": "node scripts/status-qa.mjs",
     "verify": "pnpm build && pnpm qa && pnpm qa:csp && pnpm qa:status"
   },
@@ -23,6 +24,7 @@
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
     "@fontsource-variable/space-grotesk": "^5.3.0",
     "astro": "7.2.1",
+    "fflate": "0.8.2",
     "gsap": "^3.15.0"
   },
   "devDependencies": {
