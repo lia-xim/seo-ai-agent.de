@@ -1,0 +1,80 @@
+---
+import ExampleTaskSheet from "../../components/ExampleTaskSheet.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { tasksEn } from "../../data/tasks";
+
+const dimensions = [
+  ["Evidence", "Sources and artifacts instead of unsupported claims"],
+  ["Permissions", "Only agreed data, tools, and actions"],
+  ["Repeatability", "The same inputs, versions, and rules"],
+  ["Cost", "Direct spend, review, retries, and reserve"],
+  ["Time", "Budget, runtime, waiting, and manual work"],
+  ["Failure handling", "Stops, questions, and recovery"]
+];
+---
+
+<BaseLayout
+  lang="en"
+  title="SEO AI Agent: Task recipes with reviewable evidence"
+  description="Turn an SEO job into a bounded agent run with explicit data, permissions, cost, stop rules, and evidence."
+  canonicalPath="/en"
+  bodyClass="home-page"
+>
+  <section class="hero">
+    <div class="hero-copy" data-reveal>
+      <h1>Give SEO agents a task you can review.</h1>
+      <p>Define the job, data access, budget, and stop rules. Connect real SEO data later through MCP and keep every result tied to visible evidence.</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="/en/task-spec-builder">Build a Task Recipe <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg></a>
+        <a class="text-link" href="/en/workflows">Explore workflows</a>
+      </div>
+    </div>
+    <ExampleTaskSheet lang="en" />
+  </section>
+
+  <section class="home-section task-overview" aria-labelledby="task-overview-title">
+    <header class="section-heading" data-reveal>
+      <div><h2 id="task-overview-title">Three recipes. One reviewable contract.</h2><p>Two first-party runs have been executed. There is no public provider ranking and no independent human reviewer.</p></div>
+      <a class="text-link" href="/en/tasks">View all tasks</a>
+    </header>
+    <div class="home-task-table" data-reveal>
+      <div class="task-table-head" aria-hidden="true"><span>ID</span><span>Task</span><span>Evidence</span><span>Access</span><span>Time</span><span>Budget</span><span>Output</span><span></span></div>
+      {tasksEn.map((task) => (
+        <a class="task-table-row" href={`/en/tasks/${task.slug}`} data-reveal-item>
+          <span class="task-id">{task.id}</span><strong>{task.title}</strong><span class="evidence-state"><i aria-hidden="true"></i> defined</span><span>Read-only</span><span>{task.timeLimitMinutes} min</span><span>€{task.costLimitEuro.toFixed(2)}</span><span>{task.id === "SEO-AI-001" ? "5 prioritized findings" : task.id === "SEO-AI-002" ? "10 prioritized opportunities" : "10 link suggestions"}</span><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="home-section measurement-section" aria-labelledby="measurement-title">
+    <header class="section-heading" data-reveal><div><h2 id="measurement-title">What a credible run must show.</h2><p>The output matters. So does the path that produced it.</p></div></header>
+    <div class="measurement-ledger">
+      {dimensions.map(([name, description], index) => <article data-reveal-item><span>{String(index + 1).padStart(2, "0")}</span><h3>{name}</h3><p>{description}</p></article>)}
+    </div>
+    <p class="ledger-note" data-reveal><span aria-hidden="true"></span> A score cannot replace a run log. Without frozen inputs, versions, cost, and failures, results are not comparable.</p>
+  </section>
+
+  <section class="home-section control-cluster" aria-labelledby="path-title">
+    <header class="section-heading" data-reveal><div><h2 id="path-title">Plan first. Connect second. Review every result.</h2><p>The site stays useful without a live endpoint. A verified read-only Contextter connection can later turn the same recipe into an evidence-backed run.</p></div></header>
+    <div class="control-cards">
+      <article data-reveal-item><span>01 / WORKFLOWS</span><h3>Start with a real SEO job.</h3><p>Choose audit triage, internal-link evidence, keyword prioritization, or an AI-search evidence task.</p><a class="button button-secondary" href="/en/workflows">Choose a workflow</a></article>
+      <article data-reveal-item><span>02 / TASK RECIPE</span><h3>Freeze the execution contract.</h3><p>Make data needs, permissions, cost, expected output, and failure behavior explicit before the run.</p><a class="button button-secondary" href="/en/task-spec-builder">Build the contract</a></article>
+    </div>
+  </section>
+
+  <section class="home-section benchmark-wait" aria-labelledby="run-title">
+    <div class="benchmark-gates" data-reveal><header class="section-heading"><div><h2 id="run-title">Two first-party runs are public.</h2><p>The technical run is reproducible. The internal-link run remains partially accepted because independent human review is missing.</p></div></header><ul><li>Benchmark owner: Matthias Ramahi</li><li>SEO-AI-001 with 14 raw HTTP observations</li><li>SEO-AI-003 with 10 validated link candidates</li><li>No provider season and no ranking</li></ul></div>
+    <aside class="disclosure-box" data-reveal><span>Disclosed relationship</span><p>SEO AI Agent and Contextter are operated by Matthias Ramahi. Contextter is not an independent recommendation and receives no automatic winner status.</p><a class="text-link" href="/en/runs">Review both runs</a></aside>
+  </section>
+
+  <section class="relationship-section home-relationships" aria-labelledby="ecosystem-title" data-reveal>
+    <header><span class="eyebrow">Contextual handoff</span><h2 id="ecosystem-title">The task lives here. Data and implementation stay separate.</h2><p>These links follow the user workflow. They are not independent endorsements or a portfolio-wide link network.</p></header>
+    <div class="relationship-cards">
+      <article><h3>Contextter: possible first-party data context</h3><p><strong>Ownership disclosure:</strong> Contextter and SEO AI Agent share the same operator. No public Contextter MCP endpoint is claimed here.</p><a class="button button-secondary" href="https://contextter.com/">View Contextter</a></article>
+      <article><h3>SEO MCP: capability reference</h3><p><strong>Ownership disclosure:</strong> seo-mcp.de belongs to the same portfolio. It is the separate technical reference, not independent proof.</p><a class="button button-secondary" href="https://seo-mcp.de/capabilities">Review capabilities</a></article>
+    </div>
+  </section>
+
+  <section class="closing-cta" data-reveal><div><h2>From a clear task to an evidence-backed run.</h2><p>Export a portable recipe now. Connect only when OAuth, scopes, and a real read capability have been verified.</p></div><a class="button button-primary" href="/en/task-spec-builder">Build a Task Recipe <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg></a></section>
+</BaseLayout>

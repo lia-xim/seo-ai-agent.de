@@ -7,12 +7,17 @@ const host = "127.0.0.1";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const dist = resolve(root, "dist");
 const routes = [
-  "/", "/task-spec-builder", "/aufgaben",
+  "/", "/workflows", "/task-spec-builder", "/aufgaben",
   "/aufgaben/technische-audit-triage", "/aufgaben/keyword-chancen-priorisieren",
   "/aufgaben/interne-links-begruenden", "/benchmarks",
   "/benchmarks/2026-08-22-technische-audit-triage",
   "/benchmarks/2026-08-22-interne-link-evidenz", "/agenten-vergleich",
   "/faehigkeiten", "/mcp-fuer-seo-agenten", "/seo-agent-kosten", "/fehlerbehandlung-seo-agenten", "/methodik-und-konflikte", "/quellen-und-rechte", "/impressum", "/datenschutz",
+  "/en", "/en/workflows", "/en/task-spec-builder", "/en/tasks",
+  "/en/tasks/technical-audit-triage", "/en/tasks/prioritize-keyword-opportunities", "/en/tasks/justify-internal-links",
+  "/en/runs", "/en/runs/2026-08-22-technical-audit-triage", "/en/runs/2026-08-22-internal-link-evidence",
+  "/en/capabilities", "/en/mcp-for-seo-agents", "/en/agent-comparison", "/en/seo-agent-costs", "/en/failure-handling",
+  "/en/methodology", "/en/sources-and-rights", "/en/legal-notice", "/en/privacy",
   "/robots.txt", "/sitemap-index.xml", "/sitemap-0.xml",
   "/evidence/runs/2026-08-22-seo-ai-001-r1/input.v1.json",
   "/evidence/runs/2026-08-22-seo-ai-001-r1/raw-observations.v1.json",

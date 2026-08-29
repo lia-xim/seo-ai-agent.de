@@ -1,0 +1,25 @@
+---
+import type { GetStaticPaths } from "astro";
+import PageIntro from "../../components/PageIntro.astro";
+import { englishPages, type EnglishPage } from "../../data/english-pages";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export const getStaticPaths = (() => englishPages.map((page) => ({ params: { slug: page.slug }, props: { page } }))) satisfies GetStaticPaths;
+const { page } = Astro.props as { page: EnglishPage };
+const contentClass = page.legal ? "legal-document" : "english-content";
+---
+
+<BaseLayout lang="en" title={page.title} description={page.description} canonicalPath={`/en/${page.slug}`} pageType={page.pageType ?? "WebPage"}>
+  <PageIntro section={page.sections[0]?.number.slice(0, 2) ?? "00"} title={page.intro} description={page.description} meta={page.meta} />
+  <article class={contentClass}>
+    {page.sections.map((section) => (
+      <section data-reveal-item>
+        <span>{section.number}</span>
+        <h2>{section.title}</h2>
+        {section.paragraphs?.map((paragraph) => <p class:list={{ "preserve-lines": paragraph.includes("\n") }}>{paragraph}</p>)}
+        {section.bullets && <ul>{section.bullets.map((item) => <li>{item}</li>)}</ul>}
+        {section.links && <div class="inline-links">{section.links.map((link) => <a class="text-link" href={link.href}>{link.label}</a>)}</div>}
+      </section>
+    ))}
+  </article>
+</BaseLayout>

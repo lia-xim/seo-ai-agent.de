@@ -1,0 +1,69 @@
+---
+import PageIntro from "../components/PageIntro.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const workflows = [
+  { id: "01", title: "Technische Audit-Triage", input: "Crawl, Indexierung, Canonicals und Redirects", output: "Fünf priorisierte Befunde mit URL-Evidenz", task: "/aufgaben/technische-audit-triage", state: "R1 ausgeführt" },
+  { id: "02", title: "Interne Links begründen", input: "Quellpassage, Zielseite, Anchor und Linkzustand", output: "Zehn prüfbare Linkkandidaten", task: "/aufgaben/interne-links-begruenden", state: "R1 teilweise abgenommen" },
+  { id: "03", title: "Keyword-Chancen priorisieren", input: "Keyword-, Seiten- und Search-Performance-Daten", output: "Zehn begründete Chancen mit Konfliktrisiko", task: "/aufgaben/keyword-chancen-priorisieren", state: "Recipe bereit" },
+  { id: "04", title: "AI-Search-Evidenz auswerten", input: "Provider-offengelegte Suchanfragen und Quellen", output: "Ein begrenzter Analyseauftrag ohne erfundene Traces", task: "/task-spec-builder?task=keyword-chancen-priorisieren", state: "Recipe vorbereiten" }
+];
+---
+
+<BaseLayout
+  title="SEO-Agent-Workflows"
+  description="Vier klar begrenzte SEO-Agent-Workflows: Aufgabe definieren, Capabilities prüfen, später reale Daten verbinden und Ergebnisse belegen."
+  canonicalPath="/workflows"
+  pageType="CollectionPage"
+>
+  <PageIntro
+    section="00"
+    title="Von der SEO-Aufgabe zum prüfbaren Run."
+    description="Wähle zuerst den Nutzerjob. Die Task Recipe friert Scope, Daten, Budget und Abbruchregeln ein. Ein realer Daten-Connect kommt erst danach."
+    meta="4 WORKFLOWS / READ-FIRST / MCP NOCH DEAKTIVIERT"
+  />
+
+  <section class="workflow-rail" aria-labelledby="workflow-title">
+    <header class="section-heading" data-reveal>
+      <div>
+        <h2 id="workflow-title">Ein einfacher Ablauf für vier echte SEO-Jobs.</h2>
+        <p>Jeder Workflow bleibt ohne Contextter nützlich. Der spätere Connect ersetzt weder die Taskgrenzen noch die menschliche Abnahme.</p>
+      </div>
+      <a class="text-link" href="/task-spec-builder">Eigene Recipe bauen</a>
+    </header>
+    <div class="workflow-list">
+      {workflows.map((workflow) => (
+        <article data-reveal-item>
+          <span>{workflow.id}</span>
+          <div><h3>{workflow.title}</h3><p>{workflow.input}</p></div>
+          <div><small>Erwartetes Ergebnis</small><p>{workflow.output}</p></div>
+          <strong>{workflow.state}</strong>
+          <a class="text-link" href={workflow.task}>Workflow öffnen</a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="execution-path" aria-labelledby="execution-title" data-reveal>
+    <header><h2 id="execution-title">Task → Zugriff → Run → Entscheidung</h2><p>MCP ist der Transportweg. Die Aufgabe und ihre Evidenz bleiben das Produkt.</p></header>
+    <ol>
+      <li><span>01</span><strong>Task Recipe</strong><p>Ziel, Scope, Budget und Stop-Regeln definieren.</p></li>
+      <li><span>02</span><strong>Capability-Check</strong><p>Daten, Scopes und erforderliche Nachweise prüfen.</p></li>
+      <li><span>03</span><strong>Read-only Connect</strong><p>Erst nach verifiziertem OAuth und realer Capability.</p></li>
+      <li><span>04</span><strong>Evidence Run</strong><p>Beobachtungen, Kosten, Fehler und Grenzen protokollieren.</p></li>
+      <li><span>05</span><strong>Menschliche Entscheidung</strong><p>Ergebnis prüfen und nur freigegebene nächste Schritte übernehmen.</p></li>
+    </ol>
+  </section>
+
+  <section class="relationship-section" aria-labelledby="workflow-relationship-title">
+    <header>
+      <span class="eyebrow">Fachlicher Übergang</span>
+      <h2 id="workflow-relationship-title">Echte Projektdaten erst am richtigen Punkt.</h2>
+      <p>Contextter kann später Crawl-, Keyword-, GSC- und Work-Item-Kontext liefern. seo-mcp.de bleibt die separate technische Capability-Referenz.</p>
+    </header>
+    <div class="relationship-cards">
+      <article><h3>Contextter als Ausführungsraum</h3><p><strong>Eigentumshinweis:</strong> Contextter und seo-ai-agent.de werden gemeinsam von Matthias Ramahi betrieben. Das ist Produktkontext, keine unabhängige Empfehlung; ein öffentlicher MCP-Endpunkt wird derzeit nicht behauptet.</p><a class="button button-secondary" href="https://contextter.com/">Contextter ansehen</a></article>
+      <article><h3>SEO MCP als Capability-Referenz</h3><p><strong>Eigentumshinweis:</strong> seo-mcp.de gehört zum selben Portfolio. Der Link dient der technischen Einordnung und bestätigt diese Website nicht unabhängig.</p><a class="button button-secondary" href="https://seo-mcp.de/capabilities">Capabilities prüfen</a></article>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,23 @@
+---
+import type { GetStaticPaths } from "astro";
+import PageIntro from "../../../components/PageIntro.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { runsEn } from "../../../data/runs-en";
+
+export const getStaticPaths = (() => runsEn.map((run) => ({ params: { slug: run.slug }, props: { run } }))) satisfies GetStaticPaths;
+const { run } = Astro.props as { run: typeof runsEn[number] };
+---
+
+<BaseLayout lang="en" title={run.title} description={run.description} canonicalPath={`/en/runs/${run.slug}`}>
+  <PageIntro section="R1" title={run.title} description={run.description} meta={`${run.status} / FIRST-PARTY / NOT INDEPENDENTLY REVIEWED`} />
+  <div class="task-detail-grid">
+    <article class="protocol">
+      <section><h2>Result</h2><p>{run.result}</p></section>
+      <section><h2>Passed execution gates</h2><ul>{run.criteria.map((item) => <li>{item}</li>)}</ul></section>
+      <section><h2>Limits</h2><ul>{run.limits.map((item) => <li>{item}</li>)}</ul></section>
+      <section><h2>Evidence boundary</h2><p>This translated review page does not create a second dataset. The versioned JSON artifacts remain the canonical raw evidence for the same first-party run.</p></section>
+    </article>
+    <aside class="protocol-sidebar"><dl><div><dt>Run ID</dt><dd>{run.runId}</dd></div><div><dt>Date</dt><dd>22 August 2026</dd></div><div><dt>Owner</dt><dd>Matthias Ramahi</dd></div><div><dt>Independent reviewer</dt><dd>None · disclosed</dd></div><div><dt>MCP</dt><dd>Not connected</dd></div><div><dt>Ranking</dt><dd>None</dd></div></dl><a class="button button-primary" href={run.artifact}>Open result JSON</a></aside>
+  </div>
+  <section class="statement-band"><p>No ranking or active MCP connection is claimed. The result applies only to the frozen task, fixture, version, and date.</p><div class="inline-links"><a class="text-link" href={run.raw}>Raw observations</a><a class="text-link" href={run.task}>Task specification</a><a class="text-link" href="/en/methodology">Methodology</a><a class="text-link" href="/en/runs">All runs</a></div></section>
+</BaseLayout>

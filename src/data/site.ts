@@ -52,6 +52,7 @@ export const site: SiteConfig = {
   ],
   pages: [
     { path: "/", label: "Start", description: "Prüfbare SEO-Agent-Aufträge und ehrlicher Projektstatus.", indexableWhenLaunched: true },
+    { path: "/workflows", label: "Workflows", description: "Vier begrenzte SEO-Agent-Workflows vom Auftrag bis zum prüfbaren Run.", indexableWhenLaunched: true },
     { path: "/task-spec-builder", label: "Task Recipe Builder", description: "Einen begrenzten Auftrag mit Datenbedarf als Markdown oder JSON erstellen.", indexableWhenLaunched: true },
     { path: "/aufgaben", label: "Aufgaben", description: "Versionierte SEO-Aufgaben mit Evidenz- und Abnahmegrenzen.", indexableWhenLaunched: true },
     { path: "/aufgaben/technische-audit-triage", label: "Technische Audit-Triage", description: "Technische Befunde für eine menschliche Prüfung priorisieren.", indexableWhenLaunched: true },
@@ -68,6 +69,25 @@ export const site: SiteConfig = {
     { path: "/methodik-und-konflikte", label: "Methodik und Konflikte", description: "Rubrik, Eigentum, Korrekturen und Grenzen prüfen.", indexableWhenLaunched: true },
     { path: "/quellen-und-rechte", label: "Quellen und Rechte", description: "Quellenregister, Drittanbieterrechte und Evidenzgrenzen.", indexableWhenLaunched: true },
     { path: "/impressum", label: "Impressum", description: "Anbieterkennzeichnung und Kontakt für seo-ai-agent.de.", indexableWhenLaunched: true },
-    { path: "/datenschutz", label: "Datenschutz", description: "Datenschutzinformationen zur statischen Vercel-Website, zum lokalen Task Recipe Builder und zum lokalen Kostenrechner.", indexableWhenLaunched: true }
+    { path: "/datenschutz", label: "Datenschutz", description: "Datenschutzinformationen zur statischen Vercel-Website, zum lokalen Task Recipe Builder und zum lokalen Kostenrechner.", indexableWhenLaunched: true },
+    { path: "/en", label: "English home", description: "Reviewable SEO-agent tasks and visible evidence.", indexableWhenLaunched: true },
+    { path: "/en/workflows", label: "Workflows", description: "Four bounded SEO-agent workflows.", indexableWhenLaunched: true },
+    { path: "/en/task-spec-builder", label: "Task Recipe Builder", description: "Build a portable reviewable SEO-agent task.", indexableWhenLaunched: true },
+    { path: "/en/tasks", label: "Tasks", description: "Versioned SEO-agent tasks.", indexableWhenLaunched: true },
+    { path: "/en/tasks/technical-audit-triage", label: "Technical audit triage", description: "Prioritize technical findings with evidence.", indexableWhenLaunched: true },
+    { path: "/en/tasks/prioritize-keyword-opportunities", label: "Prioritize keyword opportunities", description: "Prioritize opportunities without invented data.", indexableWhenLaunched: true },
+    { path: "/en/tasks/justify-internal-links", label: "Justify internal links", description: "Support internal links with source and target evidence.", indexableWhenLaunched: true },
+    { path: "/en/runs", label: "Runs", description: "Dated first-party task runs and limits.", indexableWhenLaunched: true },
+    { path: "/en/runs/2026-08-22-technical-audit-triage", label: "Technical audit run", description: "English review of the technical first-party run.", indexableWhenLaunched: true },
+    { path: "/en/runs/2026-08-22-internal-link-evidence", label: "Internal-link evidence run", description: "English review of the internal-link first-party run.", indexableWhenLaunched: true },
+    { path: "/en/capabilities", label: "Capabilities", description: "Task-oriented SEO-agent capabilities.", indexableWhenLaunched: true },
+    { path: "/en/mcp-for-seo-agents", label: "MCP for SEO agents", description: "MCP data access and task boundaries.", indexableWhenLaunched: true },
+    { path: "/en/agent-comparison", label: "Agent comparison", description: "Compare approaches by job and risk.", indexableWhenLaunched: true },
+    { path: "/en/seo-agent-costs", label: "SEO-agent costs", description: "Plan execution, review, retries, and reserve.", indexableWhenLaunched: true },
+    { path: "/en/failure-handling", label: "Failure handling", description: "Define stop, retry, escalation, and rollback rules.", indexableWhenLaunched: true },
+    { path: "/en/methodology", label: "Methodology", description: "Evidence, review, cost, and conflict rules.", indexableWhenLaunched: true },
+    { path: "/en/sources-and-rights", label: "Sources and rights", description: "Source register and rights boundaries.", indexableWhenLaunched: true },
+    { path: "/en/legal-notice", label: "Legal notice", description: "Provider identification and contact.", indexableWhenLaunched: true },
+    { path: "/en/privacy", label: "Privacy", description: "Privacy information for the static site and local builder.", indexableWhenLaunched: true }
   ]
 };

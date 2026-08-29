@@ -482,8 +482,71 @@ try {
   await runAxe("homepage mobile");
   const mobileScreenshot = await screenshot("homepage-mobile.png");
 
+  await navigate("/en", desktopViewport);
+  const englishHome = JSON.parse(await evaluate(`JSON.stringify({
+    lang: document.documentElement.lang,
+    h1: document.querySelector('h1')?.textContent.trim(),
+    alternateGerman: document.querySelector('link[hreflang="de"]')?.href,
+    alternateEnglish: document.querySelector('link[hreflang="en"]')?.href,
+    languageSwitch: document.querySelector('.language-switch')?.getAttribute('href'),
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(englishHome.lang === "en" && englishHome.h1 === "Give SEO agents a task you can review.", "English homepage language or h1 mismatch");
+  assert(englishHome.alternateGerman === "https://seo-ai-agent.de/" && englishHome.alternateEnglish === "https://seo-ai-agent.de/en", "English homepage hreflang pair mismatch");
+  assert(englishHome.languageSwitch === "/", "English homepage language switch is not path-paired");
+  assert(englishHome.scrollWidth <= englishHome.viewport, "English homepage desktop overflow detected");
+  await runAxe("English homepage desktop");
+  const englishHomeScreenshot = await screenshot("homepage-en-desktop.png");
+
+  await navigate("/en/workflows", desktopViewport);
+  const englishWorkflows = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector('h1')?.textContent.trim(),
+    workflows: document.querySelectorAll('.workflow-list article').length,
+    steps: document.querySelectorAll('.execution-path li').length,
+    contextterDisclosure: document.body.textContent.includes('Contextter and SEO AI Agent share the same operator'),
+    connectClaim: document.body.textContent.includes('no public MCP endpoint is claimed'),
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(englishWorkflows.h1 === "From an SEO job to a reviewable run.", "English workflows h1 mismatch");
+  assert(englishWorkflows.workflows === 4 && englishWorkflows.steps === 5, "English workflows count mismatch");
+  assert(englishWorkflows.contextterDisclosure && englishWorkflows.connectClaim, "English workflow ownership or MCP boundary missing");
+  assert(englishWorkflows.scrollWidth <= englishWorkflows.viewport, "English workflows desktop overflow detected");
+  await runAxe("English workflows desktop");
+  const englishWorkflowsScreenshot = await screenshot("workflows-en-desktop.png");
+
+  await navigate("/en/task-spec-builder", desktopViewport);
+  await command("Runtime.evaluate", { expression: `(() => { const select = document.querySelector('[data-task-builder-en] select[name="taskId"]'); select.value = 'prioritize-keyword-opportunities'; select.dispatchEvent(new Event('change', { bubbles: true })); const format = document.querySelector('[data-task-builder-en] [data-output-format]'); format.value = 'json'; format.dispatchEvent(new Event('change', { bubbles: true })); })()` });
+  const englishBuilder = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector('h1')?.textContent.trim(),
+    output: document.querySelector('[data-task-builder-en] [data-spec-output]')?.textContent,
+    validation: document.querySelector('[data-task-builder-en] [data-validation-total]')?.textContent.trim(),
+    connectDisabled: document.querySelector('[data-task-builder-en] .connection-panel .button-disabled')?.disabled,
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(englishBuilder.h1 === "Build an SEO-agent task you can review.", "English Builder h1 mismatch");
+  assert(englishBuilder.output.includes('SEO-AI-002') && englishBuilder.output.includes('Prioritize'), "English Builder task selection did not update output");
+  assert(englishBuilder.validation === "9 / 9 fields" && englishBuilder.connectDisabled, "English Builder validation or disabled MCP state failed");
+  assert(englishBuilder.scrollWidth <= englishBuilder.viewport, "English Builder desktop overflow detected");
+  await runAxe("English builder desktop");
+  const englishBuilderScreenshot = await screenshot("builder-en-desktop.png");
+
+  await navigate("/en", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+  const englishMobile = JSON.parse(await evaluate(`JSON.stringify({
+    h1: document.querySelector('h1')?.textContent.trim(),
+    menu: getComputedStyle(document.querySelector('.mobile-menu')).display,
+    scrollWidth: document.documentElement.scrollWidth,
+    viewport: window.innerWidth
+  })`));
+  assert(englishMobile.h1 === "Give SEO agents a task you can review." && englishMobile.menu !== "none", "English mobile homepage or navigation failed");
+  assert(englishMobile.scrollWidth <= englishMobile.viewport, "English homepage mobile overflow detected");
+  await runAxe("English homepage mobile");
+  const englishMobileScreenshot = await screenshot("homepage-en-mobile.png");
+
   assert(errors.length === 0, `Browser console/runtime errors: ${errors.join(" | ")}`);
-  console.log(JSON.stringify({ browserExecutable, desktop, performance, keyboard, capabilities, mcp, costCalculator, failureHandling, comparison, library, interaction, resultInteraction, benchmarkHub, runEvidence, linkRunEvidence, legal, benchmarkHubMobile, linkRunMobile, costMobile, builderMobile, mobile, axeResults, screenshots: [desktopScreenshot, capabilitiesScreenshot, mcpScreenshot, costScreenshot, failureScreenshot, comparisonScreenshot, libraryScreenshot, builderScreenshot, resultScreenshot, benchmarkHubScreenshot, runScreenshot, linkRunScreenshot, legalScreenshot, benchmarkHubMobileScreenshot, linkRunMobileScreenshot, costMobileScreenshot, builderMobileScreenshot, mobileScreenshot], errors }, null, 2));
+  console.log(JSON.stringify({ browserExecutable, desktop, performance, keyboard, capabilities, mcp, costCalculator, failureHandling, comparison, library, interaction, resultInteraction, benchmarkHub, runEvidence, linkRunEvidence, legal, benchmarkHubMobile, linkRunMobile, costMobile, builderMobile, mobile, englishHome, englishWorkflows, englishBuilder, englishMobile, axeResults, screenshots: [desktopScreenshot, capabilitiesScreenshot, mcpScreenshot, costScreenshot, failureScreenshot, comparisonScreenshot, libraryScreenshot, builderScreenshot, resultScreenshot, benchmarkHubScreenshot, runScreenshot, linkRunScreenshot, legalScreenshot, benchmarkHubMobileScreenshot, linkRunMobileScreenshot, costMobileScreenshot, builderMobileScreenshot, mobileScreenshot, englishHomeScreenshot, englishWorkflowsScreenshot, englishBuilderScreenshot, englishMobileScreenshot], errors }, null, 2));
 } finally {
   if (socket?.readyState === WebSocket.OPEN) socket.close();
   browserProcess.kill();

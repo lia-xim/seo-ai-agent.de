@@ -1,0 +1,10 @@
+---
+import PageIntro from "../../components/PageIntro.astro";
+import TaskSpecBuilderEn from "../../components/TaskSpecBuilderEn.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout lang="en" title="Task Recipe Builder" description="Build a portable SEO-agent task with explicit data needs, access, budget, stop rules, and MCP readiness." canonicalPath="/en/task-spec-builder" bodyClass="builder-page" structuredData={{ "@context": "https://schema.org", "@type": "SoftwareApplication", name: "SEO Agent Task Recipe Builder", url: "https://seo-ai-agent.de/en/task-spec-builder", applicationCategory: "BusinessApplication", operatingSystem: "Web", inLanguage: "en", description: "A local tool for bounded SEO-agent tasks with optional MCP data requirements.", offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" } }}>
+  <PageIntro section="01" title="Build an SEO-agent task you can review." description="Define the goal, data access, budget, and output. A verified MCP connection can later turn the same recipe into an evidence-backed workflow." meta="LOCAL / MCP PILOT / NO LIVE DATA" />
+  <TaskSpecBuilderEn />
+</BaseLayout>

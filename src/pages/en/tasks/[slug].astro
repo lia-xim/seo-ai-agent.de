@@ -1,0 +1,23 @@
+---
+import type { GetStaticPaths } from "astro";
+import PageIntro from "../../../components/PageIntro.astro";
+import type { TaskDefinition } from "../../../data/tasks";
+import { tasksEn } from "../../../data/tasks";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+export const getStaticPaths = (() => tasksEn.map((task) => ({ params: { slug: task.slug }, props: { task } }))) satisfies GetStaticPaths;
+const { task } = Astro.props as { task: TaskDefinition };
+const runHref = task.id === "SEO-AI-001" ? "/en/runs/2026-08-22-technical-audit-triage" : task.id === "SEO-AI-003" ? "/en/runs/2026-08-22-internal-link-evidence" : null;
+const meta = task.status === "draft_spec" ? `DRAFT / V${task.version} / NO RUN` : task.id === "SEO-AI-003" ? `EXECUTED / V${task.version} / PARTIAL` : `EXECUTED / V${task.version} / REAL RUN`;
+---
+
+<BaseLayout lang="en" title={task.title} description={task.summary} canonicalPath={`/en/tasks/${task.slug}`}>
+  <PageIntro section={task.id.slice(-2)} title={task.title} description={task.summary} meta={meta} />
+  <div class="task-detail-grid">
+    <article class="protocol"><section><h2>Goal</h2><p>{task.goal}</p></section><section><h2>In scope</h2><ul>{task.inScope.map((item) => <li>{item}</li>)}</ul></section><section><h2>Out of scope</h2><ul>{task.outOfScope.map((item) => <li>{item}</li>)}</ul></section><section><h2>Allowed sources</h2><ul>{task.allowedSources.map((item) => <li>{item}</li>)}</ul></section></article>
+    <aside class="protocol-sidebar"><dl><div><dt>Task ID</dt><dd>{task.id}</dd></div><div><dt>Version</dt><dd>{task.version}</dd></div><div><dt>Access</dt><dd>Read-only</dd></div><div><dt>Time limit</dt><dd>{task.timeLimitMinutes} minutes</dd></div><div><dt>Cost limit</dt><dd>{task.costLimitEuro.toFixed(2)} EUR</dd></div><div><dt>Review</dt><dd>Human required</dd></div></dl><a class="button button-primary" href={`/en/task-spec-builder?task=${task.slug}`}>Open in Builder</a></aside>
+  </div>
+  <section class="criteria-section"><div><span class="section-number" aria-hidden="true">A</span><h2>Acceptance criteria</h2><ol>{task.acceptanceCriteria.map((item) => <li>{item}</li>)}</ol></div><div><span class="section-number" aria-hidden="true">F</span><h2>Failure signals</h2><ol>{task.failureSignals.map((item) => <li>{item}</li>)}</ol></div></section>
+  <section class="stop-rule"><span>STOP RULE</span><p>{task.stopRule}</p></section>
+  <section class="statement-band"><p>{task.status === "executed_once" ? "A dated first-party run exists for this specification. Review its result state and limits before reusing the recipe." : "This specification has not been published as a real run. Method, budget, and failure handling remain required before execution."}</p><div class="inline-links">{runHref && <a class="text-link" href={runHref}>Review executed run</a>}<a class="text-link" href="/en/methodology">Methodology</a><a class="text-link" href="/en/capabilities">Capabilities and controls</a></div></section>
+</BaseLayout>

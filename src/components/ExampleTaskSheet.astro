@@ -1,11 +1,16 @@
 ---
-import { tasks } from "../data/tasks";
-const task = tasks[0];
-const steps = ["Aufgabe", "Evidenz", "Zugriff", "Budget", "Abnahme"];
+import type { Language } from "../data/i18n";
+import { tasks, tasksEn } from "../data/tasks";
+interface Props { lang?: Language; }
+const { lang = "de" } = Astro.props;
+const task = lang === "de" ? tasks[0] : tasksEn[0];
+const steps = lang === "de" ? ["Aufgabe", "Evidenz", "Zugriff", "Budget", "Abnahme"] : ["Task", "Evidence", "Access", "Budget", "Review"];
+const taskPath = lang === "de" ? `/aufgaben/${task.slug}` : `/en/tasks/${task.slug}`;
+const builderPath = lang === "de" ? "/task-spec-builder" : "/en/task-spec-builder";
 ---
 
 <article class="task-sheet" aria-labelledby="example-task-title" data-reveal>
-  <ol class="task-flow" aria-label="Task-Spec-Schritte" tabindex="0">
+  <ol class="task-flow" aria-label={lang === "de" ? "Task-Spec-Schritte" : "Task spec steps"} tabindex="0">
     {steps.map((step, index) => (
       <li class:list={{ active: index === 0 }} data-flow-node>
         <span>{String(index + 1).padStart(2, "0")}</span>
@@ -20,21 +25,21 @@ const steps = ["Aufgabe", "Evidenz", "Zugriff", "Budget", "Abnahme"];
         <p>Task Recipe</p>
         <h2 id="example-task-title">{task.title}</h2>
       </div>
-      <span class="draft-state"><i aria-hidden="true"></i> R1 ausgeführt</span>
+      <span class="draft-state"><i aria-hidden="true"></i> {lang === "de" ? "R1 ausgeführt" : "R1 executed"}</span>
     </header>
 
     <dl>
       <div><dt>ID</dt><dd>{task.id}</dd></div>
-      <div><dt>Zugriff</dt><dd>Nur lesen</dd></div>
-      <div><dt>Zeitlimit</dt><dd>{task.timeLimitMinutes} min</dd></div>
-      <div><dt>Budget</dt><dd>{task.costLimitEuro.toFixed(2).replace(".", ",")} €</dd></div>
-      <div><dt>Ergebnis</dt><dd>5 priorisierte Befunde</dd></div>
+      <div><dt>{lang === "de" ? "Zugriff" : "Access"}</dt><dd>{lang === "de" ? "Nur lesen" : "Read-only"}</dd></div>
+      <div><dt>{lang === "de" ? "Zeitlimit" : "Time limit"}</dt><dd>{task.timeLimitMinutes} min</dd></div>
+      <div><dt>{lang === "de" ? "Budget" : "Budget"}</dt><dd>{task.costLimitEuro.toFixed(2).replace(".", lang === "de" ? "," : ".")} €</dd></div>
+      <div><dt>{lang === "de" ? "Ergebnis" : "Output"}</dt><dd>{lang === "de" ? "5 priorisierte Befunde" : "5 prioritized findings"}</dd></div>
     </dl>
 
     <footer>
-      <a class="text-link" href={`/aufgaben/${task.slug}`}>Aufgabe ansehen</a>
-      <a class="button button-primary button-compact" href={`/task-spec-builder?task=${task.slug}`}>
-        Recipe öffnen
+      <a class="text-link" href={taskPath}>{lang === "de" ? "Aufgabe ansehen" : "View task"}</a>
+      <a class="button button-primary button-compact" href={`${builderPath}?task=${task.slug}`}>
+        {lang === "de" ? "Recipe öffnen" : "Open recipe"}
         <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg>
       </a>
     </footer>

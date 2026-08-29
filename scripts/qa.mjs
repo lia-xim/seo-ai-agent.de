@@ -6,18 +6,33 @@ const dist = resolve(root, "dist");
 const domain = "seo-ai-agent.de";
 const origin = `https://${domain}`;
 const pageRoutes = [
-  "/", "/task-spec-builder", "/aufgaben",
+  "/", "/workflows", "/task-spec-builder", "/aufgaben",
   "/aufgaben/technische-audit-triage", "/aufgaben/keyword-chancen-priorisieren",
   "/aufgaben/interne-links-begruenden", "/benchmarks",
   "/benchmarks/2026-08-22-technische-audit-triage",
   "/benchmarks/2026-08-22-interne-link-evidenz", "/agenten-vergleich",
   "/faehigkeiten", "/mcp-fuer-seo-agenten", "/seo-agent-kosten",
   "/fehlerbehandlung-seo-agenten", "/methodik-und-konflikte",
-  "/quellen-und-rechte", "/impressum", "/datenschutz"
+  "/quellen-und-rechte", "/impressum", "/datenschutz",
+  "/en", "/en/workflows", "/en/task-spec-builder", "/en/tasks",
+  "/en/tasks/technical-audit-triage", "/en/tasks/prioritize-keyword-opportunities",
+  "/en/tasks/justify-internal-links", "/en/runs",
+  "/en/runs/2026-08-22-technical-audit-triage",
+  "/en/runs/2026-08-22-internal-link-evidence", "/en/capabilities",
+  "/en/mcp-for-seo-agents", "/en/agent-comparison", "/en/seo-agent-costs",
+  "/en/failure-handling", "/en/methodology", "/en/sources-and-rights",
+  "/en/legal-notice", "/en/privacy"
 ];
-const collectionRoutes = new Set(["/aufgaben", "/benchmarks", "/faehigkeiten"]);
+const collectionRoutes = new Set(["/workflows", "/aufgaben", "/benchmarks", "/faehigkeiten", "/en/workflows", "/en/tasks", "/en/runs", "/en/capabilities"]);
 const runRoute = "/benchmarks/2026-08-22-technische-audit-triage";
 const linkRunRoute = "/benchmarks/2026-08-22-interne-link-evidenz";
+const languagePairs = [
+  ["/", "/en"], ["/workflows", "/en/workflows"], ["/task-spec-builder", "/en/task-spec-builder"], ["/aufgaben", "/en/tasks"],
+  ["/aufgaben/technische-audit-triage", "/en/tasks/technical-audit-triage"], ["/aufgaben/keyword-chancen-priorisieren", "/en/tasks/prioritize-keyword-opportunities"], ["/aufgaben/interne-links-begruenden", "/en/tasks/justify-internal-links"],
+  ["/benchmarks", "/en/runs"], [runRoute, "/en/runs/2026-08-22-technical-audit-triage"], [linkRunRoute, "/en/runs/2026-08-22-internal-link-evidence"],
+  ["/faehigkeiten", "/en/capabilities"], ["/mcp-fuer-seo-agenten", "/en/mcp-for-seo-agents"], ["/agenten-vergleich", "/en/agent-comparison"], ["/seo-agent-kosten", "/en/seo-agent-costs"], ["/fehlerbehandlung-seo-agenten", "/en/failure-handling"],
+  ["/methodik-und-konflikte", "/en/methodology"], ["/quellen-und-rechte", "/en/sources-and-rights"], ["/impressum", "/en/legal-notice"], ["/datenschutz", "/en/privacy"]
+];
 
 const failures = [];
 const routeFile = (route) => route === "/" ? resolve(dist, "index.html") : resolve(dist, route.slice(1), "index.html");
@@ -30,7 +45,8 @@ for (const route of pageRoutes) {
   await access(file);
   const html = await readFile(file, "utf8");
   pageHtml.set(route, html);
-  check(html.includes('<html lang="de">'), `${route}: document language must be de`);
+  const expectedLanguage = route === "/en" || route.startsWith("/en/") ? "en" : "de";
+  check(html.includes(`<html lang="${expectedLanguage}">`), `${route}: document language must be ${expectedLanguage}`);
   check(!/<meta\s+name="robots"/i.test(html), `${route}: indexable canonical page must not contain a robots meta directive`);
   check(!/noindex/i.test(html.split("</head>", 1)[0]), `${route}: noindex remains in the document head`);
   check(html.includes(`href="${origin}${route === "/" ? "/" : route}"`), `${route}: canonical URL is missing or wrong`);
@@ -79,13 +95,26 @@ for (const [route, html] of pageHtml) {
   }
 }
 
+for (const [deRoute, enRoute] of languagePairs) {
+  const deHtml = pageHtml.get(deRoute);
+  const enHtml = pageHtml.get(enRoute);
+  const deUrl = `${origin}${deRoute === "/" ? "/" : deRoute}`;
+  const enUrl = `${origin}${enRoute}`;
+  for (const [route, html] of [[deRoute, deHtml], [enRoute, enHtml]]) {
+    check(html.includes(`rel="alternate" hreflang="de" href="${deUrl}"`), `${route}: German hreflang target mismatch`);
+    check(html.includes(`rel="alternate" hreflang="en" href="${enUrl}"`), `${route}: English hreflang target mismatch`);
+    check(html.includes(`rel="alternate" hreflang="x-default" href="${deUrl}"`), `${route}: x-default hreflang target mismatch`);
+  }
+}
+
 const allSchemas = [...schemaByRoute.values()].flat();
 check(allSchemas.filter((node) => node["@type"] === "WebSite").length === 1, "schema: expected exactly one WebSite entity across the site");
 check(allSchemas.filter((node) => node["@type"] === "Dataset").length === 2, "schema: Dataset must exist only for the two real reproducible runs");
 check((schemaByRoute.get(runRoute) ?? []).some((node) => node["@type"] === "Dataset" && node.creator?.name === "Matthias Ramahi"), "schema: technical run Dataset or creator missing");
 check((schemaByRoute.get(linkRunRoute) ?? []).some((node) => node["@type"] === "Dataset" && node.creator?.name === "Matthias Ramahi"), "schema: link run Dataset or creator missing");
-check(allSchemas.filter((node) => node["@type"] === "SoftwareApplication").length === 1, "schema: SoftwareApplication must exist only for the Builder");
+check(allSchemas.filter((node) => node["@type"] === "SoftwareApplication").length === 2, "schema: SoftwareApplication must exist only for the two localized Builder pages");
 check((schemaByRoute.get("/task-spec-builder") ?? []).some((node) => node["@type"] === "SoftwareApplication"), "schema: Builder SoftwareApplication missing");
+check((schemaByRoute.get("/en/task-spec-builder") ?? []).some((node) => node["@type"] === "SoftwareApplication"), "schema: English Builder SoftwareApplication missing");
 
 const home = pageHtml.get("/");
 const capabilities = pageHtml.get("/faehigkeiten");
@@ -111,6 +140,10 @@ check(builder.includes("disabled>Contextter MCP verbinden – bald verfügbar"),
 check(builder.includes('href="/faehigkeiten"') && builder.includes('href="/mcp-fuer-seo-agenten"'), "builder: informational cluster links missing");
 check(builder.includes('href="https://seo-mcp.de/capabilities"') && builder.includes('href="https://contextter.com/"'), "builder: external informational links missing");
 check((builder.match(/<label\b/g) ?? []).length >= 8, "builder: too few explicit labels");
+const englishBuilder = pageHtml.get("/en/task-spec-builder");
+check(englishBuilder.includes('data-task-builder-en') && englishBuilder.includes("MCP pilot in preparation"), "English builder: localized surface or honest MCP state missing");
+check(englishBuilder.includes("disabled>MCP pilot in preparation") && englishBuilder.includes("data-download-json") && englishBuilder.includes("data-copy-markdown"), "English builder: disabled connect or export actions missing");
+check(englishBuilder.includes('href="/en/capabilities"') && englishBuilder.includes('href="/en/mcp-for-seo-agents"'), "English builder: localized cluster links missing");
 
 const costPage = pageHtml.get("/seo-agent-kosten");
 const failurePage = pageHtml.get("/fehlerbehandlung-seo-agenten");
@@ -138,6 +171,10 @@ check(imprint.includes("Kempener Straße 44") && imprint.includes("info@matthias
 check(privacy.includes("Keine Analyse, Cookies oder Formulare"), "privacy: exact no-tracking section is missing");
 check(privacy.includes("ohne Reporting-Endpunkt") && privacy.includes("keine CSP-Berichte"), "privacy: CSP report-only behavior missing");
 check(privacy.includes("nicht an seo-ai-agent.de, Contextter, Vercel Functions, einen MCP-Server oder eine externe API übertragen"), "privacy: local builder boundary is missing");
+const englishLegal = pageHtml.get("/en/legal-notice");
+const englishPrivacy = pageHtml.get("/en/privacy");
+check(englishLegal.includes("Kempener Straße 44") && englishLegal.includes("info@matthiasramahi.de"), "English legal notice: verified operator details are missing");
+check(englishPrivacy.includes("No analytics, cookies, forms, or live APIs") && englishPrivacy.includes("not sent to seo-ai-agent.de, Contextter, Vercel Functions, an MCP server, or an external API"), "English privacy: exact local/no-tracking boundary missing");
 
 const socialCard = await readFile(resolve(root, "public", "social-card.png"));
 check(socialCard.length > 100_000, "social card PNG appears empty or under-rendered");

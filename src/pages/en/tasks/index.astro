@@ -1,0 +1,23 @@
+---
+import PageIntro from "../../../components/PageIntro.astro";
+import { tasksEn } from "../../../data/tasks";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout lang="en" title="Versioned SEO-agent tasks" description="Three bounded SEO-agent tasks with explicit inputs, sources, access, review, and stop rules." canonicalPath="/en/tasks" bodyClass="library-page" pageType="CollectionPage">
+  <PageIntro section="02" title="Three tasks. Clearly bounded." description="Every task defines its goal, scope, sources, access, limits, expected output, and stop rule. Two first-party runs exist; there is no provider ranking." meta="LIBRARY / V0.1 / TWO REAL RUNS" />
+  <section class="task-library" aria-labelledby="library-title" data-reveal>
+    <h2 id="library-title" class="visually-hidden">Task library</h2>
+    <div class="task-library-head" aria-hidden="true"><span>ID</span><span>Task</span><span>Access</span><span>Time</span><span>Budget</span><span>Status</span><span></span></div>
+    {tasksEn.map((task, index) => (
+      <details class="task-library-item" open={index === 1} data-reveal-item>
+        <summary><span class="task-id">{task.id}</span><strong>{task.title}</strong><span>Read-only</span><span>{task.timeLimitMinutes} min</span><span>€{task.costLimitEuro.toFixed(2)}</span><span class="row-status">{task.status === "executed_once" ? "1 run" : "Draft"}</span><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg></summary>
+        <div class="task-library-detail">
+          <div><h3>Goal</h3><p>{task.goal}</p></div><div><h3>Allowed sources</h3><p>{task.allowedSources.join(", ")}</p></div><div><h3>Expected output</h3><p>{task.expectedOutput}</p></div><div><h3>Stop rule</h3><p>{task.stopRule}</p></div>
+          <footer><a class="button button-primary button-compact" href={`/en/task-spec-builder?task=${task.slug}`}>Open in Builder <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg></a><a class="button button-secondary button-compact" href={`/en/tasks/${task.slug}`}>View task</a></footer>
+        </div>
+      </details>
+    ))}
+  </section>
+  <section class="statement-band disclosure-band" data-reveal><span class="info-mark" aria-hidden="true">i</span><p>Two first-party runs are public. The internal-link run is only partially accepted; there is no provider ranking and Contextter receives no automatic winner status.</p><a class="text-link" href="/en/runs">Review runs</a></section>
+</BaseLayout>

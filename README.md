@@ -2,6 +2,8 @@
 
 Public source repository for seo-ai-agent.de: a German Task Recipe and evidence workspace for making bounded SEO-agent work executable and reviewable without generic winner claims.
 
+The website is now bilingual. German remains the default at `/`; English equivalents live under `/en` with explicit hreflang pairs. The product role is deliberately simple: choose a workflow, freeze a Task Recipe, check required capabilities, connect real data only after verification, and review a versioned run artifact.
+
 ## Current state
 
 The owned custom domain is an indexable launch. Matthias Ramahi is the named operator and Benchmark Owner. Two real First-Party task runs are published: `SEO-AI-001-2026-08-22-R1` contains the frozen technical launch audit; `SEO-AI-003-2026-08-22-R1` contains ten HTML-validated internal-link candidates and remains explicitly `partial` because no independent human reviewer confirmed anchor, placement, or editorial value.
@@ -24,6 +26,9 @@ seo-ai-agent.de is a newly registered domain. It is not an expired-domain rebuil
 
 - `/` — purpose, task workflow, measurement dimensions, and launch status
 - `/task-spec-builder` — local JSON/Markdown Task Recipe Builder with disabled MCP readiness and an explicitly synthetic example
+- `/workflows` — four task-first paths from a real SEO job to a reviewable run
+- `/en` — English product home with equivalent workflows, tasks, capabilities, runs, method, rights, and legal information
+- `/en/task-spec-builder` — English local JSON/Markdown Task Recipe Builder with the same disabled MCP boundary
 - `/aufgaben` plus three versioned task definitions
 - `/benchmarks` — published runs and transparent review state
 - `/benchmarks/2026-08-22-technische-audit-triage` — frozen technical First-Party task run

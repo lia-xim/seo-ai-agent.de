@@ -1,29 +1,35 @@
 ---
 import { site } from "../data/site";
+import type { Language } from "../data/i18n";
+
+interface Props { lang?: Language; }
+const { lang = "de" } = Astro.props;
+const links = lang === "de" ? [
+  ["/workflows", "Workflows"], ["/task-spec-builder", "Task Recipe"], ["/aufgaben", "Aufgaben"],
+  ["/faehigkeiten", "Fähigkeiten"], ["/benchmarks", "Runs"], ["/mcp-fuer-seo-agenten", "MCP für Agenten"],
+  ["/agenten-vergleich", "Vergleich"], ["/seo-agent-kosten", "Kosten"], ["/fehlerbehandlung-seo-agenten", "Fehlerbehandlung"],
+  ["/methodik-und-konflikte", "Methodik"], ["/quellen-und-rechte", "Quellen & Rechte"],
+  ["/impressum", "Impressum"], ["/datenschutz", "Datenschutz"]
+] : [
+  ["/en/workflows", "Workflows"], ["/en/task-spec-builder", "Task Recipe"], ["/en/tasks", "Tasks"],
+  ["/en/capabilities", "Capabilities"], ["/en/runs", "Runs"], ["/en/mcp-for-seo-agents", "MCP for agents"],
+  ["/en/agent-comparison", "Comparison"], ["/en/seo-agent-costs", "Costs"], ["/en/failure-handling", "Failure handling"],
+  ["/en/methodology", "Methodology"], ["/en/sources-and-rights", "Sources & rights"],
+  ["/en/legal-notice", "Legal notice"], ["/en/privacy", "Privacy"]
+];
 ---
 
 <footer class="site-footer">
   <div class="footer-brand">
     <span>SEO AI AGENT</span>
-    <p>Aufgaben definieren. Daten verbinden. Ergebnisse belegen.</p>
+    <p>{lang === "de" ? "Aufgaben definieren. Daten verbinden. Ergebnisse belegen." : "Define tasks. Connect data. Prove results."}</p>
   </div>
   <nav aria-label="Fußnavigation">
-    <a href="/task-spec-builder">Task Recipe</a>
-    <a href="/aufgaben">Aufgaben</a>
-    <a href="/faehigkeiten">Fähigkeiten</a>
-    <a href="/benchmarks">Benchmarks</a>
-    <a href="/mcp-fuer-seo-agenten">MCP für Agenten</a>
-    <a href="/seo-agent-kosten">Kostenrechner</a>
-    <a href="/fehlerbehandlung-seo-agenten">Fehlerbehandlung</a>
-    <a href="/agenten-vergleich">Vergleich</a>
-    <a href="/methodik-und-konflikte">Methodik</a>
-    <a href="/quellen-und-rechte">Quellen &amp; Rechte</a>
-    <a href="/impressum">Impressum</a>
-    <a href="/datenschutz">Datenschutz</a>
+    {links.map(([href, label]) => <a href={href}>{label}</a>)}
     <a href={site.githubUrl}>GitHub</a>
   </nav>
   <div class="footer-meta">
-    <p><span class="status-dot" aria-hidden="true"></span> Indexierbarer Launch · {site.reviewedAt}</p>
-    <p>Korrekturen und Anbieterantworten werden dokumentiert.</p>
+    <p><span class="status-dot" aria-hidden="true"></span> {lang === "de" ? "Indexierbarer Launch" : "Indexable launch"} · {site.reviewedAt}</p>
+    <p>{lang === "de" ? "Korrekturen und Anbieterantworten werden dokumentiert." : "Corrections and vendor responses are documented."}</p>
   </div>
 </footer>
