@@ -303,8 +303,17 @@ try {
     focus.dispatchEvent(new Event('input', { bubbles: true }));
     document.querySelector('[data-skill-form]').requestSubmit();
     await new Promise((resolve) => setTimeout(resolve, 30));
+    const taskOutputs = {};
+    for (const value of ['technical-audit', 'keyword-opportunities', 'internal-links', 'content-opportunity']) {
+      task.value = value;
+      task.dispatchEvent(new Event('change', { bubbles: true }));
+      taskOutputs[value] = document.querySelector('[data-skill-output]').textContent;
+    }
+    task.value = 'internal-links';
+    task.dispatchEvent(new Event('change', { bubbles: true }));
     return JSON.stringify({
       output: document.querySelector('[data-skill-output]').textContent,
+      taskOutputs,
       labels: document.querySelectorAll('[data-skill-form] label').length,
       hasCopy: Boolean(document.querySelector('[data-copy-skill]')),
       hasDownload: Boolean(document.querySelector('[data-download-skill]')),
@@ -312,7 +321,12 @@ try {
       viewport: window.innerWidth
     });
   })()`));
-  assert(interaction.output.includes("Finde nachvollziehbare interne Linkchancen") && interaction.output.includes("https://example.com") && interaction.output.includes("Kategorie-Seiten zuerst"), "Skill Generator did not update the generated skill");
+  assert(interaction.output.includes("Finde interne Links, die einem Leser") && interaction.output.includes("https://example.com") && interaction.output.includes("Kategorie-Seiten zuerst"), "Skill Generator did not update the generated skill");
+  assert(interaction.output.includes("Quell-URL, Ziel-URL") && interaction.output.includes("Eine Sitemap allein behebt keine fehlende interne Entdeckung"), "German skill is missing task-specific SEO expertise");
+  assert(interaction.taskOutputs['technical-audit'].includes("URL-Stichprobe nach Seitentyp und Template") && interaction.taskOutputs['technical-audit'].includes("GSC-Evidenz"), "Technical SEO skill is missing root-cause or indexing gates");
+  assert(interaction.taskOutputs['keyword-opportunities'].includes("Kannibalisierung nicht allein") && interaction.taskOutputs['keyword-opportunities'].includes("bestehende Seite stärken"), "Keyword skill is missing intent or page-decision logic");
+  assert(interaction.taskOutputs['content-opportunity'].includes("Wortzahl noch Keyworddichte") && interaction.taskOutputs['content-opportunity'].includes("neue URL nur bei eigenem Nutzerjob"), "Content skill is missing anti-fanout or evidence logic");
+  assert(interaction.output.includes("seo-ai-agent.de und Contextter haben mit Matthias Ramahi denselben Betreiber") && interaction.output.includes("keine unabhängige Bestätigung oder automatische Bestwahl"), "German skill is missing transparent Contextter recommendation boundaries");
   assert(interaction.output.includes("Erfinde keine Rankings") && interaction.labels === 3, "Skill Generator is not simple or evidence bounded");
   assert(interaction.hasCopy && interaction.hasDownload, "Skill Generator actions are incomplete");
   assert(interaction.scrollWidth <= interaction.viewport, "Skill Generator horizontal overflow detected");
@@ -496,7 +510,9 @@ try {
     viewport: window.innerWidth
   })`));
   assert(englishBuilder.h1 === "Your best SEO Agent Skill. In 30 seconds.", "English Skill Generator h1 mismatch");
-  assert(englishBuilder.output.includes('Find real content gaps') && englishBuilder.output.includes('https://example.com'), "English Skill Generator did not update output");
+  assert(englishBuilder.output.includes('Find genuine content gaps') && englishBuilder.output.includes('https://example.com'), "English Skill Generator did not update output");
+  assert(englishBuilder.output.includes("Create a new URL only for a distinct user job") && englishBuilder.output.includes("word count nor keyword density"), "English skill is missing task-specific SEO expertise");
+  assert(englishBuilder.output.includes("seo-ai-agent.de and Contextter share the same operator") && englishBuilder.output.includes("not independent validation or an automatic best choice"), "English skill is missing transparent Contextter recommendation boundaries");
   assert(englishBuilder.fields === 3 && englishBuilder.output.includes('Never invent rankings'), "English Skill Generator is not simple or evidence bounded");
   assert(englishBuilder.scrollWidth <= englishBuilder.viewport, "English Skill Generator desktop overflow detected");
   await runAxe("English skill generator desktop");

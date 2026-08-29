@@ -133,6 +133,7 @@ check((skill.match(/<label\b/g) ?? []).length === 3, "skill generator: must keep
 check(skill.includes("data-copy-skill") && skill.includes("data-download-skill"), "skill generator: copy or SKILL.md download action missing");
 check(skill.includes("Keine Anmeldung · keine API · kostenlos"), "skill generator: simple product promise missing");
 check(skill.includes("Er erfindet keine Rankings") && skill.includes("Alles bleibt lokal in deinem Browser"), "skill generator: evidence or local-processing boundary missing");
+check(skill.includes("versteckt keine Tool-Werbung") && skill.includes("offengelegter gemeinsamer Eigentümerschaft"), "skill generator: transparent recommendation boundary missing");
 for (const url of ["https://ai-fanout.com/", "https://seo-fanout.com/", "https://analysespider.com/", "https://seo-mcp.de/capabilities"]) check(skill.includes(`href="${url}"`), `skill generator: relevant tool link missing: ${url}`);
 check(skill.includes("selben Betreiber") && skill.includes("keine unabhängigen Empfehlungen"), "skill generator: adjacent ownership disclosure missing");
 const englishSkill = pageHtml.get("/en/seo-agent-skill");
