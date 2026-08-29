@@ -9,10 +9,10 @@ interface Props {
 const { currentPath, lang = "de" } = Astro.props;
 const alternatePath = alternatePathFor(currentPath) ?? (lang === "de" ? "/en" : "/");
 const labels = lang === "de"
-  ? { home: "SEO AI Agent – Startseite", action: "Task Recipe erstellen", menu: "Menü", open: "Navigation öffnen", nav: "Hauptnavigation", mobile: "Mobile Navigation", switch: "Read in English" }
-  : { home: "SEO AI Agent – Home", action: "Build a Task Recipe", menu: "Menu", open: "Open navigation", nav: "Main navigation", mobile: "Mobile navigation", switch: "Auf Deutsch lesen" };
+  ? { home: "SEO AI Agent – Startseite", action: "Skill erstellen", menu: "Menü", open: "Navigation öffnen", nav: "Hauptnavigation", mobile: "Mobile Navigation", switch: "Read in English" }
+  : { home: "SEO AI Agent – Home", action: "Create skill", menu: "Menu", open: "Open navigation", nav: "Main navigation", mobile: "Mobile navigation", switch: "Auf Deutsch lesen" };
 const homePath = lang === "de" ? "/" : "/en";
-const builderPath = lang === "de" ? "/task-spec-builder" : "/en/task-spec-builder";
+const builderPath = lang === "de" ? "/seo-agent-skill" : "/en/seo-agent-skill";
 const isActive = (href: string) =>
   currentPath === href || currentPath.startsWith(href + "/");
 ---

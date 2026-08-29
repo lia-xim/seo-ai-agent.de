@@ -5,7 +5,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 const principles = [
   ["01", "Datenzugriff ist nicht Autonomie", "MCP kann beschreiben, welche Daten und Tools erreichbar sind. Ob ein Agent lesen, vorschlagen oder schreiben darf, bleibt eine eigene Scope- und Freigabeentscheidung."],
   ["02", "Read-only zuerst", "Für Audit, Search Performance, Keyword- und Linkaufgaben beginnt ein belastbarer Pilot mit eng begrenzten Leserechten, festen Properties und sichtbarer Datenfrische."],
-  ["03", "Capability vor Anbieter", "Die Task Recipe nennt zuerst die benötigte Fähigkeit. Erst danach wird geprüft, ob ein konkreter Server sie mit passendem Schema, Auth und Evidenz tatsächlich bereitstellt."],
+  ["03", "Capability vor Anbieter", "Der SEO Agent Skill nennt zuerst die benötigte Fähigkeit. Erst danach wird geprüft, ob ein konkreter Server sie mit passendem Schema, Auth und Evidenz tatsächlich bereitstellt."],
   ["04", "Jeder Lauf bleibt protokolliert", "Tool, Version, Input, Scope, Kosten, Fehler, manuelle Eingriffe und Ergebnis gehören zum Run. Eine Verbindung allein beweist keine Qualität."],
   ["05", "Schreiben braucht eine zweite Grenze", "Änderungen an Website, GSC, CMS oder Datenbestand benötigen explizite Freigabe, Vorschau, Rollback und eine benannte verantwortliche Person."]
 ];
@@ -78,8 +78,8 @@ const principles = [
     <div>
       <span class="status-dot" aria-hidden="true"></span>
       <h2 id="status-title">Aktueller Status: Information, kein Connect.</h2>
-      <p>Alle MCP- und Connect-Aktionen im Task Recipe Builder bleiben deaktiviert, bis ein öffentlicher Endpoint mit Auth, Scopes und mindestens einer live geprüften Read-Capability existiert.</p>
+      <p>Der SEO Agent Skill benötigt keine Verbindung. MCP bleibt ein optionaler Datenweg und wird erst behauptet, wenn ein öffentlicher Endpoint mit Auth, Scopes und mindestens einer live geprüften Read-Capability existiert.</p>
     </div>
-    <div class="inline-links"><a class="button button-primary" href="/task-spec-builder">Task Recipe ohne Verbindung bauen</a><a class="text-link" href="/seo-agent-kosten">Kosten- und Retry-Budget kalkulieren</a><a class="text-link" href="/fehlerbehandlung-seo-agenten">Fehlermodi und Rückweg festlegen</a></div>
+    <div class="inline-links"><a class="button button-primary" href="/seo-agent-skill">SEO Agent Skill erstellen</a><a class="text-link" href="/seo-agent-kosten">Kosten- und Retry-Budget kalkulieren</a><a class="text-link" href="/fehlerbehandlung-seo-agenten">Fehlermodi und Rückweg festlegen</a></div>
   </section>
 </BaseLayout>

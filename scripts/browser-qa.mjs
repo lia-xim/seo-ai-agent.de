@@ -112,6 +112,7 @@ try {
     await command("Page.navigate", { url: `${baseUrl}${path}` });
     await waitForPage();
     await new Promise((resolveWait) => setTimeout(resolveWait, 700));
+    await evaluate("scrollTo(0, 0); true");
   };
   const screenshot = async (name) => {
     const capture = await command("Page.captureScreenshot", { format: "png", fromSurface: true, captureBeyondViewport: false });
@@ -167,10 +168,11 @@ try {
   assert(performance.firstContentfulPaintMs > 0 && performance.firstContentfulPaintMs < 3000, "Local homepage FCP timing exceeded 3000 ms");
   assert(performance.encodedBytes < 2_000_000, "Local homepage encoded resources exceeded 2 MB");
   assert(desktop.lang === "de", "Desktop document language is not de");
-  assert(desktop.h1 === "Gib SEO-Agenten einen prüfbaren Auftrag.", "Desktop h1 mismatch");
+  assert(desktop.h1 === "Der SEO Agent Skill, den du sofort benutzen kannst.", "Desktop h1 mismatch");
   assert(desktop.noindex == null, "Indexable homepage still exposes a robots meta directive");
   assert(desktop.scrollWidth <= desktop.viewport, "Desktop horizontal overflow detected");
   await runAxe("homepage desktop");
+  const desktopScreenshot = await screenshot("homepage-desktop.png");
   await evaluate("document.activeElement?.blur(); document.body.setAttribute('tabindex', '-1'); document.body.focus(); true");
   await pressKey("Tab");
   const firstKeyboardTarget = await evaluate("document.activeElement?.className ?? ''");
@@ -179,7 +181,6 @@ try {
   const skipLinkTarget = await evaluate("document.activeElement?.id ?? ''");
   assert(skipLinkTarget === "main-content", "Skip link did not move focus to main content");
   const keyboard = { firstKeyboardTarget, skipLinkTarget };
-  const desktopScreenshot = await screenshot("homepage-desktop.png");
 
   await navigate("/faehigkeiten", desktopViewport);
   const capabilities = JSON.parse(await evaluate(`JSON.stringify({
@@ -205,7 +206,7 @@ try {
     h1: document.querySelector("h1")?.textContent.trim(),
     principles: document.querySelectorAll(".mcp-principles li").length,
     endpointUnavailable: document.body.textContent.includes("kein öffentlicher Contextter-MCP-Endpunkt"),
-    connectDisabled: document.body.textContent.includes("Connect-Aktionen im Task Recipe Builder bleiben deaktiviert"),
+    connectDisabled: document.body.textContent.includes("Der SEO Agent Skill benötigt keine Verbindung"),
     contextterLink: document.querySelector('a[href="https://contextter.com/"]')?.href,
     mcpLink: document.querySelector('a[href="https://seo-mcp.de/capabilities"]')?.href,
     scrollWidth: document.documentElement.scrollWidth,
@@ -289,65 +290,34 @@ try {
   await runAxe("task library desktop");
   const libraryScreenshot = await screenshot("library-desktop.png");
 
-  await navigate("/task-spec-builder", desktopViewport);
+  await navigate("/seo-agent-skill?task=keyword-opportunities", desktopViewport);
   const interaction = JSON.parse(await evaluate(`(async () => {
-    const task = document.querySelector('#task-id');
-    task.value = 'keyword-chancen-priorisieren';
+    const task = document.querySelector('[data-skill-form] [name="task"]');
+    task.value = 'internal-links';
     task.dispatchEvent(new Event('change', { bubbles: true }));
-    const time = document.querySelector('#time-limit');
-    time.value = '37';
-    time.dispatchEvent(new Event('input', { bubbles: true }));
-    document.querySelector('.spec-form').requestSubmit();
-    await new Promise((resolve) => setTimeout(resolve, 80));
-    const format = document.querySelector('[data-output-format]');
-    format.value = 'json';
-    format.dispatchEvent(new Event('change', { bubbles: true }));
-    await new Promise((resolve) => setTimeout(resolve, 30));
-    const json = document.querySelector('[data-spec-output]').textContent;
-    format.value = 'markdown';
-    format.dispatchEvent(new Event('change', { bubbles: true }));
+    const domain = document.querySelector('[data-skill-form] [name="domain"]');
+    domain.value = 'https://example.com';
+    domain.dispatchEvent(new Event('input', { bubbles: true }));
+    const focus = document.querySelector('[data-skill-form] [name="focus"]');
+    focus.value = 'Kategorie-Seiten zuerst';
+    focus.dispatchEvent(new Event('input', { bubbles: true }));
+    document.querySelector('[data-skill-form]').requestSubmit();
     await new Promise((resolve) => setTimeout(resolve, 30));
     return JSON.stringify({
-      outputId: document.querySelector('[data-output-id]').textContent,
-      jsonHasTime: json.includes('"time_minutes": 37'),
-      jsonHasTask: json.includes('SEO-AI-002'),
-      markdownStartsCorrectly: document.querySelector('[data-spec-output]').textContent.startsWith('# Task Recipe:'),
-      validation: document.querySelector('[data-validation-total]').textContent,
+      output: document.querySelector('[data-skill-output]').textContent,
+      labels: document.querySelectorAll('[data-skill-form] label').length,
+      hasCopy: Boolean(document.querySelector('[data-copy-skill]')),
+      hasDownload: Boolean(document.querySelector('[data-download-skill]')),
       scrollWidth: document.documentElement.scrollWidth,
       viewport: window.innerWidth
     });
   })()`));
-  assert(interaction.outputId === "SEO-AI-002", "Builder did not switch task");
-  assert(interaction.jsonHasTime && interaction.jsonHasTask, "Builder JSON did not update");
-  assert(interaction.markdownStartsCorrectly, "Builder Markdown did not render");
-  assert(interaction.validation === "9 / 9 Felder", "Builder validation is incomplete");
-  assert(interaction.scrollWidth <= interaction.viewport, "Builder horizontal overflow detected");
-  await runAxe("builder desktop");
-  const builderScreenshot = await screenshot("builder-desktop.png");
-
-  const resultInteraction = JSON.parse(await evaluate(`(async () => {
-    document.querySelector('[data-show-example]').click();
-    await new Promise((resolve) => setTimeout(resolve, 120));
-    const rows = [...document.querySelectorAll('[data-finding]')];
-    rows[1].click();
-    await new Promise((resolve) => setTimeout(resolve, 50));
-    return JSON.stringify({
-      visible: !document.querySelector('[data-result-workspace]').hidden,
-      sampleLabel: document.body.textContent.includes('Beispielergebnis · keine Live-Daten'),
-      selectedTitle: document.querySelector('[data-detail-title]').textContent.trim(),
-      disabledConnect: document.querySelector('.result-connect .button-disabled').disabled,
-      capabilityCount: document.querySelectorAll('[data-result-capabilities] li').length,
-      scrollWidth: document.documentElement.scrollWidth,
-      viewport: window.innerWidth
-    });
-  })()`));
-  assert(resultInteraction.visible, "Example result did not open");
-  assert(resultInteraction.sampleLabel, "Synthetic result disclosure is missing");
-  assert(resultInteraction.selectedTitle === "Interner Link endet in einer Weiterleitung", "Finding selection did not update details");
-  assert(resultInteraction.disabledConnect, "MCP connect must remain disabled");
-  assert(resultInteraction.capabilityCount === 3, "Result capability list is incomplete");
-  assert(resultInteraction.scrollWidth <= resultInteraction.viewport, "Result view horizontal overflow detected");
-  const resultScreenshot = await screenshot("result-desktop.png");
+  assert(interaction.output.includes("Finde nachvollziehbare interne Linkchancen") && interaction.output.includes("https://example.com") && interaction.output.includes("Kategorie-Seiten zuerst"), "Skill Generator did not update the generated skill");
+  assert(interaction.output.includes("Erfinde keine Rankings") && interaction.labels === 3, "Skill Generator is not simple or evidence bounded");
+  assert(interaction.hasCopy && interaction.hasDownload, "Skill Generator actions are incomplete");
+  assert(interaction.scrollWidth <= interaction.viewport, "Skill Generator horizontal overflow detected");
+  await runAxe("skill generator desktop");
+  const builderScreenshot = await screenshot("seo-agent-skill-desktop.png");
 
   await navigate("/benchmarks", desktopViewport);
   const benchmarkHub = JSON.parse(await evaluate(`JSON.stringify({
@@ -454,19 +424,19 @@ try {
   assert(costMobile.scrollWidth <= costMobile.viewport, "Mobile cost calculator horizontal overflow detected");
   await runAxe("cost calculator mobile");
   const costMobileScreenshot = await screenshot("cost-calculator-mobile.png");
-  await navigate("/task-spec-builder", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+  await navigate("/seo-agent-skill", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   const builderMobile = JSON.parse(await evaluate(`JSON.stringify({
     h1: document.querySelector('h1')?.textContent.trim(),
     scrollWidth: document.documentElement.scrollWidth,
     viewport: window.innerWidth,
-    modeVisible: Boolean(document.querySelector('.recipe-mode-bar')),
-    connectDisabled: document.querySelector('.connection-panel .button-disabled')?.disabled
+    fields: document.querySelectorAll('[data-skill-form] label').length,
+    output: document.querySelector('[data-skill-output]')?.textContent
   })`));
-  assert(builderMobile.h1 === "Baue einen prüfbaren SEO-Agent-Auftrag.", "Mobile builder h1 mismatch");
-  assert(builderMobile.scrollWidth <= builderMobile.viewport, "Mobile builder horizontal overflow detected");
-  assert(builderMobile.modeVisible && builderMobile.connectDisabled, "Mobile Recipe or MCP readiness state missing");
-  await runAxe("builder mobile");
-  const builderMobileScreenshot = await screenshot("builder-mobile.png");
+  assert(builderMobile.h1 === "Dein bester SEO Agent Skill. In 30 Sekunden.", "Mobile Skill Generator h1 mismatch");
+  assert(builderMobile.scrollWidth <= builderMobile.viewport, "Mobile Skill Generator horizontal overflow detected");
+  assert(builderMobile.fields === 3 && builderMobile.output.includes("SEO Agent Skill"), "Mobile Skill Generator is incomplete");
+  await runAxe("skill generator mobile");
+  const builderMobileScreenshot = await screenshot("seo-agent-skill-mobile.png");
 
   await navigate("/", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   const mobile = JSON.parse(await evaluate(`JSON.stringify({
@@ -492,7 +462,7 @@ try {
     scrollWidth: document.documentElement.scrollWidth,
     viewport: window.innerWidth
   })`));
-  assert(englishHome.lang === "en" && englishHome.h1 === "Give SEO agents a task you can review.", "English homepage language or h1 mismatch");
+  assert(englishHome.lang === "en" && englishHome.h1 === "The SEO Agent Skill you can use right away.", "English homepage language or h1 mismatch");
   assert(englishHome.alternateGerman === "https://seo-ai-agent.de/" && englishHome.alternateEnglish === "https://seo-ai-agent.de/en", "English homepage hreflang pair mismatch");
   assert(englishHome.languageSwitch === "/", "English homepage language switch is not path-paired");
   assert(englishHome.scrollWidth <= englishHome.viewport, "English homepage desktop overflow detected");
@@ -509,29 +479,28 @@ try {
     scrollWidth: document.documentElement.scrollWidth,
     viewport: window.innerWidth
   })`));
-  assert(englishWorkflows.h1 === "From an SEO job to a reviewable run.", "English workflows h1 mismatch");
+  assert(englishWorkflows.h1 === "From an SEO job to a reusable skill.", "English workflows h1 mismatch");
   assert(englishWorkflows.workflows === 4 && englishWorkflows.steps === 5, "English workflows count mismatch");
   assert(englishWorkflows.contextterDisclosure && englishWorkflows.connectClaim, "English workflow ownership or MCP boundary missing");
   assert(englishWorkflows.scrollWidth <= englishWorkflows.viewport, "English workflows desktop overflow detected");
   await runAxe("English workflows desktop");
   const englishWorkflowsScreenshot = await screenshot("workflows-en-desktop.png");
 
-  await navigate("/en/task-spec-builder", desktopViewport);
-  await command("Runtime.evaluate", { expression: `(() => { const select = document.querySelector('[data-task-builder-en] select[name="taskId"]'); select.value = 'prioritize-keyword-opportunities'; select.dispatchEvent(new Event('change', { bubbles: true })); const format = document.querySelector('[data-task-builder-en] [data-output-format]'); format.value = 'json'; format.dispatchEvent(new Event('change', { bubbles: true })); })()` });
+  await navigate("/en/seo-agent-skill?task=keyword-opportunities", desktopViewport);
+  await command("Runtime.evaluate", { expression: `(() => { const root = document.querySelector('[data-seo-skill-generator]'); const select = root.querySelector('[name="task"]'); select.value = 'content-opportunity'; select.dispatchEvent(new Event('change', { bubbles: true })); const domain = root.querySelector('[name="domain"]'); domain.value = 'https://example.com'; domain.dispatchEvent(new Event('input', { bubbles: true })); })()` });
   const englishBuilder = JSON.parse(await evaluate(`JSON.stringify({
     h1: document.querySelector('h1')?.textContent.trim(),
-    output: document.querySelector('[data-task-builder-en] [data-spec-output]')?.textContent,
-    validation: document.querySelector('[data-task-builder-en] [data-validation-total]')?.textContent.trim(),
-    connectDisabled: document.querySelector('[data-task-builder-en] .connection-panel .button-disabled')?.disabled,
+    output: document.querySelector('[data-skill-output]')?.textContent,
+    fields: document.querySelectorAll('[data-skill-form] label').length,
     scrollWidth: document.documentElement.scrollWidth,
     viewport: window.innerWidth
   })`));
-  assert(englishBuilder.h1 === "Build an SEO-agent task you can review.", "English Builder h1 mismatch");
-  assert(englishBuilder.output.includes('SEO-AI-002') && englishBuilder.output.includes('Prioritize'), "English Builder task selection did not update output");
-  assert(englishBuilder.validation === "9 / 9 fields" && englishBuilder.connectDisabled, "English Builder validation or disabled MCP state failed");
-  assert(englishBuilder.scrollWidth <= englishBuilder.viewport, "English Builder desktop overflow detected");
-  await runAxe("English builder desktop");
-  const englishBuilderScreenshot = await screenshot("builder-en-desktop.png");
+  assert(englishBuilder.h1 === "Your best SEO Agent Skill. In 30 seconds.", "English Skill Generator h1 mismatch");
+  assert(englishBuilder.output.includes('Find real content gaps') && englishBuilder.output.includes('https://example.com'), "English Skill Generator did not update output");
+  assert(englishBuilder.fields === 3 && englishBuilder.output.includes('Never invent rankings'), "English Skill Generator is not simple or evidence bounded");
+  assert(englishBuilder.scrollWidth <= englishBuilder.viewport, "English Skill Generator desktop overflow detected");
+  await runAxe("English skill generator desktop");
+  const englishBuilderScreenshot = await screenshot("seo-agent-skill-en-desktop.png");
 
   await navigate("/en", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   const englishMobile = JSON.parse(await evaluate(`JSON.stringify({
@@ -540,13 +509,13 @@ try {
     scrollWidth: document.documentElement.scrollWidth,
     viewport: window.innerWidth
   })`));
-  assert(englishMobile.h1 === "Give SEO agents a task you can review." && englishMobile.menu !== "none", "English mobile homepage or navigation failed");
+  assert(englishMobile.h1 === "The SEO Agent Skill you can use right away." && englishMobile.menu !== "none", "English mobile homepage or navigation failed");
   assert(englishMobile.scrollWidth <= englishMobile.viewport, "English homepage mobile overflow detected");
   await runAxe("English homepage mobile");
   const englishMobileScreenshot = await screenshot("homepage-en-mobile.png");
 
   assert(errors.length === 0, `Browser console/runtime errors: ${errors.join(" | ")}`);
-  console.log(JSON.stringify({ browserExecutable, desktop, performance, keyboard, capabilities, mcp, costCalculator, failureHandling, comparison, library, interaction, resultInteraction, benchmarkHub, runEvidence, linkRunEvidence, legal, benchmarkHubMobile, linkRunMobile, costMobile, builderMobile, mobile, englishHome, englishWorkflows, englishBuilder, englishMobile, axeResults, screenshots: [desktopScreenshot, capabilitiesScreenshot, mcpScreenshot, costScreenshot, failureScreenshot, comparisonScreenshot, libraryScreenshot, builderScreenshot, resultScreenshot, benchmarkHubScreenshot, runScreenshot, linkRunScreenshot, legalScreenshot, benchmarkHubMobileScreenshot, linkRunMobileScreenshot, costMobileScreenshot, builderMobileScreenshot, mobileScreenshot, englishHomeScreenshot, englishWorkflowsScreenshot, englishBuilderScreenshot, englishMobileScreenshot], errors }, null, 2));
+  console.log(JSON.stringify({ browserExecutable, desktop, performance, keyboard, capabilities, mcp, costCalculator, failureHandling, comparison, library, interaction, benchmarkHub, runEvidence, linkRunEvidence, legal, benchmarkHubMobile, linkRunMobile, costMobile, builderMobile, mobile, englishHome, englishWorkflows, englishBuilder, englishMobile, axeResults, screenshots: [desktopScreenshot, capabilitiesScreenshot, mcpScreenshot, costScreenshot, failureScreenshot, comparisonScreenshot, libraryScreenshot, builderScreenshot, benchmarkHubScreenshot, runScreenshot, linkRunScreenshot, legalScreenshot, benchmarkHubMobileScreenshot, linkRunMobileScreenshot, costMobileScreenshot, builderMobileScreenshot, mobileScreenshot, englishHomeScreenshot, englishWorkflowsScreenshot, englishBuilderScreenshot, englishMobileScreenshot], errors }, null, 2));
 } finally {
   if (socket?.readyState === WebSocket.OPEN) socket.close();
   browserProcess.kill();

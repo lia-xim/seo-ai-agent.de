@@ -25,16 +25,16 @@ export const englishPages: readonly EnglishPage[] = [
       { number: "02", title: "Interpret search performance", paragraphs: ["Connect clicks, impressions, CTR, and position to the property, page, query, date range, filters, timezone, and data freshness. An export is not the same as an authenticated live connection."] },
       { number: "03", title: "Prioritize keyword opportunities", paragraphs: ["Combine demand, intent, existing pages, technical suitability, effort, and uncertainty. Never invent missing volume or rankings."], links: [{ href: "/en/tasks/prioritize-keyword-opportunities", label: "Open matching task" }] },
       { number: "04", title: "Justify internal links", paragraphs: ["Show the read source passage, canonical target, proposed anchor, current link state, and why the link helps the user."], links: [{ href: "/en/tasks/justify-internal-links", label: "Open matching task" }] },
-      { number: "05", title: "Control access and actions", paragraphs: ["Separate read, propose, and write scopes. Log tool calls, cost, retries, questions, and final state. Stop when evidence or permission is missing."], links: [{ href: "/en/task-spec-builder", label: "Build a Task Recipe" }, { href: "https://seo-mcp.de/capabilities", label: "Review the shared-owner SEO MCP reference" }, { href: "https://contextter.com/", label: "View the shared-owner Contextter product context" }] }
+      { number: "05", title: "Control access and actions", paragraphs: ["Separate read, propose, and write scopes. Log tool calls, cost, retries, questions, and final state. Stop when evidence or permission is missing."], links: [{ href: "/en/seo-agent-skill", label: "Create an SEO Agent Skill" }, { href: "https://seo-mcp.de/capabilities", label: "Review the shared-owner SEO MCP reference" }, { href: "https://contextter.com/", label: "View the shared-owner Contextter product context" }] }
     ]
   },
   {
     slug: "mcp-for-seo-agents", title: "MCP for SEO agents", description: "How MCP can expose SEO data and tools while task scope, evidence, and human approval remain separate.", intro: "MCP makes data reachable. It does not make the result correct.", meta: "READ-ONLY FIRST / NO PUBLIC CONTEXTTER ENDPOINT CLAIM",
     sections: [
-      { number: "01", title: "Data access is not autonomy", paragraphs: ["A server can describe reachable data and tools. The Task Recipe still decides whether an agent may read, propose, or write."] },
+      { number: "01", title: "Data access is not autonomy", paragraphs: ["A server can describe reachable data and tools. The SEO Agent Skill still defines evidence rules and when the agent must stop."] },
       { number: "02", title: "Capability before provider", paragraphs: ["Name the required job first. Then verify whether a server exposes the right schema, authentication, freshness, cost, and evidence fields."] },
       { number: "03", title: "Read-only is the first useful milestone", paragraphs: ["A useful pilot can read one bounded project, return source-linked observations, and fail closed when tenant, scope, or freshness is unclear."] },
-      { number: "04", title: "Current connection state", paragraphs: ["The Contextter connect remains disabled. No public endpoint, OAuth flow, or live read capability is claimed on this website."], links: [{ href: "/en/task-spec-builder", label: "Build a recipe without a connection" }, { href: "https://seo-mcp.de/capabilities", label: "Open the shared-owner technical reference" }] }
+      { number: "04", title: "Current connection state", paragraphs: ["The skill works without a connection. No public Contextter endpoint, OAuth flow, or live read capability is claimed on this website."], links: [{ href: "/en/seo-agent-skill", label: "Create a skill without a connection" }, { href: "https://seo-mcp.de/capabilities", label: "Open the shared-owner technical reference" }] }
     ]
   },
   {
@@ -60,7 +60,7 @@ export const englishPages: readonly EnglishPage[] = [
       { number: "01", title: "Direct execution", paragraphs: ["Record model, tool, data-provider, and infrastructure spend using your own current terms. This site does not invent market prices."] },
       { number: "02", title: "Human review", paragraphs: ["Budget for setup, output review, adjudication, and corrections. A cheap model run can still create expensive review work."] },
       { number: "03", title: "Retries and reserve", paragraphs: ["Set a retry ceiling per step and a total reserve. A budget is a limit, not permission to call every available endpoint."] },
-      { number: "04", title: "Portable budget field", paragraphs: ["The English Task Recipe Builder stores time and cost limits locally and exports them with the task."], links: [{ href: "/en/task-spec-builder", label: "Open the local builder" }] }
+      { number: "04", title: "Portable task instruction", paragraphs: ["The SEO Agent Skill Generator stores inputs locally and exports a reusable prompt or SKILL.md."], links: [{ href: "/en/seo-agent-skill", label: "Open the skill generator" }] }
     ]
   },
   {
@@ -100,11 +100,11 @@ export const englishPages: readonly EnglishPage[] = [
     ]
   },
   {
-    slug: "privacy", title: "Privacy", description: "Privacy information for the static Vercel website and local Task Recipe Builder.", intro: "What this website processes — and what remains local.", meta: "GDPR / UPDATED 22 AUGUST 2026", legal: true,
+    slug: "privacy", title: "Privacy", description: "Privacy information for the static Vercel website and local SEO Agent Skill Generator.", intro: "What this website processes — and what remains local.", meta: "GDPR / UPDATED 29 AUGUST 2026", legal: true,
     sections: [
       { number: "01 / CONTROLLER", title: "Controller", paragraphs: ["Matthias Ramahi\nKempener Straße 44\n40699 Erkrath\nGermany", "Email: info@matthiasramahi.de"] },
       { number: "02 / HOSTING", title: "Static hosting through Vercel", paragraphs: ["Vercel processes technically necessary connection and log data when serving this static Astro site, including IP address, time, requested URL, browser and device information, referrer, security, and diagnostic data.", "The report-only Content Security Policy has no reporting endpoint. This website therefore does not collect or transmit CSP reports."], links: [{ href: "https://vercel.com/legal/privacy-notice", label: "Vercel privacy notice" }] },
-      { number: "03 / LOCAL TOOL", title: "Local Task Recipe Builder", paragraphs: ["Builder inputs are processed in browser memory only. They are not sent to seo-ai-agent.de, Contextter, Vercel Functions, an MCP server, or an external API. Clipboard access occurs only after an explicit copy action."] },
+      { number: "03 / LOCAL TOOL", title: "Local SEO Agent Skill Generator", paragraphs: ["Generator inputs are processed in browser memory only. They are not sent to seo-ai-agent.de, Contextter, Vercel Functions, an MCP server, or an external API. Clipboard access occurs only after an explicit copy action."] },
       { number: "04 / NOT USED", title: "No analytics, cookies, forms, or live APIs", bullets: ["No analytics, advertising, or tracking", "No cookies, Local Storage, or Session Storage", "No contact form, account, login, or upload", "Fonts are delivered with the website", "No live MCP, AI-model, or external API calls", "No embedded videos, maps, or social widgets"] },
       { number: "05 / EMAIL", title: "Contact by email", paragraphs: ["When you contact us by email, sender address, content, time, and voluntarily supplied details are processed to answer the request. Data is deleted when the request is complete unless legal retention or legitimate documentation duties apply."] },
       { number: "06 / RIGHTS", title: "Your privacy rights", paragraphs: ["Subject to legal requirements, you may have rights to access, correction, deletion, restriction, portability, and objection. You may also complain to a supervisory authority."], links: [{ href: "https://www.ldi.nrw.de/", label: "Data Protection Authority of North Rhine-Westphalia" }] }

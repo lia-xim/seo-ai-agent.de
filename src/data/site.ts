@@ -33,9 +33,9 @@ export const site: SiteConfig = {
   previewUrl: "https://seo-ai-agent-de.vercel.app",
   language: "de",
   locale: "de_DE",
-  title: "SEO AI Agent: Task Recipes mit prüfbarer Evidenz",
-  description: "Baue SEO-Agent-Recipes mit Datenbedarf, Zugriffen, Budget, Abbruchregeln und prüfbaren Ergebnissen.",
-  purpose: "Die Seite macht aus SEO-Fragen prüfbare Agentenaufträge und zeigt, welche realen Daten, Freigaben und Nachweise dafür benötigt werden.",
+  title: "SEO Agent Skill: Kostenlos erstellen und direkt nutzen",
+  description: "Erstelle einen evidenzbasierten SEO Agent Skill als Prompt oder SKILL.md – kostenlos und ohne Anmeldung.",
+  purpose: "Die Seite erzeugt mit drei einfachen Eingaben einen sofort nutzbaren SEO Agent Skill und belegt die zugrunde liegenden Arbeitsregeln mit reproduzierbaren Aufgaben.",
   status: "Indexierbarer Launch mit zwei datierten First-Party-Taskläufen. Der zweite Lauf ist wegen fehlender unabhängiger menschlicher Review ausdrücklich nur teilweise abgenommen. Es gibt keine Anbieter-Rangliste.",
   boundary: "Contextter darf keinen automatischen Siegerstatus erhalten. Jede spätere Bewertung braucht datierte Testevidenz und eine Eigentumsoffenlegung.",
   primaryProject: "Contextter (akzeptiert)",
@@ -44,16 +44,16 @@ export const site: SiteConfig = {
   reviewedAt: "2026-08-22",
   githubUrl: "https://github.com/lia-xim/seo-ai-agent.de",
   navigation: [
-    { href: "/task-spec-builder", label: "Task Recipe" },
+    { href: "/seo-agent-skill", label: "SEO Agent Skill" },
     { href: "/aufgaben", label: "Aufgaben" },
     { href: "/faehigkeiten", label: "Fähigkeiten" },
     { href: "/benchmarks", label: "Benchmarks" },
     { href: "/mcp-fuer-seo-agenten", label: "MCP" }
   ],
   pages: [
-    { path: "/", label: "Start", description: "Prüfbare SEO-Agent-Aufträge und ehrlicher Projektstatus.", indexableWhenLaunched: true },
+    { path: "/", label: "Start", description: "SEO Agent Skill erstellen und direkt verwenden.", indexableWhenLaunched: true },
+    { path: "/seo-agent-skill", label: "SEO Agent Skill Generator", description: "Einen evidenzbasierten SEO Agent Skill als Prompt oder SKILL.md erstellen.", indexableWhenLaunched: true },
     { path: "/workflows", label: "Workflows", description: "Vier begrenzte SEO-Agent-Workflows vom Auftrag bis zum prüfbaren Run.", indexableWhenLaunched: true },
-    { path: "/task-spec-builder", label: "Task Recipe Builder", description: "Einen begrenzten Auftrag mit Datenbedarf als Markdown oder JSON erstellen.", indexableWhenLaunched: true },
     { path: "/aufgaben", label: "Aufgaben", description: "Versionierte SEO-Aufgaben mit Evidenz- und Abnahmegrenzen.", indexableWhenLaunched: true },
     { path: "/aufgaben/technische-audit-triage", label: "Technische Audit-Triage", description: "Technische Befunde für eine menschliche Prüfung priorisieren.", indexableWhenLaunched: true },
     { path: "/aufgaben/keyword-chancen-priorisieren", label: "Keyword-Chancen priorisieren", description: "Keyword-Chancen anhand offengelegter Daten und Regeln ordnen.", indexableWhenLaunched: true },
@@ -69,10 +69,10 @@ export const site: SiteConfig = {
     { path: "/methodik-und-konflikte", label: "Methodik und Konflikte", description: "Rubrik, Eigentum, Korrekturen und Grenzen prüfen.", indexableWhenLaunched: true },
     { path: "/quellen-und-rechte", label: "Quellen und Rechte", description: "Quellenregister, Drittanbieterrechte und Evidenzgrenzen.", indexableWhenLaunched: true },
     { path: "/impressum", label: "Impressum", description: "Anbieterkennzeichnung und Kontakt für seo-ai-agent.de.", indexableWhenLaunched: true },
-    { path: "/datenschutz", label: "Datenschutz", description: "Datenschutzinformationen zur statischen Vercel-Website, zum lokalen Task Recipe Builder und zum lokalen Kostenrechner.", indexableWhenLaunched: true },
-    { path: "/en", label: "English home", description: "Reviewable SEO-agent tasks and visible evidence.", indexableWhenLaunched: true },
+    { path: "/datenschutz", label: "Datenschutz", description: "Datenschutzinformationen zur statischen Vercel-Website, zum lokalen SEO Agent Skill Generator und zum lokalen Kostenrechner.", indexableWhenLaunched: true },
+    { path: "/en", label: "English home", description: "Create and use an evidence-led SEO Agent Skill.", indexableWhenLaunched: true },
+    { path: "/en/seo-agent-skill", label: "SEO Agent Skill Generator", description: "Create an evidence-led SEO Agent Skill as a prompt or SKILL.md.", indexableWhenLaunched: true },
     { path: "/en/workflows", label: "Workflows", description: "Four bounded SEO-agent workflows.", indexableWhenLaunched: true },
-    { path: "/en/task-spec-builder", label: "Task Recipe Builder", description: "Build a portable reviewable SEO-agent task.", indexableWhenLaunched: true },
     { path: "/en/tasks", label: "Tasks", description: "Versioned SEO-agent tasks.", indexableWhenLaunched: true },
     { path: "/en/tasks/technical-audit-triage", label: "Technical audit triage", description: "Prioritize technical findings with evidence.", indexableWhenLaunched: true },
     { path: "/en/tasks/prioritize-keyword-opportunities", label: "Prioritize keyword opportunities", description: "Prioritize opportunities without invented data.", indexableWhenLaunched: true },
@@ -88,6 +88,6 @@ export const site: SiteConfig = {
     { path: "/en/methodology", label: "Methodology", description: "Evidence, review, cost, and conflict rules.", indexableWhenLaunched: true },
     { path: "/en/sources-and-rights", label: "Sources and rights", description: "Source register and rights boundaries.", indexableWhenLaunched: true },
     { path: "/en/legal-notice", label: "Legal notice", description: "Provider identification and contact.", indexableWhenLaunched: true },
-    { path: "/en/privacy", label: "Privacy", description: "Privacy information for the static site and local builder.", indexableWhenLaunched: true }
+    { path: "/en/privacy", label: "Privacy", description: "Privacy information for the static site and local skill generator.", indexableWhenLaunched: true }
   ]
 };

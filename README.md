@@ -1,20 +1,20 @@
 # seo-ai-agent.de
 
-Public source repository for seo-ai-agent.de: a German Task Recipe and evidence workspace for making bounded SEO-agent work executable and reviewable without generic winner claims.
+Public source repository for seo-ai-agent.de: a bilingual SEO Agent Skill Generator backed by bounded tasks and reproducible evidence without generic winner claims.
 
-The website is now bilingual. German remains the default at `/`; English equivalents live under `/en` with explicit hreflang pairs. The product role is deliberately simple: choose a workflow, freeze a Task Recipe, check required capabilities, connect real data only after verification, and review a versioned run artifact.
+The website is bilingual. German remains the default at `/`; English equivalents live under `/en` with explicit hreflang pairs. The product role is deliberately simple: choose one SEO job, add a website, and copy an evidence-led prompt or download `SKILL.md`.
 
 ## Current state
 
 The owned custom domain is an indexable launch. Matthias Ramahi is the named operator and Benchmark Owner. Two real First-Party task runs are published: `SEO-AI-001-2026-08-22-R1` contains the frozen technical launch audit; `SEO-AI-003-2026-08-22-R1` contains ten HTML-validated internal-link candidates and remains explicitly `partial` because no independent human reviewer confirmed anchor, placement, or editorial value.
 
-There is no provider ranking and no independent human review. Authenticated GSC status is `NOT PROVEN`, and no provider/comparison budget is fixed. The site does not claim an active MCP connection. The Builder's result example remains explicitly synthetic.
+There is no provider ranking and no independent human review. Authenticated GSC status is `NOT PROVEN`, and no provider/comparison budget is fixed. The site does not claim an active MCP connection. The generated skill explicitly forbids invented data and unapproved writes.
 
 Canonical HTML pages are indexable and generated automatically into `sitemap-index.xml` through `@astrojs/sitemap`. `robots.txt` allows crawling and references the sitemap index. The 404 page remains noindex and is excluded from the sitemap. Vercel permanently redirects both the www root and www subpaths to the path-equivalent apex URL.
 
 ## Purpose and boundary
 
-Die Seite macht aus SEO-Fragen klare Task Recipes mit Freigaben, Budgets, Datenbedarf, erwarteten Ergebnissen und nachvollziehbaren Testkriterien.
+Die Seite erzeugt aus drei einfachen Eingaben einen sofort nutzbaren SEO Agent Skill mit Quellenpflicht, Read-only-Grenzen und klaren Stop-Regeln.
 
 Contextter darf keinen automatischen Siegerstatus erhalten. Jede Bewertung braucht datierte Testevidenz und eine Eigentumsoffenlegung. Contextter is disclosed as the accepted primary portfolio relationship and as a possible future test participant, not as an independent source. Contextter and seo-mcp.de are linked only inside relevant user flows with adjacent common-ownership disclosure; there is no cross-domain footer network.
 
@@ -25,10 +25,10 @@ seo-ai-agent.de is a newly registered domain. It is not an expired-domain rebuil
 ## Implemented surfaces
 
 - `/` — purpose, task workflow, measurement dimensions, and launch status
-- `/task-spec-builder` — local JSON/Markdown Task Recipe Builder with disabled MCP readiness and an explicitly synthetic example
+- `/seo-agent-skill` — local three-input SEO Agent Skill Generator with copy and `SKILL.md` download
 - `/workflows` — four task-first paths from a real SEO job to a reviewable run
 - `/en` — English product home with equivalent workflows, tasks, capabilities, runs, method, rights, and legal information
-- `/en/task-spec-builder` — English local JSON/Markdown Task Recipe Builder with the same disabled MCP boundary
+- `/en/seo-agent-skill` — English localized SEO Agent Skill Generator
 - `/aufgaben` plus three versioned task definitions
 - `/benchmarks` — published runs and transparent review state
 - `/benchmarks/2026-08-22-technische-audit-triage` — frozen technical First-Party task run
@@ -62,7 +62,7 @@ The second harness replays the frozen, HTTP-derived page fixture from the histor
 
 The UI does not connect to a live MCP server. It never asks for raw tokens, never performs paid work, and keeps the connect action disabled until OAuth, scopes, and a read capability are verified in production.
 
-The site is statically hosted on Vercel. It has no analytics, cookies, consent manager, contact form, external font request, local or session storage, advertising, or embedded third-party media. Builder and cost-calculator inputs stay in browser memory and are not transmitted. Clipboard access occurs only after an explicit copy action.
+The site is statically hosted on Vercel. It has no analytics, cookies, consent manager, contact form, external font request, local or session storage, advertising, or embedded third-party media. Skill-generator and cost-calculator inputs stay in browser memory and are not transmitted. Clipboard access occurs only after an explicit copy action.
 
 ## Local development and verification
 

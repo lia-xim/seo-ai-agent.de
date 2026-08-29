@@ -1,80 +1,14 @@
 ---
-import ExampleTaskSheet from "../../components/ExampleTaskSheet.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { tasksEn } from "../../data/tasks";
-
-const dimensions = [
-  ["Evidence", "Sources and artifacts instead of unsupported claims"],
-  ["Permissions", "Only agreed data, tools, and actions"],
-  ["Repeatability", "The same inputs, versions, and rules"],
-  ["Cost", "Direct spend, review, retries, and reserve"],
-  ["Time", "Budget, runtime, waiting, and manual work"],
-  ["Failure handling", "Stops, questions, and recovery"]
-];
 ---
 
-<BaseLayout
-  lang="en"
-  title="SEO AI Agent: Task recipes with reviewable evidence"
-  description="Turn an SEO job into a bounded agent run with explicit data, permissions, cost, stop rules, and evidence."
-  canonicalPath="/en"
-  bodyClass="home-page"
->
-  <section class="hero">
-    <div class="hero-copy" data-reveal>
-      <h1>Give SEO agents a task you can review.</h1>
-      <p>Define the job, data access, budget, and stop rules. Connect real SEO data later through MCP and keep every result tied to visible evidence.</p>
-      <div class="hero-actions">
-        <a class="button button-primary" href="/en/task-spec-builder">Build a Task Recipe <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg></a>
-        <a class="text-link" href="/en/workflows">Explore workflows</a>
-      </div>
-    </div>
-    <ExampleTaskSheet lang="en" />
+<BaseLayout lang="en" title="SEO Agent Skill: Create and use it instantly" description="Create an evidence-led SEO Agent Skill as a prompt or SKILL.md. Three inputs, ready to copy, free, and without sign-up." canonicalPath="/en" bodyClass="home-page skill-home">
+  <section class="hero skill-home-hero">
+    <div class="hero-copy" data-reveal><h1>The SEO Agent Skill you can use right away.</h1><p>Choose an SEO task, add your website, and copy a clear evidence-led skill. No complicated workflow. No setup.</p><div class="hero-actions"><a class="button button-primary" href="/en/seo-agent-skill">Create SEO Agent Skill <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg></a><a class="text-link" href="/en/tasks">View example tasks</a></div></div>
+    <article class="skill-hero-preview" data-reveal aria-label="SEO Agent Skill preview"><header><span>SKILL.md</span><strong><i aria-hidden="true"></i>Ready to use</strong></header><div><p># SEO Agent Skill</p><h2>Run a technical SEO audit</h2><ol><li>Inspect available data first</li><li>Never invent rankings or metrics</li><li>Support every finding with a URL</li><li>Propose changes until approved</li></ol></div><footer><span>01 Choose task</span><span>02 Add website</span><b>03 Copy skill</b></footer></article>
   </section>
-
-  <section class="home-section task-overview" aria-labelledby="task-overview-title">
-    <header class="section-heading" data-reveal>
-      <div><h2 id="task-overview-title">Three recipes. One reviewable contract.</h2><p>Two first-party runs have been executed. There is no public provider ranking and no independent human reviewer.</p></div>
-      <a class="text-link" href="/en/tasks">View all tasks</a>
-    </header>
-    <div class="home-task-table" data-reveal>
-      <div class="task-table-head" aria-hidden="true"><span>ID</span><span>Task</span><span>Evidence</span><span>Access</span><span>Time</span><span>Budget</span><span>Output</span><span></span></div>
-      {tasksEn.map((task) => (
-        <a class="task-table-row" href={`/en/tasks/${task.slug}`} data-reveal-item>
-          <span class="task-id">{task.id}</span><strong>{task.title}</strong><span class="evidence-state"><i aria-hidden="true"></i> defined</span><span>Read-only</span><span>{task.timeLimitMinutes} min</span><span>€{task.costLimitEuro.toFixed(2)}</span><span>{task.id === "SEO-AI-001" ? "5 prioritized findings" : task.id === "SEO-AI-002" ? "10 prioritized opportunities" : "10 link suggestions"}</span><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg>
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <section class="home-section measurement-section" aria-labelledby="measurement-title">
-    <header class="section-heading" data-reveal><div><h2 id="measurement-title">What a credible run must show.</h2><p>The output matters. So does the path that produced it.</p></div></header>
-    <div class="measurement-ledger">
-      {dimensions.map(([name, description], index) => <article data-reveal-item><span>{String(index + 1).padStart(2, "0")}</span><h3>{name}</h3><p>{description}</p></article>)}
-    </div>
-    <p class="ledger-note" data-reveal><span aria-hidden="true"></span> A score cannot replace a run log. Without frozen inputs, versions, cost, and failures, results are not comparable.</p>
-  </section>
-
-  <section class="home-section control-cluster" aria-labelledby="path-title">
-    <header class="section-heading" data-reveal><div><h2 id="path-title">Plan first. Connect second. Review every result.</h2><p>The site stays useful without a live endpoint. A verified read-only Contextter connection can later turn the same recipe into an evidence-backed run.</p></div></header>
-    <div class="control-cards">
-      <article data-reveal-item><span>01 / WORKFLOWS</span><h3>Start with a real SEO job.</h3><p>Choose audit triage, internal-link evidence, keyword prioritization, or an AI-search evidence task.</p><a class="button button-secondary" href="/en/workflows">Choose a workflow</a></article>
-      <article data-reveal-item><span>02 / TASK RECIPE</span><h3>Freeze the execution contract.</h3><p>Make data needs, permissions, cost, expected output, and failure behavior explicit before the run.</p><a class="button button-secondary" href="/en/task-spec-builder">Build the contract</a></article>
-    </div>
-  </section>
-
-  <section class="home-section benchmark-wait" aria-labelledby="run-title">
-    <div class="benchmark-gates" data-reveal><header class="section-heading"><div><h2 id="run-title">Two first-party runs are public.</h2><p>The technical run is reproducible. The internal-link run remains partially accepted because independent human review is missing.</p></div></header><ul><li>Benchmark owner: Matthias Ramahi</li><li>SEO-AI-001 with 14 raw HTTP observations</li><li>SEO-AI-003 with 10 validated link candidates</li><li>No provider season and no ranking</li></ul></div>
-    <aside class="disclosure-box" data-reveal><span>Disclosed relationship</span><p>SEO AI Agent and Contextter are operated by Matthias Ramahi. Contextter is not an independent recommendation and receives no automatic winner status.</p><a class="text-link" href="/en/runs">Review both runs</a></aside>
-  </section>
-
-  <section class="relationship-section home-relationships" aria-labelledby="ecosystem-title" data-reveal>
-    <header><span class="eyebrow">Contextual handoff</span><h2 id="ecosystem-title">The task lives here. Data and implementation stay separate.</h2><p>These links follow the user workflow. They are not independent endorsements or a portfolio-wide link network.</p></header>
-    <div class="relationship-cards">
-      <article><h3>Contextter: possible first-party data context</h3><p><strong>Ownership disclosure:</strong> Contextter and SEO AI Agent share the same operator. No public Contextter MCP endpoint is claimed here.</p><a class="button button-secondary" href="https://contextter.com/">View Contextter</a></article>
-      <article><h3>SEO MCP: capability reference</h3><p><strong>Ownership disclosure:</strong> seo-mcp.de belongs to the same portfolio. It is the separate technical reference, not independent proof.</p><a class="button button-secondary" href="https://seo-mcp.de/capabilities">Review capabilities</a></article>
-    </div>
-  </section>
-
-  <section class="closing-cta" data-reveal><div><h2>From a clear task to an evidence-backed run.</h2><p>Export a portable recipe now. Connect only when OAuth, scopes, and a real read capability have been verified.</p></div><a class="button button-primary" href="/en/task-spec-builder">Build a Task Recipe <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg></a></section>
+  <section class="home-section skill-home-steps" aria-labelledby="simple-title"><header class="section-heading"><div><h2 id="simple-title">It should be this simple.</h2><p>The generator personalizes one strong SEO-agent skill. It does not assemble an arbitrary stack of modules.</p></div></header><ol><li><span>01</span><h3>Choose a task</h3><p>Technical SEO, keywords, internal links, or content opportunities.</p></li><li><span>02</span><h3>Add the website</h3><p>Add an optional short focus. Nothing else is required.</p></li><li><span>03</span><h3>Use the skill</h3><p>Copy it as a prompt or download <code>SKILL.md</code>.</p></li></ol></section>
+  <section class="home-section skill-tool-flow" aria-labelledby="tool-flow-title"><header class="section-heading"><div><h2 id="tool-flow-title">The clear role between the other tools.</h2><p>Other tools provide inputs. SEO AI Agent turns them into a reusable operating instruction.</p></div></header><div><a href="https://ai-fanout.com/"><span>INPUT</span><h3>AI Fanout</h3><p>Discover topics and subquestions.</p></a><a href="https://seo-fanout.com/"><span>INPUT</span><h3>SEO Fanout</h3><p>Prioritize SEO actions.</p></a><a href="https://analysespider.com/"><span>INPUT</span><h3>AnalyseSpider</h3><p>Collect technical findings.</p></a><a href="/en/seo-agent-skill"><span>OUTPUT</span><h3>SEO Agent Skill</h3><p>Make the task immediately executable.</p></a></div><p><strong>Ownership disclosure:</strong> The named websites are operated by Matthias Ramahi in the Contextter portfolio. The links follow a real workflow and are not independent recommendations.</p></section>
+  <section class="home-section benchmark-wait" aria-labelledby="proof-title"><div class="benchmark-gates"><header class="section-heading"><div><h2 id="proof-title">A good skill needs clear boundaries.</h2><p>The generated skill therefore requires sources, uncertainty, read-only work, and a stop when evidence is missing.</p></div></header><ul><li>No invented rankings or search volume</li><li>A concrete URL or source for every finding</li><li>Changes only after approval</li><li>Open data gaps remain visible</li></ul></div><aside class="disclosure-box"><span>Real evidence</span><p>Two first-party tasks were executed with frozen inputs and visible limitations. There is no public provider ranking.</p><a class="text-link" href="/en/runs">Review the runs</a></aside></section>
+  <section class="closing-cta"><div><h2>Build your SEO Agent Skill now.</h2><p>Three inputs. One clear skill. Copy it and use it in your agent.</p></div><a class="button button-primary" href="/en/seo-agent-skill">Create it free <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg></a></section>
 </BaseLayout>

@@ -62,7 +62,7 @@ const taskMeta = task.status === "draft_spec"
         <div><dt>Kostenlimit</dt><dd>{task.costLimitEuro.toFixed(2).replace(".", ",")} EUR</dd></div>
         <div><dt>Abnahme</dt><dd>Durch eine Person</dd></div>
       </dl>
-      <a class="button button-primary" href={`/task-spec-builder?task=${task.slug}`}>Im Builder öffnen</a>
+      <a class="button button-primary" href={`/seo-agent-skill?task=${task.slug}`}>Als SEO Agent Skill verwenden</a>
     </aside>
   </div>
 
@@ -85,7 +85,7 @@ const taskMeta = task.status === "draft_spec"
   </section>
 
   <section class="statement-band">
-    <p>{task.status === "executed_once" ? "Zu dieser Spezifikation ist ein datierter First-Party-Lauf veröffentlicht. Prüfe Ergebnisstatus und Grenzen, bevor du die Recipe übernimmst." : "Diese Spezifikation ist noch nicht als realer Lauf veröffentlicht. Methodik, Budget und Failure Handling bleiben vor einer Ausführung Pflicht."}</p>
+    <p>{task.status === "executed_once" ? "Zu dieser Spezifikation ist ein datierter First-Party-Lauf veröffentlicht. Prüfe Ergebnisstatus und Grenzen, bevor du sie in einen Skill übernimmst." : "Diese Spezifikation ist noch nicht als realer Lauf veröffentlicht. Methodik, Budget und Failure Handling bleiben vor einer Ausführung Pflicht."}</p>
     <div class="inline-links">
       {runHref && <a class="text-link" href={runHref}>Ausgeführten Lauf prüfen</a>}
       <a class="text-link" href="/methodik-und-konflikte">Evidenz- und Bewertungsmethodik</a>

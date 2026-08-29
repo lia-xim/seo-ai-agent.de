@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SeoAgentSkillGenerator from "../../components/SeoAgentSkillGenerator.astro";
+---
+
+<BaseLayout
+  lang="en"
+  title="Best SEO Agent Skill: Free Generator"
+  description="Create a ready-to-use SEO Agent Skill as a prompt or SKILL.md — free, local, and without sign-up."
+  canonicalPath="/en/seo-agent-skill"
+  bodyClass="skill-page"
+  structuredData={{ "@context": "https://schema.org", "@type": "SoftwareApplication", name: "SEO Agent Skill Generator", url: "https://seo-ai-agent.de/en/seo-agent-skill", applicationCategory: "BusinessApplication", operatingSystem: "Web", inLanguage: "en", description: "A local generator for an evidence-led SEO Agent Skill.", offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" } }}
+>
+  <section class="skill-hero">
+    <div><h1>Your best SEO Agent Skill. In 30 seconds.</h1><p>Choose the task, add the website, and copy the skill. Use it as a clear SEO prompt or download a ready-made <code>SKILL.md</code>.</p></div>
+    <p>No sign-up · no API · free</p>
+  </section>
+  <SeoAgentSkillGenerator lang="en" />
+  <section class="skill-usage" aria-labelledby="skill-usage-title">
+    <div><h2 id="skill-usage-title">One skill, two simple options.</h2><p>Paste the content directly into your agent or save it as <code>SKILL.md</code> for a compatible skill system.</p></div>
+    <ol><li><span>01</span><strong>Use as a prompt</strong><p>Copy everything, paste it into the agent, and start.</p></li><li><span>02</span><strong>Use as a skill file</strong><p>Download <code>SKILL.md</code> and place it in your existing skills directory.</p></li></ol>
+  </section>
+  <section class="skill-ecosystem" aria-labelledby="skill-inputs-title">
+    <header><h2 id="skill-inputs-title">Fits directly into your SEO tool flow.</h2><p>Each link serves a concrete step. All named websites share the same operator and are not independent recommendations.</p></header>
+    <div>
+      <a href="https://ai-fanout.com/"><strong>AI Fanout</strong><span>Turn topic paths into a reusable content skill.</span></a>
+      <a href="https://seo-fanout.com/"><strong>SEO Fanout</strong><span>Turn SEO decisions into a reusable skill.</span></a>
+      <a href="https://analysespider.com/"><strong>AnalyseSpider</strong><span>Review technical findings with the audit skill.</span></a>
+      <a href="https://seo-mcp.de/capabilities"><strong>SEO MCP</strong><span>Understand required data capabilities before connecting.</span></a>
+    </div>
+  </section>
+</BaseLayout>

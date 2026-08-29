@@ -39,8 +39,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           <div><h3>Erwartetes Ergebnis</h3><p>{task.expectedOutput}</p></div>
           <div><h3>Abbruchregel</h3><p>{task.stopRule}</p></div>
           <footer>
-            <a class="button button-primary button-compact" href={`/task-spec-builder?task=${task.slug}`}>
-              Im Builder öffnen
+            <a class="button button-primary button-compact" href={`/seo-agent-skill?task=${task.slug}`}>
+              Skill erstellen
               <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg>
             </a>
             <a class="button button-secondary button-compact" href={`/aufgaben/${task.slug}`}>Aufgabe ansehen</a>

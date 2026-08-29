@@ -5,15 +5,15 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 const workflows = [
   { id: "01", title: "Technical audit triage", input: "Crawl, indexing, canonicals, and redirects", output: "Five prioritized findings with URL evidence", task: "/en/tasks/technical-audit-triage", state: "R1 executed" },
   { id: "02", title: "Justify internal links", input: "Source passage, target page, anchor, and link state", output: "Ten reviewable link candidates", task: "/en/tasks/justify-internal-links", state: "R1 partially accepted" },
-  { id: "03", title: "Prioritize keyword opportunities", input: "Keyword, page, and search-performance data", output: "Ten supported opportunities with conflict risk", task: "/en/tasks/prioritize-keyword-opportunities", state: "Recipe ready" },
-  { id: "04", title: "Review AI-search evidence", input: "Provider-exposed web searches and sources", output: "A bounded analysis task without invented traces", task: "/en/task-spec-builder?task=prioritize-keyword-opportunities", state: "Prepare recipe" }
+  { id: "03", title: "Prioritize keyword opportunities", input: "Keyword, page, and search-performance data", output: "Ten supported opportunities with conflict risk", task: "/en/tasks/prioritize-keyword-opportunities", state: "Skill ready" },
+  { id: "04", title: "Review AI-search evidence", input: "Provider-exposed web searches and sources", output: "A bounded analysis task without invented traces", task: "/en/seo-agent-skill?task=content-opportunity", state: "Create skill" }
 ];
 ---
 
 <BaseLayout lang="en" title="SEO agent workflows" description="Four bounded SEO-agent workflows: define the task, check capabilities, connect real data later, and keep results reviewable." canonicalPath="/en/workflows" pageType="CollectionPage">
-  <PageIntro section="00" title="From an SEO job to a reviewable run." description="Choose the user job first. A Task Recipe freezes scope, data, budget, and stop rules. A real data connection comes later." meta="4 WORKFLOWS / READ-FIRST / MCP DISABLED" />
+  <PageIntro section="00" title="From an SEO job to a reusable skill." description="Choose the user job first. The SEO Agent Skill turns it into a clear instruction with evidence and stop rules." meta="4 WORKFLOWS / READ-FIRST / MCP OPTIONAL" />
   <section class="workflow-rail" aria-labelledby="workflow-title">
-    <header class="section-heading" data-reveal><div><h2 id="workflow-title">One simple path for four real SEO jobs.</h2><p>Every workflow remains useful without Contextter. A later connection does not replace task boundaries or human review.</p></div><a class="text-link" href="/en/task-spec-builder">Build your own recipe</a></header>
+    <header class="section-heading" data-reveal><div><h2 id="workflow-title">One simple path for four real SEO jobs.</h2><p>Every workflow remains useful without Contextter. A later connection does not replace task boundaries or human review.</p></div><a class="text-link" href="/en/seo-agent-skill">Create your SEO Agent Skill</a></header>
     <div class="workflow-list">
       {workflows.map((workflow) => <article data-reveal-item><span>{workflow.id}</span><div><h3>{workflow.title}</h3><p>{workflow.input}</p></div><div><small>Expected output</small><p>{workflow.output}</p></div><strong>{workflow.state}</strong><a class="text-link" href={workflow.task}>Open workflow</a></article>)}
     </div>
@@ -21,7 +21,7 @@ const workflows = [
   <section class="execution-path" aria-labelledby="execution-title" data-reveal>
     <header><h2 id="execution-title">Task → Access → Run → Decision</h2><p>MCP is the transport. The bounded task and its evidence remain the product.</p></header>
     <ol>
-      <li><span>01</span><strong>Task Recipe</strong><p>Define goal, scope, budget, and stop rules.</p></li>
+      <li><span>01</span><strong>SEO Agent Skill</strong><p>Define the task, website, evidence rules, and stop conditions.</p></li>
       <li><span>02</span><strong>Capability check</strong><p>Review data, scopes, and required evidence.</p></li>
       <li><span>03</span><strong>Read-only connect</strong><p>Only after verified OAuth and a real capability.</p></li>
       <li><span>04</span><strong>Evidence run</strong><p>Log observations, cost, failures, and limits.</p></li>

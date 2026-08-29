@@ -6,7 +6,7 @@ const dist = resolve(root, "dist");
 const domain = "seo-ai-agent.de";
 const origin = `https://${domain}`;
 const pageRoutes = [
-  "/", "/workflows", "/task-spec-builder", "/aufgaben",
+  "/", "/workflows", "/seo-agent-skill", "/aufgaben",
   "/aufgaben/technische-audit-triage", "/aufgaben/keyword-chancen-priorisieren",
   "/aufgaben/interne-links-begruenden", "/benchmarks",
   "/benchmarks/2026-08-22-technische-audit-triage",
@@ -14,7 +14,7 @@ const pageRoutes = [
   "/faehigkeiten", "/mcp-fuer-seo-agenten", "/seo-agent-kosten",
   "/fehlerbehandlung-seo-agenten", "/methodik-und-konflikte",
   "/quellen-und-rechte", "/impressum", "/datenschutz",
-  "/en", "/en/workflows", "/en/task-spec-builder", "/en/tasks",
+  "/en", "/en/workflows", "/en/seo-agent-skill", "/en/tasks",
   "/en/tasks/technical-audit-triage", "/en/tasks/prioritize-keyword-opportunities",
   "/en/tasks/justify-internal-links", "/en/runs",
   "/en/runs/2026-08-22-technical-audit-triage",
@@ -27,7 +27,7 @@ const collectionRoutes = new Set(["/workflows", "/aufgaben", "/benchmarks", "/fa
 const runRoute = "/benchmarks/2026-08-22-technische-audit-triage";
 const linkRunRoute = "/benchmarks/2026-08-22-interne-link-evidenz";
 const languagePairs = [
-  ["/", "/en"], ["/workflows", "/en/workflows"], ["/task-spec-builder", "/en/task-spec-builder"], ["/aufgaben", "/en/tasks"],
+  ["/", "/en"], ["/workflows", "/en/workflows"], ["/seo-agent-skill", "/en/seo-agent-skill"], ["/aufgaben", "/en/tasks"],
   ["/aufgaben/technische-audit-triage", "/en/tasks/technical-audit-triage"], ["/aufgaben/keyword-chancen-priorisieren", "/en/tasks/prioritize-keyword-opportunities"], ["/aufgaben/interne-links-begruenden", "/en/tasks/justify-internal-links"],
   ["/benchmarks", "/en/runs"], [runRoute, "/en/runs/2026-08-22-technical-audit-triage"], [linkRunRoute, "/en/runs/2026-08-22-internal-link-evidence"],
   ["/faehigkeiten", "/en/capabilities"], ["/mcp-fuer-seo-agenten", "/en/mcp-for-seo-agents"], ["/agenten-vergleich", "/en/agent-comparison"], ["/seo-agent-kosten", "/en/seo-agent-costs"], ["/fehlerbehandlung-seo-agenten", "/en/failure-handling"],
@@ -112,14 +112,13 @@ check(allSchemas.filter((node) => node["@type"] === "WebSite").length === 1, "sc
 check(allSchemas.filter((node) => node["@type"] === "Dataset").length === 2, "schema: Dataset must exist only for the two real reproducible runs");
 check((schemaByRoute.get(runRoute) ?? []).some((node) => node["@type"] === "Dataset" && node.creator?.name === "Matthias Ramahi"), "schema: technical run Dataset or creator missing");
 check((schemaByRoute.get(linkRunRoute) ?? []).some((node) => node["@type"] === "Dataset" && node.creator?.name === "Matthias Ramahi"), "schema: link run Dataset or creator missing");
-check(allSchemas.filter((node) => node["@type"] === "SoftwareApplication").length === 2, "schema: SoftwareApplication must exist only for the two localized Builder pages");
-check((schemaByRoute.get("/task-spec-builder") ?? []).some((node) => node["@type"] === "SoftwareApplication"), "schema: Builder SoftwareApplication missing");
-check((schemaByRoute.get("/en/task-spec-builder") ?? []).some((node) => node["@type"] === "SoftwareApplication"), "schema: English Builder SoftwareApplication missing");
+check(allSchemas.filter((node) => node["@type"] === "SoftwareApplication").length === 2, "schema: SoftwareApplication must exist only for the two localized Skill Generator pages");
+check((schemaByRoute.get("/seo-agent-skill") ?? []).some((node) => node["@type"] === "SoftwareApplication"), "schema: German Skill Generator SoftwareApplication missing");
+check((schemaByRoute.get("/en/seo-agent-skill") ?? []).some((node) => node["@type"] === "SoftwareApplication"), "schema: English Skill Generator SoftwareApplication missing");
 
-const home = pageHtml.get("/");
 const capabilities = pageHtml.get("/faehigkeiten");
 const mcp = pageHtml.get("/mcp-fuer-seo-agenten");
-for (const [route, html] of [["/", home], ["/faehigkeiten", capabilities], ["/mcp-fuer-seo-agenten", mcp]]) {
+for (const [route, html] of [["/faehigkeiten", capabilities], ["/mcp-fuer-seo-agenten", mcp]]) {
   check(html.includes('href="https://contextter.com/"'), `${route}: Contextter link missing`);
   check(html.includes('href="https://seo-mcp.de/capabilities"'), `${route}: seo-mcp capability link missing`);
   check(html.includes("Eigentumshinweis:"), `${route}: adjacent common-ownership disclosure missing`);
@@ -128,22 +127,17 @@ for (const [route, html] of [["/", home], ["/faehigkeiten", capabilities], ["/mc
 const footerSource = await readFile(resolve(root, "src", "components", "SiteFooter.astro"), "utf8");
 check(!footerSource.includes("contextter.com") && !footerSource.includes("seo-mcp.de"), "footer: cross-domain portfolio network link found");
 
-const builder = pageHtml.get("/task-spec-builder");
-check(builder.includes('class="spec-form"'), "builder: form is missing");
-check(builder.includes("data-download-json"), "builder: JSON download action is missing");
-check(builder.includes("data-copy-markdown"), "builder: Markdown copy action is missing");
-check(builder.includes("data-show-example"), "builder: synthetic result action is missing");
-check(builder.includes("Beispielergebnis · keine Live-Daten"), "builder: synthetic result disclosure is missing");
-check(builder.includes("MCP-Pilot in Vorbereitung"), "builder: honest MCP readiness state is missing");
-check(builder.includes("disabled>MCP-Pilot in Vorbereitung"), "builder: MCP connect must remain disabled");
-check(builder.includes("disabled>Contextter MCP verbinden – bald verfügbar"), "builder: result connect must remain disabled");
-check(builder.includes('href="/faehigkeiten"') && builder.includes('href="/mcp-fuer-seo-agenten"'), "builder: informational cluster links missing");
-check(builder.includes('href="https://seo-mcp.de/capabilities"') && builder.includes('href="https://contextter.com/"'), "builder: external informational links missing");
-check((builder.match(/<label\b/g) ?? []).length >= 8, "builder: too few explicit labels");
-const englishBuilder = pageHtml.get("/en/task-spec-builder");
-check(englishBuilder.includes('data-task-builder-en') && englishBuilder.includes("MCP pilot in preparation"), "English builder: localized surface or honest MCP state missing");
-check(englishBuilder.includes("disabled>MCP pilot in preparation") && englishBuilder.includes("data-download-json") && englishBuilder.includes("data-copy-markdown"), "English builder: disabled connect or export actions missing");
-check(englishBuilder.includes('href="/en/capabilities"') && englishBuilder.includes('href="/en/mcp-for-seo-agents"'), "English builder: localized cluster links missing");
+const skill = pageHtml.get("/seo-agent-skill");
+check(skill.includes("data-seo-skill-generator") && skill.includes('class="skill-form"'), "skill generator: local form is missing");
+check((skill.match(/<label\b/g) ?? []).length === 3, "skill generator: must keep exactly three simple inputs");
+check(skill.includes("data-copy-skill") && skill.includes("data-download-skill"), "skill generator: copy or SKILL.md download action missing");
+check(skill.includes("Keine Anmeldung · keine API · kostenlos"), "skill generator: simple product promise missing");
+check(skill.includes("Er erfindet keine Rankings") && skill.includes("Alles bleibt lokal in deinem Browser"), "skill generator: evidence or local-processing boundary missing");
+for (const url of ["https://ai-fanout.com/", "https://seo-fanout.com/", "https://analysespider.com/", "https://seo-mcp.de/capabilities"]) check(skill.includes(`href="${url}"`), `skill generator: relevant tool link missing: ${url}`);
+check(skill.includes("selben Betreiber") && skill.includes("keine unabhängigen Empfehlungen"), "skill generator: adjacent ownership disclosure missing");
+const englishSkill = pageHtml.get("/en/seo-agent-skill");
+check(englishSkill.includes("data-seo-skill-generator") && englishSkill.includes("Create SEO Agent Skill"), "English skill generator: localized surface missing");
+check(englishSkill.includes("data-copy-skill") && englishSkill.includes("data-download-skill"), "English skill generator: copy or SKILL.md download action missing");
 
 const costPage = pageHtml.get("/seo-agent-kosten");
 const failurePage = pageHtml.get("/fehlerbehandlung-seo-agenten");
@@ -170,7 +164,7 @@ const privacy = pageHtml.get("/datenschutz");
 check(imprint.includes("Kempener Straße 44") && imprint.includes("info@matthiasramahi.de"), "imprint: verified operator details are missing");
 check(privacy.includes("Keine Analyse, Cookies oder Formulare"), "privacy: exact no-tracking section is missing");
 check(privacy.includes("ohne Reporting-Endpunkt") && privacy.includes("keine CSP-Berichte"), "privacy: CSP report-only behavior missing");
-check(privacy.includes("nicht an seo-ai-agent.de, Contextter, Vercel Functions, einen MCP-Server oder eine externe API übertragen"), "privacy: local builder boundary is missing");
+check(privacy.includes("nicht an seo-ai-agent.de, Contextter, Vercel Functions, einen MCP-Server oder eine externe API übertragen"), "privacy: local skill-generator boundary is missing");
 const englishLegal = pageHtml.get("/en/legal-notice");
 const englishPrivacy = pageHtml.get("/en/privacy");
 check(englishLegal.includes("Kempener Straße 44") && englishLegal.includes("info@matthiasramahi.de"), "English legal notice: verified operator details are missing");
@@ -251,7 +245,9 @@ check(headerMap.get("content-security-policy-report-only")?.includes("'sha256-")
 const robotsHeaders = [...headerMap].filter(([key]) => key === "x-robots-tag");
 check(robotsHeaders.length === 0, "Vercel must not emit an X-Robots-Tag noindex header at launch");
 const redirects = vercel.redirects ?? [];
-check(redirects.length === 2, "Vercel must define root and path canonical-host redirects");
+check(redirects.length === 4, "Vercel must define two legacy-product and two canonical-host redirects");
+check(redirects.some((redirect) => redirect.source === "/task-spec-builder" && redirect.destination === "/seo-agent-skill" && redirect.permanent === true), "legacy German Builder must permanently redirect to the Skill Generator");
+check(redirects.some((redirect) => redirect.source === "/en/task-spec-builder" && redirect.destination === "/en/seo-agent-skill" && redirect.permanent === true), "legacy English Builder must permanently redirect to the Skill Generator");
 const rootRedirect = redirects.find((redirect) => redirect.source === "/");
 const pathRedirect = redirects.find((redirect) => redirect.source === "/:path*");
 check(rootRedirect?.destination === `${origin}/` && rootRedirect?.permanent === true, "www root must permanently redirect to apex root");

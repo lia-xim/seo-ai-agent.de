@@ -3,7 +3,7 @@ export type Language = "de" | "en";
 export const routePairs = [
   ["/", "/en"],
   ["/workflows", "/en/workflows"],
-  ["/task-spec-builder", "/en/task-spec-builder"],
+  ["/seo-agent-skill", "/en/seo-agent-skill"],
   ["/aufgaben", "/en/tasks"],
   ["/aufgaben/technische-audit-triage", "/en/tasks/technical-audit-triage"],
   ["/aufgaben/keyword-chancen-priorisieren", "/en/tasks/prioritize-keyword-opportunities"],
@@ -31,15 +31,13 @@ export const alternatePathFor = (path: string) => alternateRoutes.get(path);
 
 export const navigation = {
   de: [
-    { href: "/workflows", label: "Workflows" },
-    { href: "/task-spec-builder", label: "Task Recipe" },
+    { href: "/seo-agent-skill", label: "SEO Agent Skill" },
     { href: "/aufgaben", label: "Aufgaben" },
     { href: "/benchmarks", label: "Runs" },
     { href: "/mcp-fuer-seo-agenten", label: "MCP" }
   ],
   en: [
-    { href: "/en/workflows", label: "Workflows" },
-    { href: "/en/task-spec-builder", label: "Task Recipe" },
+    { href: "/en/seo-agent-skill", label: "SEO Agent Skill" },
     { href: "/en/tasks", label: "Tasks" },
     { href: "/en/runs", label: "Runs" },
     { href: "/en/mcp-for-seo-agents", label: "MCP" }

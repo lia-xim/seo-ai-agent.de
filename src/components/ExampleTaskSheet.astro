@@ -6,7 +6,7 @@ const { lang = "de" } = Astro.props;
 const task = lang === "de" ? tasks[0] : tasksEn[0];
 const steps = lang === "de" ? ["Aufgabe", "Evidenz", "Zugriff", "Budget", "Abnahme"] : ["Task", "Evidence", "Access", "Budget", "Review"];
 const taskPath = lang === "de" ? `/aufgaben/${task.slug}` : `/en/tasks/${task.slug}`;
-const builderPath = lang === "de" ? "/task-spec-builder" : "/en/task-spec-builder";
+const builderPath = lang === "de" ? "/seo-agent-skill" : "/en/seo-agent-skill";
 ---
 
 <article class="task-sheet" aria-labelledby="example-task-title" data-reveal>
@@ -22,7 +22,7 @@ const builderPath = lang === "de" ? "/task-spec-builder" : "/en/task-spec-builde
   <div class="task-card-content">
     <header>
       <div>
-        <p>Task Recipe</p>
+        <p>SEO Agent Skill</p>
         <h2 id="example-task-title">{task.title}</h2>
       </div>
       <span class="draft-state"><i aria-hidden="true"></i> {lang === "de" ? "R1 ausgeführt" : "R1 executed"}</span>
@@ -39,7 +39,7 @@ const builderPath = lang === "de" ? "/task-spec-builder" : "/en/task-spec-builde
     <footer>
       <a class="text-link" href={taskPath}>{lang === "de" ? "Aufgabe ansehen" : "View task"}</a>
       <a class="button button-primary button-compact" href={`${builderPath}?task=${task.slug}`}>
-        {lang === "de" ? "Recipe öffnen" : "Open recipe"}
+        {lang === "de" ? "Skill erstellen" : "Create skill"}
         <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg>
       </a>
     </footer>

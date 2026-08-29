@@ -1,0 +1,175 @@
+---
+import type { Language } from "../data/i18n";
+
+interface Props { lang?: Language; }
+const { lang = "de" } = Astro.props;
+const de = lang === "de";
+---
+
+<section class="skill-generator" data-seo-skill-generator data-lang={lang}>
+  <div class="skill-steps" aria-label={de ? "Drei Schritte zum SEO Agent Skill" : "Three steps to an SEO Agent Skill"}>
+    <span><b>01</b>{de ? "Aufgabe wählen" : "Choose a task"}</span>
+    <span><b>02</b>{de ? "Website eintragen" : "Add the website"}</span>
+    <span><b>03</b>{de ? "Skill kopieren" : "Copy the skill"}</span>
+  </div>
+
+  <div class="skill-generator-grid">
+    <form class="skill-form" data-skill-form>
+      <div>
+        <label for={`skill-task-${lang}`}>{de ? "Was soll der SEO-Agent erledigen?" : "What should the SEO agent do?"}</label>
+        <select id={`skill-task-${lang}`} name="task">
+          <option value="technical-audit">{de ? "Technisches SEO prüfen" : "Run a technical SEO audit"}</option>
+          <option value="keyword-opportunities">{de ? "Keyword-Chancen priorisieren" : "Prioritize keyword opportunities"}</option>
+          <option value="internal-links">{de ? "Interne Links verbessern" : "Improve internal links"}</option>
+          <option value="content-opportunity">{de ? "Content-Chancen finden" : "Find content opportunities"}</option>
+        </select>
+      </div>
+
+      <div>
+        <label for={`skill-domain-${lang}`}>{de ? "Für welche Website?" : "For which website?"}</label>
+        <input id={`skill-domain-${lang}`} name="domain" type="url" inputmode="url" value={de ? "https://deine-domain.de" : "https://your-domain.com"} />
+      </div>
+
+      <div>
+        <label for={`skill-focus-${lang}`}>{de ? "Optionaler Fokus" : "Optional focus"}</label>
+        <input id={`skill-focus-${lang}`} name="focus" type="text" maxlength="160" placeholder={de ? "z. B. Kategorie-Seiten zuerst" : "e.g. category pages first"} />
+      </div>
+
+      <button class="button button-primary" type="submit">
+        {de ? "SEO Agent Skill erstellen" : "Create SEO Agent Skill"}
+        <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M4 10h11M11 5l5 5-5 5" /></svg>
+      </button>
+      <p>{de ? "Alles bleibt lokal in deinem Browser. Keine Anmeldung, keine API, keine versteckten Kosten." : "Everything stays in your browser. No sign-up, API, or hidden cost."}</p>
+    </form>
+
+    <article class="skill-output" aria-labelledby={`skill-output-title-${lang}`}>
+      <header>
+        <div><span>SKILL.md</span><h2 id={`skill-output-title-${lang}`}>SEO Agent Skill</h2></div>
+        <strong><i aria-hidden="true"></i>{de ? "Sofort nutzbar" : "Ready to use"}</strong>
+      </header>
+      <pre tabindex="0"><code data-skill-output></code></pre>
+      <div class="skill-output-actions">
+        <button class="button button-primary" type="button" data-copy-skill>{de ? "Skill kopieren" : "Copy skill"}</button>
+        <button class="button button-secondary" type="button" data-download-skill>SKILL.md</button>
+      </div>
+      <p class="skill-action-status" aria-live="polite" data-skill-status>{de ? "Als Prompt kopieren oder als SKILL.md speichern." : "Copy as a prompt or save as SKILL.md."}</p>
+    </article>
+  </div>
+
+  <aside class="skill-boundary">
+    <strong>{de ? "Was dieser Skill bewusst nicht macht" : "What this skill deliberately does not do"}</strong>
+    <p>{de ? "Er erfindet keine Rankings, Nachfrage- oder Traffic-Daten. Ohne freigegebene Daten arbeitet er mit dem sichtbaren Seiteninhalt und markiert fehlende Evidenz." : "It does not invent rankings, demand, or traffic data. Without approved data, it works from visible page content and marks missing evidence."}</p>
+  </aside>
+</section>
+
+<script>
+  const roots = document.querySelectorAll<HTMLElement>("[data-seo-skill-generator]");
+
+  const presets = {
+    de: {
+      "technical-audit": { title: "Technisches SEO prüfen", objective: "Prüfe technische SEO-Probleme und priorisiere nur belegte Befunde.", output: "Eine priorisierte Tabelle mit URL, Befund, Evidenz, Auswirkung, Unsicherheit und nächstem Schritt." },
+      "keyword-opportunities": { title: "Keyword-Chancen priorisieren", objective: "Priorisiere Keyword-Chancen anhand der tatsächlich bereitgestellten Such- und Seitendaten.", output: "Eine priorisierte Chancenliste mit Zielseite, Suchintention, vorhandener Evidenz, Konfliktrisiko und empfohlener Aktion." },
+      "internal-links": { title: "Interne Links verbessern", objective: "Finde nachvollziehbare interne Linkchancen zwischen vorhandenen Seiten.", output: "Eine Liste mit Quell-URL, Ziel-URL, vorgeschlagenem Anchor, Platzierung, Begründung und Unsicherheit." },
+      "content-opportunity": { title: "Content-Chancen finden", objective: "Finde echte Inhaltslücken, ohne aus einer Frage automatisch eine neue Seite zu machen.", output: "Eine Entscheidungsliste: bestehende Seite stärken, Abschnitt ergänzen, Inhalte zusammenführen, neue Seite testen oder keine Aktion." }
+    },
+    en: {
+      "technical-audit": { title: "Run a technical SEO audit", objective: "Audit technical SEO issues and prioritize only findings supported by evidence.", output: "A prioritized table with URL, finding, evidence, impact, uncertainty, and next action." },
+      "keyword-opportunities": { title: "Prioritize keyword opportunities", objective: "Prioritize keyword opportunities using only the search and page data actually provided.", output: "A prioritized list with target page, intent, available evidence, conflict risk, and recommended action." },
+      "internal-links": { title: "Improve internal links", objective: "Find defensible internal-link opportunities between existing pages.", output: "A list with source URL, target URL, suggested anchor, placement, rationale, and uncertainty." },
+      "content-opportunity": { title: "Find content opportunities", objective: "Find real content gaps without turning every question into a new page.", output: "A decision list: strengthen a page, add a section, merge content, test a new page, or take no action." }
+    }
+  } as const;
+
+  roots.forEach((root) => {
+    const lang = root.dataset.lang === "en" ? "en" : "de";
+    const form = root.querySelector<HTMLFormElement>("[data-skill-form]")!;
+    const task = form.elements.namedItem("task") as HTMLSelectElement;
+    const domain = form.elements.namedItem("domain") as HTMLInputElement;
+    const focus = form.elements.namedItem("focus") as HTMLInputElement;
+    const output = root.querySelector<HTMLElement>("[data-skill-output]")!;
+    const status = root.querySelector<HTMLElement>("[data-skill-status]")!;
+    const params = new URLSearchParams(location.search);
+    const taskAliases: Record<string, keyof typeof presets.de> = {
+      "technical-audit-triage": "technical-audit",
+      "prioritize-keyword-opportunities": "keyword-opportunities",
+      "keyword-chancen-priorisieren": "keyword-opportunities",
+      "justify-internal-links": "internal-links",
+      "interne-links-begruenden": "internal-links"
+    };
+    const rawTask = params.get("task");
+    const requestedTask = (rawTask ? taskAliases[rawTask] ?? rawTask : null) as keyof typeof presets.de | null;
+    if (requestedTask && requestedTask in presets[lang]) task.value = requestedTask;
+
+    const buildSkill = () => {
+      const preset = presets[lang][task.value as keyof typeof presets.de];
+      const target = domain.value.trim() || (lang === "de" ? "die angegebene Website" : "the provided website");
+      const extra = focus.value.trim();
+      return lang === "de" ? `---
+name: seo-agent
+description: Evidenzbasierter SEO-Agent für ${preset.title.toLowerCase()}.
+---
+
+# SEO Agent Skill
+
+## Auftrag
+${preset.objective}
+
+Website: ${target}
+${extra ? `Fokus: ${extra}\n` : ""}
+## Arbeitsregeln
+1. Prüfe zuerst die verfügbaren Seiten, Dateien und freigegebenen Daten.
+2. Trenne bestätigte Fakten, begründete Hinweise und offene Datenlücken.
+3. Erfinde keine Rankings, Suchvolumen, Traffic-, GSC- oder Providerdaten.
+4. Arbeite read-only. Schlage Änderungen vor, führe sie aber nicht ohne Freigabe aus.
+5. Nenne für jeden Befund die konkrete Quelle oder URL.
+6. Stoppe und frage nach, wenn Zugriff, Rechte oder entscheidende Daten fehlen.
+
+## Ausgabe
+${preset.output}
+
+Beginne mit den fünf wichtigsten belegten Punkten. Nenne danach Grenzen und den sinnvollsten nächsten Schritt.` : `---
+name: seo-agent
+description: Evidence-led SEO agent for ${preset.title.toLowerCase()}.
+---
+
+# SEO Agent Skill
+
+## Objective
+${preset.objective}
+
+Website: ${target}
+${extra ? `Focus: ${extra}\n` : ""}
+## Operating rules
+1. Inspect the available pages, files, and approved data first.
+2. Separate verified facts, supported observations, and open data gaps.
+3. Never invent rankings, search volume, traffic, GSC, or provider data.
+4. Work read-only. Propose changes, but do not execute them without approval.
+5. Name the concrete source or URL for every finding.
+6. Stop and ask when access, rights, or decisive evidence is missing.
+
+## Output
+${preset.output}
+
+Start with the five most important evidence-backed points. Then state limitations and the best next action.`;
+    };
+
+    const render = () => { output.textContent = buildSkill(); };
+    form.addEventListener("input", render);
+    form.addEventListener("change", render);
+    form.addEventListener("submit", (event) => { event.preventDefault(); render(); });
+    root.querySelector("[data-copy-skill]")?.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(buildSkill());
+      status.textContent = lang === "de" ? "SEO Agent Skill kopiert." : "SEO Agent Skill copied.";
+    });
+    root.querySelector("[data-download-skill]")?.addEventListener("click", () => {
+      const url = URL.createObjectURL(new Blob([buildSkill()], { type: "text/markdown;charset=utf-8" }));
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = "SKILL.md";
+      anchor.click();
+      URL.revokeObjectURL(url);
+      status.textContent = lang === "de" ? "SKILL.md heruntergeladen." : "SKILL.md downloaded.";
+    });
+    render();
+  });
+</script>
