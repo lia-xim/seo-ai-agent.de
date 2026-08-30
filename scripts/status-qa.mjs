@@ -18,7 +18,7 @@ const routes = [
   "/en/runs", "/en/runs/2026-08-22-technical-audit-triage", "/en/runs/2026-08-22-internal-link-evidence",
   "/en/capabilities", "/en/mcp-for-seo-agents", "/en/agent-comparison", "/en/seo-agent-costs", "/en/failure-handling",
   "/en/methodology", "/en/sources-and-rights", "/en/legal-notice", "/en/privacy",
-  "/robots.txt", "/sitemap-index.xml", "/sitemap-0.xml",
+  "/robots.txt", "/sitemap.xml", "/sitemap-index.xml", "/sitemap-0.xml",
   "/evidence/runs/2026-08-22-seo-ai-001-r1/input.v1.json",
   "/evidence/runs/2026-08-22-seo-ai-001-r1/raw-observations.v1.json",
   "/evidence/runs/2026-08-22-seo-ai-001-r1/result.v1.json",
@@ -73,12 +73,12 @@ try {
     const response = await fetch(`${base}${route}`, { redirect: "manual" });
     if (response.status !== 200) failures.push(`${route}: expected 200, got ${response.status}`);
   }
-  for (const route of ["/diese-seite-existiert-nicht", "/sitemap.xml"]) {
+  for (const route of ["/diese-seite-existiert-nicht"]) {
     const response = await fetch(`${base}${route}`, { redirect: "manual" });
     if (response.status !== 404) failures.push(`${route}: expected 404, got ${response.status}`);
   }
   if (failures.length > 0) throw new Error(failures.join("\n"));
-  console.log(`Status QA passed: ${routes.length} launch artifacts return 200 and both unknown and retired manual-sitemap paths return 404.`);
+  console.log(`Status QA passed: ${routes.length} launch artifacts return 200 and the unknown path returns 404.`);
 } finally {
   await new Promise((resolveClose, reject) => server.close((error) => error ? reject(error) : resolveClose()));
 }

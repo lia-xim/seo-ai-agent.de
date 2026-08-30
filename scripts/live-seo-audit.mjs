@@ -30,7 +30,7 @@ const text = (value) => value
   .trim();
 const normalizePath = (path) => path.replace(/\/$/, "") || "/";
 
-const sitemapIndex = await fetchUrl(`${origin}/sitemap-index.xml`);
+const sitemapIndex = await fetchUrl(`${origin}/sitemap.xml`);
 let urls = matches(/<loc>(.*?)<\/loc>/g, await sitemapIndex.text());
 if (urls.some((url) => url.endsWith(".xml"))) {
   const childUrls = [];
@@ -113,7 +113,7 @@ for (const [name, url] of [
   ["www-path", `https://www.${new URL(origin).hostname}/aufgaben?audit=1`],
   ["slash", `${origin}/aufgaben/`],
   ["unknown", `${origin}/does-not-exist-seo-check`],
-  ["retired-sitemap", `${origin}/sitemap.xml`]
+  ["public-sitemap", `${origin}/sitemap.xml`]
 ]) {
   const response = await fetchUrl(url, "manual");
   edgeChecks.push({ name, status: response.status, location: response.headers.get("location") });

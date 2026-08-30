@@ -50,7 +50,7 @@ for (const route of pageRoutes) {
   check(!/<meta\s+name="robots"/i.test(html), `${route}: indexable canonical page must not contain a robots meta directive`);
   check(!/noindex/i.test(html.split("</head>", 1)[0]), `${route}: noindex remains in the document head`);
   check(html.includes(`href="${origin}${route === "/" ? "/" : route}"`), `${route}: canonical URL is missing or wrong`);
-  check(html.includes('rel="sitemap" href="/sitemap-index.xml"'), `${route}: sitemap discovery link is missing`);
+  check(html.includes('rel="sitemap" href="/sitemap.xml"'), `${route}: sitemap discovery link is missing`);
   check((html.match(/<h1\b/g) ?? []).length === 1, `${route}: expected exactly one h1`);
   check(!/\{\{[^}]+\}\}|__[_A-Z]+__/.test(html), `${route}: unresolved template token found`);
   check(!/Testsieger|bester SEO-Agent|unabhängige Bewertung/i.test(html), `${route}: prohibited winner or independence claim found`);
@@ -217,11 +217,14 @@ check(socialCard.length > 100_000, "social card PNG appears empty or under-rende
 check(socialCard.readUInt32BE(16) === 1200 && socialCard.readUInt32BE(20) === 630, "social card must be 1200x630");
 
 const robots = await readFile(resolve(dist, "robots.txt"), "utf8");
+const publicSitemap = await readFile(resolve(dist, "sitemap.xml"), "utf8");
 const sitemapIndex = await readFile(resolve(dist, "sitemap-index.xml"), "utf8");
 const sitemap = await readFile(resolve(dist, "sitemap-0.xml"), "utf8");
 const notFound = await readFile(resolve(dist, "404.html"), "utf8");
 check(robots.includes("Allow: /") && !robots.includes("Disallow: /"), "robots.txt must allow crawling");
-check(robots.includes(`Sitemap: ${origin}/sitemap-index.xml`), "robots.txt must reference the automatic sitemap index");
+check(robots.includes(`Sitemap: ${origin}/sitemap.xml`), "robots.txt must reference the stable public sitemap endpoint");
+check(publicSitemap.includes('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'), "public sitemap endpoint must be a valid sitemap index");
+check(publicSitemap.includes(`${origin}/sitemap-0.xml`), "public sitemap endpoint must reference the generated child sitemap");
 check(sitemapIndex.includes(`${origin}/sitemap-0.xml`), "sitemap index must reference the generated child sitemap");
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]).sort();
 const expectedUrls = pageRoutes.map((route) => route === "/" ? `${origin}/` : `${origin}${route}`).sort();

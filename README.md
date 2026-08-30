@@ -10,7 +10,7 @@ The owned custom domain is an indexable launch. Matthias Ramahi is the named ope
 
 There is no provider ranking and no independent human review. Authenticated GSC status is `NOT PROVEN`, and no provider/comparison budget is fixed. The site does not claim an active MCP connection. The generated skill explicitly forbids invented data and unapproved writes.
 
-Canonical HTML pages are indexable and generated automatically into `sitemap-index.xml` through `@astrojs/sitemap`. `robots.txt` allows crawling and references the sitemap index. The 404 page remains noindex and is excluded from the sitemap. Vercel permanently redirects both the www root and www subpaths to the path-equivalent apex URL.
+Canonical HTML pages are indexable and generated automatically through `@astrojs/sitemap`. The stable public endpoint `sitemap.xml` is a valid sitemap index that references the generated child sitemap, and `robots.txt` points to that public endpoint. The 404 page remains noindex and is excluded from the sitemap. Vercel permanently redirects both the www root and www subpaths to the path-equivalent apex URL.
 
 ## Purpose and boundary
 
