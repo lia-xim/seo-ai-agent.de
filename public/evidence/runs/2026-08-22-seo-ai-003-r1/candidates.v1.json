@@ -96,7 +96,7 @@
       "anchor": "Kosten- und Retry-Budget vorab kalkulieren",
       "placement": "Unter Schritt 3 „Verbindung prüfen“",
       "rationale": "Der Link verbindet die Kostenprüfung im MCP-Ablauf mit dem lokalen, providerneutralen Planungswerkzeug.",
-      "conflict": "Es existiert weiterhin kein öffentlich verifizierter Contextter-MCP-Endpunkt."
+      "conflict": "Es existiert weiterhin kein in diesem Lauf verifizierter Crawl-Foundry-MCP-Endpunkt."
     },
     {
       "id": "L-010",

@@ -29,7 +29,7 @@ export const englishPages: readonly EnglishPage[] = [
     ]
   },
   {
-    slug: "mcp-for-seo-agents", title: "MCP for SEO agents", description: "How MCP can expose SEO data and tools while task scope, evidence, and human approval remain separate.", intro: "MCP makes data reachable. It does not make the result correct.", meta: "READ-ONLY FIRST / NO PUBLIC CONTEXTTER ENDPOINT CLAIM",
+    slug: "mcp-for-seo-agents", title: "MCP for SEO agents", description: "How MCP can expose SEO data and tools while task scope, evidence, and human approval remain separate.", intro: "MCP makes data reachable. It does not make the result correct.", meta: "READ-ONLY FIRST / NO PUBLIC CRAWL FOUNDRY ENDPOINT CLAIM",
     sections: [
       { number: "01", title: "Data access is not autonomy", paragraphs: ["A server can describe reachable data and tools. The SEO Agent Skill still defines evidence rules and when the agent must stop."] },
       { number: "02", title: "Capability before provider", paragraphs: ["Name the required job first. Then verify whether a server exposes the right schema, authentication, freshness, cost, and evidence fields."] },
