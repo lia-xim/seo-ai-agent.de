@@ -125,7 +125,7 @@ check((schemaByRoute.get("/en/seo-agent-skill-check") ?? []).some((node) => node
 const capabilities = pageHtml.get("/faehigkeiten");
 const mcp = pageHtml.get("/mcp-fuer-seo-agenten");
 for (const [route, html] of [["/faehigkeiten", capabilities], ["/mcp-fuer-seo-agenten", mcp]]) {
-  check(html.includes('href="https://contextter.com/"'), `${route}: Contextter link missing`);
+  check(html.includes('href="https://crawlfoundry.com/"'), `${route}: Crawl Foundry link missing`);
   check(html.includes('href="https://seo-mcp.de/capabilities"'), `${route}: seo-mcp capability link missing`);
   check(html.includes("Eigentumshinweis:"), `${route}: adjacent common-ownership disclosure missing`);
   check(html.includes("keine unabhängige") || html.includes("keine unabhängigen"), `${route}: independence boundary missing`);
@@ -204,12 +204,12 @@ const privacy = pageHtml.get("/datenschutz");
 check(imprint.includes("Kempener Straße 44") && imprint.includes("info@matthiasramahi.de"), "imprint: verified operator details are missing");
 check(privacy.includes("Keine Analyse, Cookies oder Formulare"), "privacy: exact no-tracking section is missing");
 check(privacy.includes("ohne Reporting-Endpunkt") && privacy.includes("keine CSP-Berichte"), "privacy: CSP report-only behavior missing");
-check(privacy.includes("nicht an seo-ai-agent.de, Contextter, Vercel Functions, einen MCP-Server oder eine externe API übertragen"), "privacy: local skill-generator boundary is missing");
+check(privacy.includes("nicht an seo-ai-agent.de, Crawl Foundry, Vercel Functions, einen MCP-Server oder eine externe API übertragen"), "privacy: local skill-generator boundary is missing");
 check(privacy.includes("Skill Packager, Skill Check, Policy Generator") && privacy.includes("Markdown-QA-Report") && privacy.includes("kein Upload, Modellaufruf oder serverseitiger Generierungsschritt"), "privacy: new local generators, report, or ZIP boundary missing");
 const englishLegal = pageHtml.get("/en/legal-notice");
 const englishPrivacy = pageHtml.get("/en/privacy");
 check(englishLegal.includes("Kempener Straße 44") && englishLegal.includes("info@matthiasramahi.de"), "English legal notice: verified operator details are missing");
-check(englishPrivacy.includes("No analytics, cookies, forms, or live APIs") && englishPrivacy.includes("not sent to seo-ai-agent.de, Contextter, Vercel Functions, an MCP server, or an external API"), "English privacy: exact local/no-tracking boundary missing");
+check(englishPrivacy.includes("No analytics, cookies, forms, or live APIs") && englishPrivacy.includes("not sent to seo-ai-agent.de, Crawl Foundry, Vercel Functions, an MCP server, or an external API"), "English privacy: exact local/no-tracking boundary missing");
 check(englishPrivacy.includes("Skill Packager, Skill Check, Policy Generator") && englishPrivacy.includes("Markdown QA report") && englishPrivacy.includes("There is no upload, model call, or server-side generation step"), "English privacy: new local generators, report, or ZIP boundary missing");
 
 const socialCard = await readFile(resolve(root, "public", "social-card.png"));

@@ -13,7 +13,7 @@ const workflows = [
 <BaseLayout lang="en" title="SEO agent workflows" description="Four bounded SEO-agent workflows: define the task, check capabilities, connect real data later, and keep results reviewable." canonicalPath="/en/workflows" pageType="CollectionPage">
   <PageIntro section="00" title="From an SEO job to a reusable skill." description="Choose the user job first. The SEO Agent Skill turns it into a clear instruction with evidence and stop rules." meta="4 WORKFLOWS / READ-FIRST / MCP OPTIONAL" />
   <section class="workflow-rail" aria-labelledby="workflow-title">
-    <header class="section-heading" data-reveal><div><h2 id="workflow-title">One simple path for four real SEO jobs.</h2><p>Every workflow remains useful without Contextter. A later connection does not replace task boundaries or human review.</p></div><a class="text-link" href="/en/seo-agent-skill">Create your SEO Agent Skill</a></header>
+    <header class="section-heading" data-reveal><div><h2 id="workflow-title">One simple path for four real SEO jobs.</h2><p>Every workflow remains useful without Crawl Foundry. A later connection does not replace task boundaries or human review.</p></div><a class="text-link" href="/en/seo-agent-skill">Create your SEO Agent Skill</a></header>
     <div class="workflow-list">
       {workflows.map((workflow) => <article data-reveal-item><span>{workflow.id}</span><div><h3>{workflow.title}</h3><p>{workflow.input}</p></div><div><small>Expected output</small><p>{workflow.output}</p></div><strong>{workflow.state}</strong><a class="text-link" href={workflow.task}>Open workflow</a></article>)}
     </div>
@@ -29,9 +29,9 @@ const workflows = [
     </ol>
   </section>
   <section class="relationship-section" aria-labelledby="relationship-title">
-    <header><span class="eyebrow">Contextual handoff</span><h2 id="relationship-title">Use real project data at the right moment.</h2><p>Contextter may later supply crawl, keyword, GSC, and work-item context. seo-mcp.de remains the separate technical capability reference.</p></header>
+    <header><span class="eyebrow">Contextual handoff</span><h2 id="relationship-title">Use real project data at the right moment.</h2><p>Crawl Foundry can supply crawl, keyword, GSC, and work-item context when the task needs it. seo-mcp.de remains the separate technical capability reference.</p></header>
     <div class="relationship-cards">
-      <article><h3>Contextter as execution context</h3><p><strong>Ownership disclosure:</strong> Contextter and SEO AI Agent share the same operator. This is product context, not an independent recommendation; no public MCP endpoint is claimed.</p><a class="button button-secondary" href="https://contextter.com/">View Contextter</a></article>
+      <article><h3>Crawl Foundry as data and execution context</h3><p><strong>Ownership disclosure:</strong> Crawl Foundry and SEO AI Agent share the same operator. This is product context, not an independent recommendation. This site does not create a live connection itself.</p><a class="button button-secondary" href="https://crawlfoundry.com/">View Crawl Foundry</a></article>
       <article><h3>SEO MCP as capability reference</h3><p><strong>Ownership disclosure:</strong> seo-mcp.de belongs to the same portfolio. The link supports technical review and is not independent proof.</p><a class="button button-secondary" href="https://seo-mcp.de/capabilities">Review capabilities</a></article>
     </div>
   </section>

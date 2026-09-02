@@ -25,7 +25,7 @@ export const englishPages: readonly EnglishPage[] = [
       { number: "02", title: "Interpret search performance", paragraphs: ["Connect clicks, impressions, CTR, and position to the property, page, query, date range, filters, timezone, and data freshness. An export is not the same as an authenticated live connection."] },
       { number: "03", title: "Prioritize keyword opportunities", paragraphs: ["Combine demand, intent, existing pages, technical suitability, effort, and uncertainty. Never invent missing volume or rankings."], links: [{ href: "/en/tasks/prioritize-keyword-opportunities", label: "Open matching task" }] },
       { number: "04", title: "Justify internal links", paragraphs: ["Show the read source passage, canonical target, proposed anchor, current link state, and why the link helps the user."], links: [{ href: "/en/tasks/justify-internal-links", label: "Open matching task" }] },
-      { number: "05", title: "Control access and actions", paragraphs: ["Separate read, propose, and write scopes. Log tool calls, cost, retries, questions, and final state. Stop when evidence or permission is missing."], links: [{ href: "/en/seo-agent-skill", label: "Create an SEO Agent Skill" }, { href: "https://seo-mcp.de/capabilities", label: "Review the shared-owner SEO MCP reference" }, { href: "https://contextter.com/", label: "View the shared-owner Contextter product context" }] }
+      { number: "05", title: "Control access and actions", paragraphs: ["Separate read, propose, and write scopes. Log tool calls, cost, retries, questions, and final state. Stop when evidence or permission is missing."], links: [{ href: "/en/seo-agent-skill", label: "Create an SEO Agent Skill" }, { href: "https://seo-mcp.de/capabilities", label: "Review the shared-owner SEO MCP reference" }, { href: "https://crawlfoundry.com/", label: "View the shared-owner Crawl Foundry product context" }] }
     ]
   },
   {
@@ -34,7 +34,7 @@ export const englishPages: readonly EnglishPage[] = [
       { number: "01", title: "Data access is not autonomy", paragraphs: ["A server can describe reachable data and tools. The SEO Agent Skill still defines evidence rules and when the agent must stop."] },
       { number: "02", title: "Capability before provider", paragraphs: ["Name the required job first. Then verify whether a server exposes the right schema, authentication, freshness, cost, and evidence fields."] },
       { number: "03", title: "Read-only is the first useful milestone", paragraphs: ["A useful pilot can read one bounded project, return source-linked observations, and fail closed when tenant, scope, or freshness is unclear."] },
-      { number: "04", title: "Current connection state", paragraphs: ["The skill works without a connection. No public Contextter endpoint, OAuth flow, or live read capability is claimed on this website."], links: [{ href: "/en/seo-agent-skill", label: "Create a skill without a connection" }, { href: "https://seo-mcp.de/capabilities", label: "Open the shared-owner technical reference" }] }
+      { number: "04", title: "Current connection state", paragraphs: ["The skill works without a connection. This website does not initiate OAuth or live reads; technical connection details belong in the separate MCP reference."], links: [{ href: "/en/seo-agent-skill", label: "Create a skill without a connection" }, { href: "https://seo-mcp.de/capabilities", label: "Open the shared-owner technical reference" }] }
     ]
   },
   {
@@ -51,7 +51,7 @@ export const englishPages: readonly EnglishPage[] = [
       { number: "01", title: "Assistant", paragraphs: ["Useful when a person supplies the data and remains responsible for every action. Lowest access risk, highest manual effort."] },
       { number: "02", title: "Read-only agent", paragraphs: ["Useful for bounded analysis across real project data. It needs tenant-safe scopes, source-linked output, budgets, and stop rules."] },
       { number: "03", title: "Action agent", paragraphs: ["Use only when write access is necessary, the blast radius is bounded, approvals are explicit, and rollback is proven."] },
-      { number: "RULE", title: "No automatic Contextter winner", paragraphs: ["Contextter shares the same operator as this website. It may become a disclosed task participant only after the tested capability is real and evaluated under the same frozen rules."] }
+      { number: "RULE", title: "No automatic Crawl Foundry winner", paragraphs: ["Crawl Foundry shares the same operator as this website. It may become a disclosed task participant only after the tested capability is real and evaluated under the same frozen rules."] }
     ]
   },
   {
@@ -78,7 +78,7 @@ export const englishPages: readonly EnglishPage[] = [
       { number: "01", title: "Evidence and repeatability", paragraphs: ["Freeze inputs, task version, allowed tools, environment, expected output, criteria, exclusions, retries, cost, and raw observations."] },
       { number: "02", title: "Review status", paragraphs: ["Both published runs name Matthias Ramahi as benchmark owner and openly state that no second independent human reviewer exists."] },
       { number: "03", title: "Provider gate", bullets: ["Benchmark and output rights documented", "Equal frozen task and rubric", "Provider, data, retry, infrastructure, and review budget fixed", "Reviewer and adjudication rule named", "Failures and excluded runs remain visible"] },
-      { number: "04", title: "Ownership conflict", paragraphs: ["SEO AI Agent, Contextter, and seo-mcp.de share the same operator. Common ownership is disclosed beside relevant links and can never act as independent corroboration."] }
+      { number: "04", title: "Ownership conflict", paragraphs: ["SEO AI Agent, Crawl Foundry, and seo-mcp.de share the same operator. Common ownership is disclosed beside relevant links and can never act as independent corroboration."] }
     ]
   },
   {
@@ -86,7 +86,7 @@ export const englishPages: readonly EnglishPage[] = [
     sections: [
       { number: "01", title: "First-party run artifacts", paragraphs: ["Frozen input, raw observations, results, and reproduction scripts are published for the two real task runs where rights permit."], links: [{ href: "/en/runs", label: "Review public runs" }] },
       { number: "02", title: "Third-party material", paragraphs: ["Screenshots, text, code, data, brands, customer information, model output, and provider output remain subject to their respective rights and terms."] },
-      { number: "03", title: "Common ownership", paragraphs: ["Contextter and seo-mcp.de are related portfolio properties, not independent sources. Their role is disclosed next to every relevant link."] },
+      { number: "03", title: "Common ownership", paragraphs: ["Crawl Foundry and seo-mcp.de are related properties, not independent sources. Their role is disclosed next to every relevant link."] },
       { number: "04", title: "Corrections", paragraphs: ["Technical corrections and vendor responses can be submitted through the public repository. Security reports belong in its private security flow."], links: [{ href: "https://github.com/lia-xim/seo-ai-agent.de/issues", label: "Open GitHub issues" }] }
     ]
   },
@@ -96,7 +96,7 @@ export const englishPages: readonly EnglishPage[] = [
       { number: "01 / PROVIDER", title: "Information under Section 5 DDG", paragraphs: ["Matthias Ramahi\nKempener Straße 44\n40699 Erkrath\nGermany", "Email: info@matthiasramahi.de"] },
       { number: "02 / EDITORIAL", title: "Responsible for editorial content", paragraphs: ["Matthias Ramahi, address as above.", "The content supports technical and editorial evaluation of SEO agents. It is not legal, tax, or business advice."] },
       { number: "03 / RIGHTS", title: "External links and rights", paragraphs: ["External website operators remain responsible for their content. Third-party rights in screenshots, text, data, brands, model output, and provider output remain unaffected."] },
-      { number: "04 / CONFLICT", title: "Ownership disclosure", paragraphs: ["seo-ai-agent.de is operated in the Contextter environment. Contextter may later be a disclosed test participant, is not an independent source, and receives no automatic winner status."] }
+      { number: "04 / CONFLICT", title: "Ownership disclosure", paragraphs: ["seo-ai-agent.de is operated alongside Crawl Foundry. Crawl Foundry may be a disclosed test participant, is not an independent source, and receives no automatic winner status."] }
     ]
   },
   {
@@ -104,7 +104,7 @@ export const englishPages: readonly EnglishPage[] = [
     sections: [
       { number: "01 / CONTROLLER", title: "Controller", paragraphs: ["Matthias Ramahi\nKempener Straße 44\n40699 Erkrath\nGermany", "Email: info@matthiasramahi.de"] },
       { number: "02 / HOSTING", title: "Static hosting through Vercel", paragraphs: ["Vercel processes technically necessary connection and log data when serving this static Astro site, including IP address, time, requested URL, browser and device information, referrer, security, and diagnostic data.", "The report-only Content Security Policy has no reporting endpoint. This website therefore does not collect or transmit CSP reports."], links: [{ href: "https://vercel.com/legal/privacy-notice", label: "Vercel privacy notice" }] },
-      { number: "03 / LOCAL TOOLS", title: "Browser-local generators", paragraphs: ["Inputs in the SEO Agent Skill Generator, Skill Packager, Skill Check, Policy Generator, and SEO Agent Cost Calculator are processed in browser memory only. They are not sent to seo-ai-agent.de, Contextter, Vercel Functions, an MCP server, or an external API. Clipboard access occurs only after an explicit copy action.", "The Skill Packager creates its individual files and ZIP packages, and the Skill Check creates its Markdown QA report, on your device from statically delivered templates and rules. There is no upload, model call, or server-side generation step."] },
+      { number: "03 / LOCAL TOOLS", title: "Browser-local generators", paragraphs: ["Inputs in the SEO Agent Skill Generator, Skill Packager, Skill Check, Policy Generator, and SEO Agent Cost Calculator are processed in browser memory only. They are not sent to seo-ai-agent.de, Crawl Foundry, Vercel Functions, an MCP server, or an external API. Clipboard access occurs only after an explicit copy action.", "The Skill Packager creates its individual files and ZIP packages, and the Skill Check creates its Markdown QA report, on your device from statically delivered templates and rules. There is no upload, model call, or server-side generation step."] },
       { number: "04 / NOT USED", title: "No analytics, cookies, forms, or live APIs", bullets: ["No analytics, advertising, or tracking", "No cookies, Local Storage, or Session Storage", "No contact form, account, login, or upload", "Fonts are delivered with the website", "No live MCP, AI-model, or external API calls", "No embedded videos, maps, or social widgets"] },
       { number: "05 / EMAIL", title: "Contact by email", paragraphs: ["When you contact us by email, sender address, content, time, and voluntarily supplied details are processed to answer the request. Data is deleted when the request is complete unless legal retention or legitimate documentation duties apply."] },
       { number: "06 / RIGHTS", title: "Your privacy rights", paragraphs: ["Subject to legal requirements, you may have rights to access, correction, deletion, restriction, portability, and objection. You may also complain to a supervisory authority."], links: [{ href: "https://www.ldi.nrw.de/", label: "Data Protection Authority of North Rhine-Westphalia" }] }
