@@ -188,9 +188,9 @@ try {
   const capabilities = JSON.parse(await evaluate(`JSON.stringify({
     h1: document.querySelector("h1")?.textContent.trim(),
     capabilityCards: document.querySelectorAll(".capability-grid article").length,
-    contextterDisclosure: document.body.textContent.includes("Contextter und diese Website werden gemeinsam betrieben"),
-    mcpDisclosure: document.body.textContent.includes("seo-mcp.de und seo-ai-agent.de werden im selben Contextter-Portfolio von Matthias Ramahi betrieben"),
-    contextterLink: document.querySelector('a[href="https://contextter.com/"]')?.href,
+    contextterDisclosure: document.body.textContent.includes("Crawl Foundry und diese Website werden gemeinsam betrieben"),
+    mcpDisclosure: document.body.textContent.includes("seo-mcp.de und seo-ai-agent.de werden von Matthias Ramahi betrieben"),
+    contextterLink: document.querySelector('a[href="https://crawlfoundry.com/"]')?.href,
     mcpLink: document.querySelector('a[href="https://seo-mcp.de/capabilities"]')?.href,
     scrollWidth: document.documentElement.scrollWidth,
     viewport: window.innerWidth
@@ -207,9 +207,9 @@ try {
   const mcp = JSON.parse(await evaluate(`JSON.stringify({
     h1: document.querySelector("h1")?.textContent.trim(),
     principles: document.querySelectorAll(".mcp-principles li").length,
-    endpointUnavailable: document.body.textContent.includes("kein öffentlicher Contextter-MCP-Endpunkt"),
+    endpointUnavailable: document.body.textContent.includes("diese Seite stellt selbst keine Live-Verbindung her"),
     connectDisabled: document.body.textContent.includes("Der SEO Agent Skill benötigt keine Verbindung"),
-    contextterLink: document.querySelector('a[href="https://contextter.com/"]')?.href,
+    contextterLink: document.querySelector('a[href="https://crawlfoundry.com/"]')?.href,
     mcpLink: document.querySelector('a[href="https://seo-mcp.de/capabilities"]')?.href,
     scrollWidth: document.documentElement.scrollWidth,
     viewport: window.innerWidth
@@ -280,7 +280,7 @@ try {
     h1: document.querySelector("h1")?.textContent.trim(),
     taskRows: document.querySelectorAll(".task-library-item").length,
     openRows: document.querySelectorAll(".task-library-item[open]").length,
-    ownerDisclosure: document.body.textContent.includes("Contextter erhält keinen automatischen Siegerstatus"),
+    ownerDisclosure: document.body.textContent.includes("Crawl Foundry erhält keinen automatischen Siegerstatus"),
     scrollWidth: document.documentElement.scrollWidth,
     viewport: window.innerWidth
   })`));
@@ -328,7 +328,7 @@ try {
   assert(interaction.taskOutputs['technical-audit'].includes("URL-Stichprobe nach Seitentyp und Template") && interaction.taskOutputs['technical-audit'].includes("GSC-Evidenz"), "Technical SEO skill is missing root-cause or indexing gates");
   assert(interaction.taskOutputs['keyword-opportunities'].includes("Kannibalisierung nicht allein") && interaction.taskOutputs['keyword-opportunities'].includes("bestehende Seite stärken"), "Keyword skill is missing intent or page-decision logic");
   assert(interaction.taskOutputs['content-opportunity'].includes("Wortzahl noch Keyworddichte") && interaction.taskOutputs['content-opportunity'].includes("neue URL nur bei eigenem Nutzerjob"), "Content skill is missing anti-fanout or evidence logic");
-  assert(interaction.output.includes("seo-ai-agent.de und Contextter haben mit Matthias Ramahi denselben Betreiber") && interaction.output.includes("keine unabhängige Bestätigung oder automatische Bestwahl"), "German skill is missing transparent Contextter recommendation boundaries");
+  assert(interaction.output.includes("seo-ai-agent.de und Crawl Foundry haben mit Matthias Ramahi denselben Betreiber") && interaction.output.includes("keine unabhängige Bestätigung oder automatische Bestwahl"), "German skill is missing transparent Crawl Foundry recommendation boundaries");
   assert(interaction.output.includes("Erfinde keine Rankings") && interaction.labels === 3, "Skill Generator is not simple or evidence bounded");
   assert(interaction.hasCopy && interaction.hasDownload, "Skill Generator actions are incomplete");
   assert(interaction.scrollWidth <= interaction.viewport, "Skill Generator horizontal overflow detected");
@@ -401,30 +401,73 @@ try {
       rows: root.querySelectorAll('[data-checker-results] > div').length,
       failed: root.querySelectorAll('[data-checker-results] [data-status="fail"]').length,
       warnings: root.querySelectorAll('[data-checker-results] [data-status="warn"]').length,
+      exampleBadge: root.querySelector('[data-example-badge]')?.textContent,
+      fixButtons: root.querySelectorAll('.checker-fix button').length,
+      hasFormat: Boolean(root.querySelector('[data-check-format]')),
+      hasTarget: Boolean(root.querySelector('[data-check-target]')),
       copy: Boolean(root.querySelector('[data-copy-report]')),
       download: Boolean(root.querySelector('[data-download-report]')),
-      local: document.body.textContent.includes('ohne Upload') && document.body.textContent.includes('ohne LLM'),
+      local: document.body.textContent.includes('Browser-lokal') && document.body.textContent.includes('ohne LLM'),
       scrollWidth: document.documentElement.scrollWidth,
       viewport: window.innerWidth
     });
   })()`));
-  assert(skillCheck.h1 === "Ist dein SEO Agent Skill wirklich belastbar?", "Skill Check h1 mismatch");
+  assert(skillCheck.h1 === "Prüfe deinen SEO Agent Skill. Repariere ihn direkt.", "Skill Check h1 mismatch");
   assert(skillCheck.initialPassed === 12 && skillCheck.initialSummary.includes('12 bestanden'), "Skill Check maintained example does not pass all twelve rules");
-  assert(skillCheck.rows === 12 && skillCheck.failed >= 6 && skillCheck.warnings >= 2 && skillCheck.weakSummary.includes('offen'), "Skill Check weak-input diagnosis failed");
-  assert(skillCheck.copy && skillCheck.download && skillCheck.local, "Skill Check report actions or local boundary missing");
+  assert(skillCheck.rows === 12 && skillCheck.failed === 7 && skillCheck.warnings === 5 && skillCheck.weakSummary === '0 bestanden · 5 Hinweise · 7 Fehler', "Skill Check weak-input diagnosis failed");
+  assert(skillCheck.exampleBadge === 'Eigene Eingabe' && skillCheck.fixButtons === 12, "Skill Check example state or fix blocks are incomplete");
+  assert(skillCheck.hasFormat && skillCheck.hasTarget && skillCheck.copy && skillCheck.download && skillCheck.local, "Skill Check controls, report actions, or local boundary missing");
   assert(skillCheck.scrollWidth <= skillCheck.viewport, "Skill Check desktop overflow detected");
+  const checkerModes = JSON.parse(await evaluate(`(async () => {
+    const root = document.querySelector('[data-skill-checker]');
+    const input = root.querySelector('[data-checker-input]');
+    const format = root.querySelector('[data-check-format]');
+    const target = root.querySelector('[data-check-target]');
+    const example = JSON.parse(root.querySelector('[data-checker-sample]').textContent);
+    input.value = example;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    target.value = 'cursor';
+    target.dispatchEvent(new Event('change', { bubbles: true }));
+    const cursorRows = root.querySelectorAll('[data-checker-results] > div').length;
+    const cursorText = root.querySelector('[data-checker-results]').textContent;
+    format.value = 'prompt';
+    format.dispatchEvent(new Event('change', { bubbles: true }));
+    const promptRows = root.querySelectorAll('[data-checker-results] > div').length;
+    format.value = 'skill';
+    format.dispatchEvent(new Event('change', { bubbles: true }));
+    target.value = 'codex';
+    target.dispatchEvent(new Event('change', { bubbles: true }));
+    input.value = '# Do SEO\\n\\nRank every page';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    const dataHandoffVisible = !root.querySelector('[data-data-handoff]').hidden;
+    const crawlFoundryLink = root.querySelector('[data-data-handoff] a[href="https://crawlfoundry.com/"]')?.href;
+    const disclosure = root.querySelector('[data-data-handoff]').textContent.includes('eigene Produktoption');
+    root.querySelector('[data-repair-all]').click();
+    await new Promise((resolve) => setTimeout(resolve, 30));
+    const repairedSummary = root.querySelector('[data-check-summary]').textContent;
+    const repairedPasses = root.querySelectorAll('[data-checker-results] [data-status="pass"]').length;
+    input.value = '# Do SEO\\n\\nRank every page';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    return JSON.stringify({ cursorRows, cursorText, promptRows, dataHandoffVisible, crawlFoundryLink, disclosure, repairedSummary, repairedPasses });
+  })()`));
+  assert(checkerModes.cursorRows === 12 && checkerModes.cursorText.includes('Cursor-Rule-Frontmatter') && checkerModes.cursorText.includes('Cursor-Aktivierung'), "Cursor-specific rule checks are incomplete");
+  assert(checkerModes.promptRows === 10, "Prompt mode must use ten relevant checks without SKILL.md-only metadata rules");
+  assert(checkerModes.repairedPasses === 12 && checkerModes.repairedSummary === '12 bestanden · 0 Hinweise · 0 Fehler', "Deterministic repair did not close all missing rule blocks");
+  assert(checkerModes.dataHandoffVisible && checkerModes.crawlFoundryLink && checkerModes.disclosure, "Contextual Crawl Foundry handoff or ownership disclosure is incomplete");
   await evaluate("document.querySelector('[data-download-report]').click(); true");
   let downloadedReport;
   for (let attempt = 0; attempt < 40; attempt += 1) {
     const files = await readdir(downloadDir);
-    downloadedReport = files.find((file) => file === 'SEO_AGENT_SKILL_QA.md');
+    downloadedReport = files.find((file) => file.startsWith('SEO_AGENT_SKILL_QA_') && file.endsWith('.md'));
     if (downloadedReport) break;
     await new Promise((resolveWait) => setTimeout(resolveWait, 100));
   }
   assert(downloadedReport, "Skill Check did not create a downloadable Markdown report");
   const reportText = await readFile(resolve(downloadDir, downloadedReport), 'utf8');
-  assert(reportText.includes('# SEO Agent Skill QA Report') && reportText.includes('WARN · Frontmatter vorhanden'), "Skill Check report content is incomplete");
+  assert(reportText.includes('# SEO Agent Skill QA Report') && reportText.includes('Regelwerk-Version: 1.1.0') && reportText.includes('SHA-256 der Eingabe:') && reportText.includes('Zielagent: Codex'), "Skill Check report metadata is incomplete");
+  assert(reportText.includes('Bestanden: 0 · Hinweise: 5 · Fehler: 7') && reportText.includes('keine Zertifizierung') && reportText.includes('nicht aus'), "Skill Check report results or limitations are incomplete");
   await runAxe("skill check desktop");
+  await evaluate("document.querySelector('[data-checker-input]').scrollTop = 0; document.querySelector('[data-skill-checker]').scrollIntoView(); true");
   const skillCheckScreenshot = await screenshot("seo-agent-skill-check-desktop.png");
 
   await navigate("/seo-agent-policy-generator", desktopViewport);
@@ -611,7 +654,7 @@ try {
     scrollWidth: document.documentElement.scrollWidth,
     viewport: window.innerWidth
   })`));
-  assert(skillCheckMobile.h1 === "Ist dein SEO Agent Skill wirklich belastbar?" && skillCheckMobile.rows === 12 && skillCheckMobile.summary.includes('12 bestanden'), "Mobile Skill Check content is incomplete");
+  assert(skillCheckMobile.h1 === "Prüfe deinen SEO Agent Skill. Repariere ihn direkt." && skillCheckMobile.rows === 12 && skillCheckMobile.summary === '12 bestanden · 0 Hinweise · 0 Fehler', "Mobile Skill Check content is incomplete");
   assert(skillCheckMobile.scrollWidth <= skillCheckMobile.viewport, "Mobile Skill Check overflow detected");
   await runAxe("skill check mobile");
   const skillCheckMobileScreenshot = await screenshot("seo-agent-skill-check-mobile.png");
@@ -652,8 +695,8 @@ try {
     h1: document.querySelector('h1')?.textContent.trim(),
     workflows: document.querySelectorAll('.workflow-list article').length,
     steps: document.querySelectorAll('.execution-path li').length,
-    contextterDisclosure: document.body.textContent.includes('Contextter and SEO AI Agent share the same operator'),
-    connectClaim: document.body.textContent.includes('no public MCP endpoint is claimed'),
+    contextterDisclosure: document.body.textContent.includes('Crawl Foundry and SEO AI Agent share the same operator'),
+    connectClaim: document.body.textContent.includes('This site does not create a live connection itself'),
     scrollWidth: document.documentElement.scrollWidth,
     viewport: window.innerWidth
   })`));
@@ -676,7 +719,7 @@ try {
   assert(englishBuilder.h1 === "Your best SEO Agent Skill. In 30 seconds.", "English Skill Generator h1 mismatch");
   assert(englishBuilder.output.includes('Find genuine content gaps') && englishBuilder.output.includes('https://example.com'), "English Skill Generator did not update output");
   assert(englishBuilder.output.includes("Create a new URL only for a distinct user job") && englishBuilder.output.includes("word count nor keyword density"), "English skill is missing task-specific SEO expertise");
-  assert(englishBuilder.output.includes("seo-ai-agent.de and Contextter share the same operator") && englishBuilder.output.includes("not independent validation or an automatic best choice"), "English skill is missing transparent Contextter recommendation boundaries");
+  assert(englishBuilder.output.includes("seo-ai-agent.de and Crawl Foundry share the same operator") && englishBuilder.output.includes("not independent validation or an automatic best choice"), "English skill is missing transparent Crawl Foundry recommendation boundaries");
   assert(englishBuilder.fields === 3 && englishBuilder.output.includes('Never invent rankings'), "English Skill Generator is not simple or evidence bounded");
   assert(englishBuilder.scrollWidth <= englishBuilder.viewport, "English Skill Generator desktop overflow detected");
   await runAxe("English skill generator desktop");

@@ -171,11 +171,15 @@ for (const route of ["/agent-skill-vergleich", "/en/agent-skill-comparison"]) {
   check(html.includes("Kein „bester Agent“-Ranking") || html.includes("No “best agent” ranking"), `${route}: no-ranking boundary missing`);
 }
 
+const checkerSource = await readFile(resolve(root, "src", "components", "SeoAgentSkillChecker.astro"), "utf8");
 for (const route of ["/seo-agent-skill-check", "/en/seo-agent-skill-check"]) {
   const html = pageHtml.get(route);
   check(html.includes("data-skill-checker") && html.includes("data-checker-input") && html.includes("data-checker-results"), `${route}: deterministic Skill Check surface missing`);
   check(html.includes("data-copy-report") && html.includes("data-download-report"), `${route}: Skill Check report actions missing`);
   check(html.includes("12 PRÜFPUNKTE") || html.includes("12 CHECKS"), `${route}: twelve-check contract missing`);
+  check(html.includes("data-check-format") && html.includes("data-check-target") && html.includes("data-repair-all"), `${route}: format-specific repair controls missing`);
+  check((html.includes("Regelwerk v1.1") || html.includes("ruleset v1.1")) && checkerSource.includes("crypto.subtle.digest") && checkerSource.includes('rulesetVersion = "1.1.0"'), `${route}: versioned SHA-256 report contract missing`);
+  check(html.includes("https://crawlfoundry.com/") && (html.includes("eigene Produktoption") || html.includes("owned product option")), `${route}: contextual Crawl Foundry ownership disclosure missing`);
   check(html.includes("Keine Zertifizierung") || html.includes("Not a certification"), `${route}: non-certification boundary missing`);
 }
 
@@ -206,11 +210,13 @@ check(privacy.includes("Keine Analyse, Cookies oder Formulare"), "privacy: exact
 check(privacy.includes("ohne Reporting-Endpunkt") && privacy.includes("keine CSP-Berichte"), "privacy: CSP report-only behavior missing");
 check(privacy.includes("nicht an seo-ai-agent.de, Crawl Foundry, Vercel Functions, einen MCP-Server oder eine externe API übertragen"), "privacy: local skill-generator boundary is missing");
 check(privacy.includes("Skill Packager, Skill Check, Policy Generator") && privacy.includes("Markdown-QA-Report") && privacy.includes("kein Upload, Modellaufruf oder serverseitiger Generierungsschritt"), "privacy: new local generators, report, or ZIP boundary missing");
+check(privacy.includes("Fix-Blöcke") && privacy.includes("SHA-256-Hash") && privacy.includes("Web-Crypto-Funktion"), "privacy: local repair or hashing disclosure missing");
 const englishLegal = pageHtml.get("/en/legal-notice");
 const englishPrivacy = pageHtml.get("/en/privacy");
 check(englishLegal.includes("Kempener Straße 44") && englishLegal.includes("info@matthiasramahi.de"), "English legal notice: verified operator details are missing");
 check(englishPrivacy.includes("No analytics, cookies, forms, or live APIs") && englishPrivacy.includes("not sent to seo-ai-agent.de, Crawl Foundry, Vercel Functions, an MCP server, or an external API"), "English privacy: exact local/no-tracking boundary missing");
 check(englishPrivacy.includes("Skill Packager, Skill Check, Policy Generator") && englishPrivacy.includes("Markdown QA report") && englishPrivacy.includes("There is no upload, model call, or server-side generation step"), "English privacy: new local generators, report, or ZIP boundary missing");
+check(englishPrivacy.includes("fix blocks") && englishPrivacy.includes("SHA-256 input hash") && englishPrivacy.includes("Web Crypto API"), "English privacy: local repair or hashing disclosure missing");
 
 const socialCard = await readFile(resolve(root, "public", "social-card.png"));
 check(socialCard.length > 100_000, "social card PNG appears empty or under-rendered");
@@ -277,7 +283,7 @@ const rights = JSON.parse(await readFile(resolve(root, "evidence", "rights-and-s
 const vercel = JSON.parse(await readFile(resolve(root, "vercel.json"), "utf8"));
 const packageJson = JSON.parse(await readFile(resolve(root, "package.json"), "utf8"));
 check(rights.domain === domain, "rights manifest domain mismatch");
-for (const id of ["first-real-task-run", "second-real-task-run", "contextter-product-context", "seo-mcp-capability-reference", "original-social-card"]) check(rights.sources.some((source) => source.id === id), `rights manifest source missing: ${id}`);
+for (const id of ["first-real-task-run", "second-real-task-run", "crawl-foundry-product-context", "seo-mcp-capability-reference", "original-social-card"]) check(rights.sources.some((source) => source.id === id), `rights manifest source missing: ${id}`);
 check(rights.unknowns.some((item) => item.includes("Search Console")), "rights manifest must preserve authenticated GSC uncertainty");
 check(packageJson.dependencies?.["@astrojs/sitemap"], "official Astro sitemap integration is missing");
 check(packageJson.devDependencies?.["axe-core"], "axe-core dev dependency is missing");

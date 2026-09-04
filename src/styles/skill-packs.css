@@ -267,7 +267,8 @@
 }
 
 .checker-input,
-.checker-results { display: grid; min-width: 0; grid-template-rows: auto minmax(38rem, 1fr) auto auto; }
+.checker-results { display: grid; min-width: 0; }
+.checker-input { grid-template-rows: auto auto minmax(38rem, 1fr) auto; }
 .checker-input { border-right: 1px solid var(--line); }
 .checker-input header,
 .checker-results > header {
@@ -285,6 +286,15 @@
 .checker-input header strong,
 .checker-results > header strong { display: flex; align-items: center; gap: 0.5rem; color: var(--muted-strong); font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; }
 .checker-input header i { width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--mint); }
+.checker-signals { display: flex; align-items: flex-end; flex-direction: column; gap: 0.35rem; }
+.checker-signals > span { padding: 0.2rem 0.45rem; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--muted-strong); background: rgba(255,255,255,0.025); }
+.checker-config { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.018); }
+.checker-config label { display: grid; gap: 0.4rem; padding: 0.85rem 1.35rem; }
+.checker-config label + label { border-left: 1px solid var(--line); }
+.checker-config label > span { color: var(--muted); font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; }
+.checker-config select { width: 100%; border: 0; border-radius: 0; outline: 0; padding: 0.2rem 1.7rem 0.2rem 0; background-color: transparent; color: var(--text); font: 650 0.8rem/1.4 var(--sans); }
+.checker-config select:focus-visible { box-shadow: 0 2px 0 var(--mint); }
+.checker-config option { background: #111816; color: var(--text); }
 .checker-results > header strong[data-state="fail"] { color: #ff9b8a; }
 .checker-results > header strong[data-state="warn"] { color: #ffd479; }
 .checker-results > header strong[data-state="pass"] { color: var(--mint); }
@@ -308,13 +318,31 @@
 .checker-results { grid-template-rows: auto 1fr auto auto; }
 .checker-list { display: grid; align-content: start; }
 .checker-list > div { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: start; gap: 0.9rem; padding: 0.92rem 1.2rem; border-bottom: 1px solid var(--line); }
+.checker-list > div[data-status="warn"] { background: rgba(255, 212, 121, 0.025); }
+.checker-list > div[data-status="fail"] { background: rgba(255, 155, 138, 0.03); }
 .checker-list > div > span { padding-top: 0.15rem; color: var(--muted); font-family: var(--mono); font-size: 0.62rem; }
 .checker-list strong { font-size: 0.84rem; }
 .checker-list p { margin: 0.25rem 0 0; color: var(--muted); font-size: 0.74rem; line-height: 1.45; }
 .checker-list b { padding-top: 0.15rem; color: var(--mint); font-family: var(--mono); font-size: 0.6rem; }
 .checker-list [data-status="warn"] b { color: #ffd479; }
 .checker-list [data-status="fail"] b { color: #ff9b8a; }
+.checker-fix { display: grid; gap: 0.55rem; margin-top: 0.8rem; padding: 0.75rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #080d0c; }
+.checker-fix > span { color: var(--muted); font-family: var(--mono); font-size: 0.58rem; text-transform: uppercase; }
+.checker-fix code { overflow-x: auto; white-space: pre-wrap; color: #c9d8d2; font: 0.66rem/1.5 var(--mono); }
+.checker-fix button { justify-self: start; border: 0; padding: 0; background: transparent; color: var(--mint); font: 700 0.68rem/1.4 var(--sans); cursor: pointer; }
+.checker-fix button:hover { color: var(--text); }
+.checker-fix button:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; }
+.checker-next-step { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; padding: 1.15rem 1.35rem; border-top: 1px solid var(--line); background: rgba(121,255,195,0.025); }
+.checker-next-step p { margin: 0.3rem 0 0; color: var(--muted); font-size: 0.76rem; line-height: 1.5; }
+.checker-next-step > div:last-child { display: flex; align-items: center; flex: 0 0 auto; gap: 0.8rem; }
+.checker-data-handoff { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 0 1.35rem 1rem; padding: 0.9rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: rgba(255,255,255,0.018); }
+.checker-data-handoff[hidden], .checker-next-step [hidden], .checker-results > footer [hidden] { display: none; }
+.checker-data-handoff p { margin: 0; color: var(--muted-strong); font-size: 0.72rem; line-height: 1.5; }
+.checker-data-handoff a { flex: 0 0 auto; }
 .checker-results > p { margin: 0; padding: 0 1.35rem 1.15rem; color: var(--muted); font-size: 0.72rem; }
+.checker-source-note { margin: calc(clamp(2.5rem, 5vw, 5rem) * -0.55) var(--gutter) clamp(2.5rem, 5vw, 4rem); color: var(--muted); font: 0.68rem/1.6 var(--mono); }
+.checker-source-note a { color: var(--muted-strong); }
+.checker-source-note a:hover { color: var(--mint); }
 .checker-explainer { display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding: clamp(3rem, 6vw, 5rem) var(--gutter); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .checker-explainer h2 { margin: 0 0 0.65rem; font-size: clamp(1.8rem, 3vw, 3rem); letter-spacing: -0.045em; }
 .checker-explainer p { max-width: 48rem; margin: 0; color: var(--muted-strong); }
@@ -346,6 +374,10 @@
   .checker-explainer { align-items: flex-start; flex-direction: column; }
   .checker-explainer > div:last-child { align-items: flex-start; flex-direction: column; }
   .skill-check-handoff, .pack-note-actions { align-items: flex-start; flex-direction: column; }
+  .checker-config { grid-template-columns: 1fr; }
+  .checker-config label + label { border-top: 1px solid var(--line); border-left: 0; }
+  .checker-next-step, .checker-data-handoff { align-items: flex-start; flex-direction: column; }
+  .checker-next-step > div:last-child { align-items: flex-start; flex-direction: column; }
   .checker-input footer .button, .checker-results > footer .button { width: 100%; }
   .format-row, .format-head { grid-template-columns: 1fr; }
   .format-head { display: none; }

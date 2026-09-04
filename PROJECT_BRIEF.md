@@ -4,7 +4,7 @@
 
 seo-ai-agent.de is a German Task Recipe, execution-readiness, and reproducible evaluation resource for SEO agents. It is organized by concrete SEO job, required evidence, data capabilities, permissions, budget, failure handling, and acceptance criteria rather than by generic provider list.
 
-The first useful product is a no-signup Task Recipe Builder with a clearly synthetic result view. It remains useful without Contextter; a future verified MCP connection may upgrade a recipe from a reusable prompt contract to evidence-backed execution.
+The product remains useful without Crawl Foundry. Crawl Foundry is a commonly operated, contextually linked data option rather than an independent recommendation; no live connection is claimed. A future verified connection may upgrade a reusable prompt contract to evidence-backed execution.
 
 ## Domain status and rights
 
@@ -54,7 +54,7 @@ No second human reviewer was available. The result is explicitly marked as not i
 
 ## Hard boundaries
 
-- No automatic Contextter winner status and no commonly owned site as independent corroboration.
+- No automatic Crawl Foundry winner status and no commonly owned site as independent corroboration.
 - No synthetic example presented as a real result.
 - No live MCP or model-API claim while the connection remains disabled.
 - No hidden weights, post-hoc rubric changes, unreported manual intervention, invented rankings, or fabricated test runs.

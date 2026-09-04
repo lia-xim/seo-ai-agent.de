@@ -114,13 +114,13 @@
       "rights": "Original project task output and First-Party validation artifacts. No third-party provider output, screenshot, customer data, or ranking is reproduced."
     },
     {
-      "id": "contextter-product-context",
+      "id": "crawl-foundry-product-context",
       "kind": "verified_common_ownership_product_source",
-      "title": "Contextter product website",
-      "url": "https://contextter.com/",
-      "verifiedAt": "2026-08-22",
+      "title": "Crawl Foundry product website",
+      "url": "https://crawlfoundry.com/",
+      "verifiedAt": "2026-09-04",
       "supports": [
-        "Contextter is the commonly operated primary product relationship and a possible future First-Party data context.",
+        "Crawl Foundry is the commonly operated product relationship and a possible future First-Party data context.",
         "The link is product context, not independent corroboration or a benchmark result."
       ],
       "rights": "Link and original factual description only; no independent endorsement is implied."

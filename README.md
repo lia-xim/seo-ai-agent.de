@@ -2,7 +2,7 @@
 
 Public source repository for seo-ai-agent.de: bilingual, browser-local SEO Agent Skill Packs, generators, deterministic skill checks, bounded tasks, and reproducible evidence without generic winner claims.
 
-The website is bilingual. German remains the default at `/`; English equivalents live under `/en` with explicit hreflang pairs. The product role is deliberately simple: choose a maintained SEO job, choose the target agent, and download the ready local package. A three-input general skill, a deterministic twelve-rule Skill Check, and a four-input safety policy remain available as smaller tools.
+The website is bilingual. German remains the default at `/`; English equivalents live under `/en` with explicit hreflang pairs. The product role is deliberately simple: choose a maintained SEO job, choose the target agent, and download the ready local package. A three-input general skill, a format-specific deterministic Skill Checker with local repairs, and a four-input safety policy remain available as smaller tools.
 
 ## Current state
 
@@ -14,9 +14,9 @@ Canonical HTML pages are indexable and generated automatically through `@astrojs
 
 ## Purpose and boundary
 
-Die Seite verpackt acht gepflegte SEO-Fachmethoden lokal für Codex, Claude Code, Gemini CLI, Cursor oder als universellen Prompt. Der einfache Generator, der lokale Skill Check und der Policy Generator ergänzen diese Packs mit Quellenpflicht, Read-only-Grenzen und klaren Stop-Regeln.
+Die Seite verpackt acht gepflegte SEO-Fachmethoden lokal für Codex, Claude Code, Gemini CLI, Cursor oder als universellen Prompt. Der einfache Generator, der formatspezifische Skill Checker mit Fix-Blöcken und der Policy Generator ergänzen diese Packs mit Quellenpflicht, Read-only-Grenzen und klaren Stop-Regeln.
 
-Contextter darf keinen automatischen Siegerstatus erhalten. Jede Bewertung braucht datierte Testevidenz und eine Eigentumsoffenlegung. Contextter is disclosed as the accepted primary portfolio relationship and as a possible future test participant, not as an independent source. Contextter and seo-mcp.de are linked only inside relevant user flows with adjacent common-ownership disclosure; there is no cross-domain footer network.
+Crawl Foundry darf keinen automatischen Siegerstatus erhalten. Jede Bewertung braucht datierte Testevidenz und eine Eigentumsoffenlegung. Crawl Foundry is disclosed as the commonly operated product relationship and as a possible future data option, not as an independent source. Crawl Foundry and seo-mcp.de are linked only inside relevant user flows with adjacent common-ownership disclosure; there is no cross-domain footer network.
 
 ## Fresh-domain boundary
 
@@ -67,7 +67,7 @@ The second harness replays the frozen, HTTP-derived page fixture from the histor
 
 The UI does not connect to a live MCP server. It never asks for raw tokens and never performs paid work. The generated files explain MCP as a possible data capability but do not claim a live connection.
 
-The site is statically hosted on Vercel. It has no analytics, cookies, consent manager, contact form, external font request, local or session storage, advertising, or embedded third-party media. Skill Generator, Skill Packager, Skill Check, Policy Generator, and cost-calculator inputs stay in browser memory and are not transmitted. ZIP files and QA reports are created on-device from static templates and rules. Clipboard access occurs only after an explicit copy action.
+The site is statically hosted on Vercel. It has no analytics, cookies, consent manager, contact form, external font request, local or session storage, advertising, or embedded third-party media. Skill Generator, Skill Packager, Skill Checker, Policy Generator, and cost-calculator inputs stay in browser memory and are not transmitted. ZIP files, fix blocks, SHA-256 input hashes, and QA reports are created on-device from static templates, browser cryptography, and rules. Clipboard access occurs only after an explicit copy action.
 
 ## Local development and verification
 
