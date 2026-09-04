@@ -70,7 +70,7 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
 <section class="skill-checker" data-skill-checker data-lang={lang}>
   <div class="checker-input">
     <header>
-      <div><span>{de ? "EINGABE" : "INPUT"}</span><h2>{de ? "Skill oder Prompt einfügen" : "Paste a skill or prompt"}</h2></div>
+      <div><span>{de ? "EINGABE" : "INPUT"}</span><h2>{de ? "Inhalt" : "Content"}</h2></div>
       <div class="checker-signals">
         <strong><i aria-hidden="true"></i>{de ? "Browser-lokal" : "Browser-local"}</strong>
         <span data-example-badge>{de ? "Beispiel" : "Example"}</span>
@@ -105,7 +105,7 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
 
   <article class="checker-results" aria-labelledby={`checker-results-title-${lang}`}>
     <header>
-      <div><span data-check-count>{de ? "12 PRÜFPUNKTE" : "12 CHECKS"}</span><h2 id={`checker-results-title-${lang}`}>{de ? "Struktur, Evidenz und Sicherheit" : "Structure, evidence, and safety"}</h2></div>
+      <div><span data-check-count>{de ? "12 PRÜFPUNKTE" : "12 CHECKS"}</span><h2 id={`checker-results-title-${lang}`}>{de ? "Ergebnis" : "Result"}</h2></div>
       <div class="checker-result-meta">
         <strong data-check-summary aria-live="polite"></strong>
         <button type="button" data-result-filter aria-pressed="true" hidden>{de ? "Alle anzeigen" : "Show all"}</button>
@@ -114,17 +114,11 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
     <div class="checker-list" data-checker-results aria-live="polite"></div>
     <footer>
       <button class="button button-primary" type="button" data-repair-all>{de ? "Fehlende Regeln ergänzen" : "Add missing rules"}</button>
+      <a class="button button-primary" data-package-link href={de ? "/skill-packs" : "/en/skill-packs"} hidden></a>
       <button class="button button-secondary" type="button" data-copy-report>{de ? "Report kopieren" : "Copy report"}</button>
       <button class="button button-secondary" type="button" data-download-report>{de ? "QA-Report laden" : "Download QA report"}</button>
     </footer>
-    <div class="checker-next-step" data-next-step>
-      <div><strong data-next-title></strong><p data-next-copy></p></div>
-      <div><a class="button button-primary" data-package-link href={de ? "/skill-packs" : "/en/skill-packs"}></a><a class="text-link" href={de ? "/benchmarks" : "/en/runs"}>{de ? "Reale Taskläufe ansehen" : "Review real task runs"}</a></div>
-    </div>
-    <aside class="checker-data-handoff" data-data-handoff hidden>
-      <p>{de ? "Braucht dieser Skill echte Crawl-, Keyword- oder GSC-Daten? Crawl Foundry ist eine eigene Produktoption von Matthias Ramahi – keine unabhängige Empfehlung oder automatische Bestwahl." : "Does this skill need real crawl, keyword, or GSC data? Crawl Foundry is an owned product option from Matthias Ramahi — not an independent recommendation or automatic best choice."}</p>
-      <a class="text-link" href="https://crawlfoundry.com/">{de ? "Crawl Foundry ansehen" : "View Crawl Foundry"}</a>
-    </aside>
+    <p class="checker-data-handoff" data-data-handoff hidden>{de ? "Für reale SEO-Daten: " : "For real SEO data: "}<a href="https://crawlfoundry.com/">Crawl Foundry</a>{de ? " · gleiches Eigentum, keine unabhängige Empfehlung." : " · same owner, not an independent recommendation."}</p>
     <p data-checker-status aria-live="polite">{de ? "Keine Zertifizierung: Regelwerk v1.2 prüft dokumentierte Mindestregeln, nicht die Qualität einer Ausführung." : "Not a certification: ruleset v1.2 checks documented minimum rules, not execution quality."}</p>
   </article>
 
@@ -150,8 +144,6 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
     const exampleBadge = root.querySelector<HTMLElement>("[data-example-badge]")!;
     const status = root.querySelector<HTMLElement>("[data-checker-status]")!;
     const repairAll = root.querySelector<HTMLButtonElement>("[data-repair-all]")!;
-    const nextTitle = root.querySelector<HTMLElement>("[data-next-title]")!;
-    const nextCopy = root.querySelector<HTMLElement>("[data-next-copy]")!;
     const packageLink = root.querySelector<HTMLAnchorElement>("[data-package-link]")!;
     const dataHandoff = root.querySelector<HTMLElement>("[data-data-handoff]")!;
     const sample = JSON.parse(root.querySelector<HTMLElement>("[data-checker-sample]")!.textContent || '""') as string;
@@ -326,10 +318,6 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
       packageLink.hidden = issueCount > 0;
       packageLink.href = (de ? "/skill-packs" : "/en/skill-packs") + "?agent=" + target;
       packageLink.textContent = de ? "Für " + targetLabels[target] + " verpacken" : "Package for " + targetLabels[target];
-      nextTitle.textContent = issueCount > 0 ? (de ? "Erst die offenen Regeln schließen" : "Close the open rules first") : (de ? "Strukturcheck bestanden" : "Structure check passed");
-      nextCopy.textContent = issueCount > 0
-        ? (de ? "Die Fix-Blöcke ergänzen nur dokumentierte Mindestregeln. Danach erneut prüfen." : "The fix blocks add documented minimum rules only. Run the check again afterwards.")
-        : (de ? "Jetzt kannst du die Datei für den gewählten Agenten verpacken oder reale Taskläufe zur Methodik prüfen." : "You can now package the file for the selected agent or review real task runs for methodology.");
       dataHandoff.hidden = !/(crawl|keyword|gsc|search console|serp|rank|traffic|index|suchvolumen)/i.test(input.value);
 
       const visibleChecks = showIssuesOnly && issueCount > 0 ? currentChecks.filter((item) => item.status !== "pass") : currentChecks;
@@ -347,10 +335,6 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
         if (item.status !== "pass" && item.fix) {
           const fix = document.createElement("div");
           fix.className = "checker-fix";
-          const label = document.createElement("span");
-          label.textContent = de ? "Fehlender Abschnitt" : "Missing block";
-          const code = document.createElement("code");
-          code.textContent = item.fix;
           const actions = document.createElement("div");
           actions.className = "checker-fix-actions";
           const apply = document.createElement("button");
@@ -365,7 +349,13 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
             status.textContent = de ? "Fix-Block kopiert." : "Fix block copied.";
           });
           actions.append(apply, copy);
-          fix.append(label, code, actions);
+          const disclosure = document.createElement("details");
+          const disclosureLabel = document.createElement("summary");
+          disclosureLabel.textContent = de ? "Block ansehen" : "View block";
+          const code = document.createElement("code");
+          code.textContent = item.fix;
+          disclosure.append(disclosureLabel, code);
+          fix.append(actions, disclosure);
           body.append(fix);
         }
         const state = document.createElement("b");

@@ -179,7 +179,7 @@ for (const route of ["/seo-agent-skill-check", "/en/seo-agent-skill-check"]) {
   check(html.includes("12 PRÜFPUNKTE") || html.includes("12 CHECKS"), `${route}: twelve-check contract missing`);
   check(html.includes("data-check-format") && html.includes("data-check-target") && html.includes("data-format-hint") && html.includes("data-result-filter") && html.includes("data-repair-all"), `${route}: format-specific repair controls missing`);
   check((html.includes("Regelwerk v1.2") || html.includes("ruleset v1.2")) && checkerSource.includes("crypto.subtle.digest") && checkerSource.includes('rulesetVersion = "1.2.0"'), `${route}: versioned SHA-256 report contract missing`);
-  check(html.includes("https://crawlfoundry.com/") && (html.includes("eigene Produktoption") || html.includes("owned product option")), `${route}: contextual Crawl Foundry ownership disclosure missing`);
+  check(html.includes("https://crawlfoundry.com/") && (html.includes("gleiches Eigentum") || html.includes("same owner")), `${route}: contextual Crawl Foundry ownership disclosure missing`);
   check(html.includes("Keine Zertifizierung") || html.includes("Not a certification"), `${route}: non-certification boundary missing`);
 }
 

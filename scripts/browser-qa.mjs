@@ -385,6 +385,7 @@ try {
   const packagerScreenshot = await screenshot("skill-packs-desktop.png");
 
   await navigate("/seo-agent-skill-check", desktopViewport);
+  const skillCheckFirstViewportScreenshot = await screenshot("seo-agent-skill-check-first-viewport.png");
   const skillCheck = JSON.parse(await evaluate(`(async () => {
     const root = document.querySelector('[data-skill-checker]');
     const initialSummary = root.querySelector('[data-check-summary]').textContent;
@@ -406,20 +407,23 @@ try {
       applyButtons: Array.from(root.querySelectorAll('.checker-fix button')).filter((button) => button.textContent.includes('anwenden')).length,
       filterVisible: !root.querySelector('[data-result-filter]').hidden,
       installHint: root.querySelector('[data-format-hint]').textContent,
+      collapsedFixes: root.querySelectorAll('.checker-fix details:not([open])').length,
+      redundantNextStep: Boolean(root.querySelector('[data-next-step]')),
       hasFormat: Boolean(root.querySelector('[data-check-format]')),
       hasTarget: Boolean(root.querySelector('[data-check-target]')),
       copy: Boolean(root.querySelector('[data-copy-report]')),
       download: Boolean(root.querySelector('[data-download-report]')),
-      local: document.body.textContent.includes('Browser-lokal') && document.body.textContent.includes('ohne LLM'),
+      local: document.body.textContent.includes('Browser-lokal') && document.body.textContent.includes('Alles bleibt in deinem Browser'),
       scrollWidth: document.documentElement.scrollWidth,
       viewport: window.innerWidth
     });
   })()`));
-  assert(skillCheck.h1 === "Prüfe deinen SEO Agent Skill. Repariere ihn direkt.", "Skill Check h1 mismatch");
+  assert(skillCheck.h1 === "SEO Agent Skill prüfen.", "Skill Check h1 mismatch");
   assert(skillCheck.initialPassed === 12 && skillCheck.initialSummary.includes('12 bestanden'), "Skill Check maintained example does not pass all twelve rules");
   assert(skillCheck.rows === 12 && skillCheck.failed === 7 && skillCheck.warnings === 5 && skillCheck.weakSummary === '0 bestanden · 5 Hinweise · 7 Fehler', "Skill Check weak-input diagnosis failed");
   assert(skillCheck.exampleBadge === 'Eigene Eingabe' && skillCheck.fixButtons === 24 && skillCheck.applyButtons === 12, "Skill Check example state or direct fix actions are incomplete");
   assert(skillCheck.filterVisible && skillCheck.installHint.includes('.codex/skills/<name>/SKILL.md'), "Skill Check issue filter or install hint is missing");
+  assert(skillCheck.collapsedFixes === 12 && !skillCheck.redundantNextStep, "Skill Check progressive disclosure or simplified action flow failed");
   assert(skillCheck.hasFormat && skillCheck.hasTarget && skillCheck.copy && skillCheck.download && skillCheck.local, "Skill Check controls, report actions, or local boundary missing");
   assert(skillCheck.scrollWidth <= skillCheck.viewport, "Skill Check desktop overflow detected");
   const checkerModes = JSON.parse(await evaluate(`(async () => {
@@ -449,7 +453,7 @@ try {
     input.dispatchEvent(new Event('input', { bubbles: true }));
     const dataHandoffVisible = !root.querySelector('[data-data-handoff]').hidden;
     const crawlFoundryLink = root.querySelector('[data-data-handoff] a[href="https://crawlfoundry.com/"]')?.href;
-    const disclosure = root.querySelector('[data-data-handoff]').textContent.includes('eigene Produktoption');
+    const disclosure = root.querySelector('[data-data-handoff]').textContent.includes('gleiches Eigentum');
     root.querySelector('[data-repair-all]').click();
     await new Promise((resolve) => setTimeout(resolve, 30));
     const repairedSummary = root.querySelector('[data-check-summary]').textContent;
@@ -681,7 +685,7 @@ try {
     scrollWidth: document.documentElement.scrollWidth,
     viewport: window.innerWidth
   })`));
-  assert(skillCheckMobile.h1 === "Prüfe deinen SEO Agent Skill. Repariere ihn direkt." && skillCheckMobile.rows === 12 && skillCheckMobile.summary === '12 bestanden · 0 Hinweise · 0 Fehler', "Mobile Skill Check content is incomplete");
+  assert(skillCheckMobile.h1 === "SEO Agent Skill prüfen." && skillCheckMobile.rows === 12 && skillCheckMobile.summary === '12 bestanden · 0 Hinweise · 0 Fehler', "Mobile Skill Check content is incomplete");
   assert(skillCheckMobile.scrollWidth <= skillCheckMobile.viewport, "Mobile Skill Check overflow detected");
   await runAxe("skill check mobile");
   const skillCheckMobileScreenshot = await screenshot("seo-agent-skill-check-mobile.png");
@@ -765,7 +769,7 @@ try {
   const englishMobileScreenshot = await screenshot("homepage-en-mobile.png");
 
   assert(errors.length === 0, `Browser console/runtime errors: ${errors.join(" | ")}`);
-  console.log(JSON.stringify({ browserExecutable, desktop, performance, keyboard, capabilities, mcp, costCalculator, failureHandling, comparison, library, interaction, packager, skillCheck, policyGenerator, formatComparison, benchmarkHub, runEvidence, linkRunEvidence, legal, benchmarkHubMobile, linkRunMobile, costMobile, builderMobile, packagerMobile, skillCheckMobile, mobile, englishHome, englishWorkflows, englishBuilder, englishMobile, axeResults, screenshots: [desktopScreenshot, capabilitiesScreenshot, mcpScreenshot, costScreenshot, failureScreenshot, comparisonScreenshot, libraryScreenshot, builderScreenshot, packagerScreenshot, skillCheckScreenshot, policyGeneratorScreenshot, formatComparisonScreenshot, benchmarkHubScreenshot, runScreenshot, linkRunScreenshot, legalScreenshot, benchmarkHubMobileScreenshot, linkRunMobileScreenshot, costMobileScreenshot, builderMobileScreenshot, packagerMobileScreenshot, skillCheckMobileScreenshot, mobileScreenshot, englishHomeScreenshot, englishWorkflowsScreenshot, englishBuilderScreenshot, englishMobileScreenshot], errors }, null, 2));
+  console.log(JSON.stringify({ browserExecutable, desktop, performance, keyboard, capabilities, mcp, costCalculator, failureHandling, comparison, library, interaction, packager, skillCheck, policyGenerator, formatComparison, benchmarkHub, runEvidence, linkRunEvidence, legal, benchmarkHubMobile, linkRunMobile, costMobile, builderMobile, packagerMobile, skillCheckMobile, mobile, englishHome, englishWorkflows, englishBuilder, englishMobile, axeResults, screenshots: [desktopScreenshot, capabilitiesScreenshot, mcpScreenshot, costScreenshot, failureScreenshot, comparisonScreenshot, libraryScreenshot, builderScreenshot, packagerScreenshot, skillCheckFirstViewportScreenshot, skillCheckScreenshot, policyGeneratorScreenshot, formatComparisonScreenshot, benchmarkHubScreenshot, runScreenshot, linkRunScreenshot, legalScreenshot, benchmarkHubMobileScreenshot, linkRunMobileScreenshot, costMobileScreenshot, builderMobileScreenshot, packagerMobileScreenshot, skillCheckMobileScreenshot, mobileScreenshot, englishHomeScreenshot, englishWorkflowsScreenshot, englishBuilderScreenshot, englishMobileScreenshot], errors }, null, 2));
 } finally {
   if (socket?.readyState === WebSocket.OPEN) socket.close();
   browserProcess.kill();
