@@ -27,7 +27,7 @@ seo-ai-agent.de is a newly registered domain. It is not an expired-domain rebuil
 - `/` — purpose, task workflow, measurement dimensions, and launch status
 - `/skill-packs` — eight curated SEO Agent Skill Packs packaged locally for five target formats, including a complete ZIP
 - `/seo-agent-skill` — local three-input SEO Agent Skill Generator with copy and `SKILL.md` download
-- `/seo-agent-skill-check` — deterministic local twelve-rule review with copyable and downloadable QA report
+- `/seo-agent-skill-check` — format-aware local review for SKILL.md, Cursor Rules, and prompts with deterministic repairs, install hints, and a SHA-256 QA report
 - `/seo-agent-policy-generator` — local four-input scope, action, data, cost, security, and stop-rule generator
 - `/agent-skill-vergleich` — source-linked format comparison for Codex, Claude Code, Gemini CLI, Cursor, prompts, and MCP
 - `/workflows` — four task-first paths from a real SEO job to a reviewable run

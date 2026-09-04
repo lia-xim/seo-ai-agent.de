@@ -94,6 +94,7 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
         </select>
       </label>
     </div>
+    <p class="checker-format-hint" data-format-hint></p>
     <label class="sr-only" for={`skill-check-input-${lang}`}>{de ? "Zu prüfender SEO Agent Skill" : "SEO Agent Skill to check"}</label>
     <textarea id={`skill-check-input-${lang}`} data-checker-input spellcheck="false">{sample}</textarea>
     <footer>
@@ -105,7 +106,10 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
   <article class="checker-results" aria-labelledby={`checker-results-title-${lang}`}>
     <header>
       <div><span data-check-count>{de ? "12 PRÜFPUNKTE" : "12 CHECKS"}</span><h2 id={`checker-results-title-${lang}`}>{de ? "Struktur, Evidenz und Sicherheit" : "Structure, evidence, and safety"}</h2></div>
-      <strong data-check-summary aria-live="polite"></strong>
+      <div class="checker-result-meta">
+        <strong data-check-summary aria-live="polite"></strong>
+        <button type="button" data-result-filter aria-pressed="true" hidden>{de ? "Alle anzeigen" : "Show all"}</button>
+      </div>
     </header>
     <div class="checker-list" data-checker-results aria-live="polite"></div>
     <footer>
@@ -121,7 +125,7 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
       <p>{de ? "Braucht dieser Skill echte Crawl-, Keyword- oder GSC-Daten? Crawl Foundry ist eine eigene Produktoption von Matthias Ramahi – keine unabhängige Empfehlung oder automatische Bestwahl." : "Does this skill need real crawl, keyword, or GSC data? Crawl Foundry is an owned product option from Matthias Ramahi — not an independent recommendation or automatic best choice."}</p>
       <a class="text-link" href="https://crawlfoundry.com/">{de ? "Crawl Foundry ansehen" : "View Crawl Foundry"}</a>
     </aside>
-    <p data-checker-status aria-live="polite">{de ? "Keine Zertifizierung: Regelwerk v1.1 prüft dokumentierte Mindestregeln, nicht die Qualität einer Ausführung." : "Not a certification: ruleset v1.1 checks documented minimum rules, not execution quality."}</p>
+    <p data-checker-status aria-live="polite">{de ? "Keine Zertifizierung: Regelwerk v1.2 prüft dokumentierte Mindestregeln, nicht die Qualität einer Ausführung." : "Not a certification: ruleset v1.2 checks documented minimum rules, not execution quality."}</p>
   </article>
 
   <script is:inline type="application/json" data-checker-sample set:html={JSON.stringify(sample)} />
@@ -138,8 +142,10 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
     const input = root.querySelector<HTMLTextAreaElement>("[data-checker-input]")!;
     const formatSelect = root.querySelector<HTMLSelectElement>("[data-check-format]")!;
     const targetSelect = root.querySelector<HTMLSelectElement>("[data-check-target]")!;
+    const formatHint = root.querySelector<HTMLElement>("[data-format-hint]")!;
     const results = root.querySelector<HTMLElement>("[data-checker-results]")!;
     const summary = root.querySelector<HTMLElement>("[data-check-summary]")!;
+    const resultFilter = root.querySelector<HTMLButtonElement>("[data-result-filter]")!;
     const countLabel = root.querySelector<HTMLElement>("[data-check-count]")!;
     const exampleBadge = root.querySelector<HTMLElement>("[data-example-badge]")!;
     const status = root.querySelector<HTMLElement>("[data-checker-status]")!;
@@ -149,9 +155,21 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
     const packageLink = root.querySelector<HTMLAnchorElement>("[data-package-link]")!;
     const dataHandoff = root.querySelector<HTMLElement>("[data-data-handoff]")!;
     const sample = JSON.parse(root.querySelector<HTMLElement>("[data-checker-sample]")!.textContent || '""') as string;
-    const rulesetVersion = "1.1.0";
+    const rulesetVersion = "1.2.0";
     const targetLabels: Record<Target, string> = { codex: "Codex", claude: "Claude Code", gemini: "Gemini CLI", cursor: "Cursor" };
+    const installPaths: Record<Target, string> = {
+      codex: ".codex/skills/<name>/SKILL.md",
+      claude: ".claude/skills/<name>/SKILL.md",
+      gemini: ".gemini/skills/<name>/SKILL.md",
+      cursor: ".cursor/rules/<name>.mdc"
+    };
+    const bodySample = sample.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*/, "");
+    const cursorSample = "---\ndescription: Apply for evidence-led SEO analysis and implementation.\nglobs:\nalwaysApply: false\n---\n\n" + bodySample;
+    const promptSample = (de ? "Du bist ein evidenzorientierter SEO-Agent. Bearbeite ausschließlich die freigegebene Aufgabe.\n\n" : "You are an evidence-led SEO agent. Work only on the approved task.\n\n") + bodySample;
+    const sampleFor = (format: Format, target: Target) => format === "prompt" ? promptSample : target === "cursor" ? cursorSample : sample;
+    const knownSamples = new Set([sample, cursorSample, promptSample]);
     let currentChecks: Check[] = [];
+    let showIssuesOnly = true;
 
     const has = (text: string, expressions: RegExp[]) => expressions.some((expression) => expression.test(text));
     const check = (id: string, title: string, pass: boolean, detail: string, fix: string, severity: "fail" | "warn" = "fail"): Check => ({ id, title, detail, fix, status: pass ? "pass" : severity });
@@ -243,17 +261,67 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
       await navigator.clipboard.writeText(value);
     };
 
+    const metadataIds = new Set(["frontmatter", "name", "description", "cursor-scope"]);
+
+    const repairMetadata = (source: string, target: Target) => {
+      const value = source.trim();
+      const frontmatter = value.match(/^---\s*\r?\n([\s\S]*?)\r?\n---/);
+      let meta = frontmatter?.[1]?.trim() || "";
+      const line = (key: string) => meta.match(new RegExp("^" + key + ":\\s*([^\\r\\n]*)$", "m"));
+      const replaceLine = (key: string, replacement: string) => {
+        const expression = new RegExp("^" + key + ":\\s*.*$", "m");
+        meta = expression.test(meta) ? meta.replace(expression, replacement) : meta + (meta ? "\n" : "") + replacement;
+      };
+
+      const description = line("description")?.[1]?.trim() || "";
+      if (target === "cursor") {
+        if (description.length < 20) replaceLine("description", "description: Apply for evidence-led SEO analysis and implementation.");
+        if (!line("globs")) replaceLine("globs", "globs:");
+        if (!/^alwaysApply:\s*(true|false)\s*$/m.test(meta)) replaceLine("alwaysApply", "alwaysApply: false");
+      } else {
+        const name = line("name")?.[1]?.trim() || "";
+        if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(name)) replaceLine("name", "name: seo-agent-skill");
+        if (description.length < 45 || description.length > 500) replaceLine("description", "description: Use this skill when an SEO task needs reproducible evidence, clear boundaries, and a reviewable output.");
+      }
+
+      const block = "---\n" + meta + "\n---";
+      return frontmatter ? value.replace(frontmatter[0], block) : block + (value ? "\n\n" + value : "");
+    };
+
+    const applyCheckFix = (item: Check) => {
+      const format = formatSelect.value as Format;
+      const target = targetSelect.value as Target;
+      let value = input.value.trim();
+      if (format === "skill" && metadataIds.has(item.id)) {
+        value = repairMetadata(value, target);
+      } else if (item.fix && !value.includes(item.fix)) {
+        value = item.id === "prompt-trigger" ? item.fix + (value ? "\n\n" + value : "") : value + (value ? "\n\n" : "") + item.fix;
+      }
+      input.value = value;
+      renderV2();
+      status.textContent = de ? "Fix angewendet. Inhalt und Scope fachlich prüfen." : "Fix applied. Review content and scope before use.";
+      input.focus({ preventScroll: true });
+    };
+
     const renderV2 = () => {
       currentChecks = evaluate(input.value);
       const counts = countsFor(currentChecks);
       const issueCount = counts.warn + counts.fail;
+      const format = formatSelect.value as Format;
       const target = targetSelect.value as Target;
+      const activeSample = sampleFor(format, target);
       summary.textContent = de
         ? counts.pass + " bestanden · " + counts.warn + " Hinweise · " + counts.fail + " Fehler"
         : counts.pass + " passed · " + counts.warn + " warnings · " + counts.fail + " errors";
       summary.dataset.state = counts.fail > 0 ? "fail" : counts.warn > 0 ? "warn" : "pass";
       countLabel.textContent = de ? currentChecks.length + " PRÜFPUNKTE" : currentChecks.length + " CHECKS";
-      exampleBadge.textContent = input.value === sample ? (de ? "Beispiel" : "Example") : input.value.trim() ? (de ? "Eigene Eingabe" : "Your input") : (de ? "Leer" : "Empty");
+      exampleBadge.textContent = input.value === activeSample ? (de ? "Beispiel" : "Example") : input.value.trim() ? (de ? "Eigene Eingabe" : "Your input") : (de ? "Leer" : "Empty");
+      formatHint.textContent = format === "prompt"
+        ? (de ? "Direkt als Prompt in " + targetLabels[target] + " einfügen · Frontmatter ist nicht erforderlich." : "Paste directly as a prompt in " + targetLabels[target] + " · frontmatter is not required.")
+        : (de ? "Empfohlener Projektpfad: " : "Recommended project path: ") + installPaths[target];
+      resultFilter.hidden = issueCount === 0;
+      resultFilter.setAttribute("aria-pressed", String(showIssuesOnly));
+      resultFilter.textContent = showIssuesOnly ? (de ? "Alle anzeigen" : "Show all") : (de ? "Nur offene" : "Issues only");
       repairAll.hidden = issueCount === 0;
       packageLink.hidden = issueCount > 0;
       packageLink.href = (de ? "/skill-packs" : "/en/skill-packs") + "?agent=" + target;
@@ -264,11 +332,12 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
         : (de ? "Jetzt kannst du die Datei für den gewählten Agenten verpacken oder reale Taskläufe zur Methodik prüfen." : "You can now package the file for the selected agent or review real task runs for methodology.");
       dataHandoff.hidden = !/(crawl|keyword|gsc|search console|serp|rank|traffic|index|suchvolumen)/i.test(input.value);
 
-      results.replaceChildren(...currentChecks.map((item, index) => {
+      const visibleChecks = showIssuesOnly && issueCount > 0 ? currentChecks.filter((item) => item.status !== "pass") : currentChecks;
+      results.replaceChildren(...visibleChecks.map((item) => {
         const row = document.createElement("div");
         row.dataset.status = item.status;
         const number = document.createElement("span");
-        number.textContent = String(index + 1).padStart(2, "0");
+        number.textContent = String(currentChecks.indexOf(item) + 1).padStart(2, "0");
         const body = document.createElement("div");
         const title = document.createElement("strong");
         title.textContent = item.title;
@@ -282,14 +351,21 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
           label.textContent = de ? "Fehlender Abschnitt" : "Missing block";
           const code = document.createElement("code");
           code.textContent = item.fix;
-          const button = document.createElement("button");
-          button.type = "button";
-          button.textContent = de ? "Fix-Block kopieren" : "Copy fix block";
-          button.addEventListener("click", async () => {
+          const actions = document.createElement("div");
+          actions.className = "checker-fix-actions";
+          const apply = document.createElement("button");
+          apply.type = "button";
+          apply.textContent = de ? "Fix anwenden" : "Apply fix";
+          apply.addEventListener("click", () => applyCheckFix(item));
+          const copy = document.createElement("button");
+          copy.type = "button";
+          copy.textContent = de ? "Fix-Block kopieren" : "Copy fix block";
+          copy.addEventListener("click", async () => {
             await copyText(item.fix || "");
             status.textContent = de ? "Fix-Block kopiert." : "Fix block copied.";
           });
-          fix.append(label, code, button);
+          actions.append(apply, copy);
+          fix.append(label, code, actions);
           body.append(fix);
         }
         const state = document.createElement("b");
@@ -303,27 +379,11 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
       const format = formatSelect.value as Format;
       const target = targetSelect.value as Target;
       let value = input.value.trim();
-      if (format === "skill") {
-        const frontmatter = value.match(/^---\s*\r?\n([\s\S]*?)\r?\n---/);
-        if (!frontmatter) {
-          const block = target === "cursor"
-            ? "---\ndescription: Apply for evidence-led SEO analysis and implementation.\nglobs:\nalwaysApply: false\n---"
-            : "---\nname: seo-agent-skill\ndescription: Use this skill when an SEO task needs reproducible evidence, clear boundaries, and a reviewable output.\n---";
-          value = block + (value ? "\n\n" + value : "");
-        } else {
-          const meta = frontmatter[1];
-          const additions: string[] = [];
-          if (!/^description:\s*.+$/m.test(meta)) additions.push(target === "cursor" ? "description: Apply for evidence-led SEO analysis and implementation." : "description: Use this skill when an SEO task needs reproducible evidence, clear boundaries, and a reviewable output.");
-          if (target !== "cursor" && !/^name:\s*.+$/m.test(meta)) additions.unshift("name: seo-agent-skill");
-          if (target === "cursor" && !/^globs:\s*.*$/m.test(meta)) additions.push("globs:");
-          if (target === "cursor" && !/^alwaysApply:\s*(true|false)\s*$/m.test(meta)) additions.push("alwaysApply: false");
-          if (additions.length) value = value.replace(frontmatter[0], "---\n" + meta.trim() + "\n" + additions.join("\n") + "\n---");
-        }
-      }
-      const metadataIds = new Set(["frontmatter", "name", "description", "cursor-scope"]);
-      const additions = evaluate(value)
-        .filter((item) => item.status !== "pass" && item.fix && !metadataIds.has(item.id) && !value.includes(item.fix))
-        .map((item) => item.fix);
+      if (format === "skill") value = repairMetadata(value, target);
+      const missing = evaluate(value).filter((item) => item.status !== "pass" && item.fix && !metadataIds.has(item.id) && !value.includes(item.fix));
+      const promptOpening = missing.find((item) => item.id === "prompt-trigger")?.fix;
+      if (promptOpening) value = promptOpening + (value ? "\n\n" + value : "");
+      const additions = missing.filter((item) => item.id !== "prompt-trigger").map((item) => item.fix as string);
       if (additions.length) value += (value ? "\n\n" : "") + additions.join("\n\n");
       input.value = value;
       renderV2();
@@ -339,9 +399,15 @@ Stop on scope change, missing rights, access, cost, or decisive evidence.`;
     };
 
     input.addEventListener("input", renderV2);
-    formatSelect.addEventListener("change", renderV2);
-    targetSelect.addEventListener("change", renderV2);
-    root.querySelector("[data-load-example]")?.addEventListener("click", () => { input.value = sample; renderV2(); input.focus(); });
+    const changeMode = () => {
+      if (knownSamples.has(input.value)) input.value = sampleFor(formatSelect.value as Format, targetSelect.value as Target);
+      showIssuesOnly = true;
+      renderV2();
+    };
+    formatSelect.addEventListener("change", changeMode);
+    targetSelect.addEventListener("change", changeMode);
+    resultFilter.addEventListener("click", () => { showIssuesOnly = !showIssuesOnly; renderV2(); });
+    root.querySelector("[data-load-example]")?.addEventListener("click", () => { input.value = sampleFor(formatSelect.value as Format, targetSelect.value as Target); showIssuesOnly = true; renderV2(); input.focus(); });
     root.querySelector("[data-clear-checker]")?.addEventListener("click", () => { input.value = ""; renderV2(); input.focus(); });
     repairAll.addEventListener("click", repairCurrent);
     root.querySelector("[data-copy-report]")?.addEventListener("click", async () => { const output = await reportV2(); await copyText(output.content); status.textContent = de ? "QA-Report kopiert." : "QA report copied."; });

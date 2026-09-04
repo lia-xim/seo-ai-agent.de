@@ -403,6 +403,9 @@ try {
       warnings: root.querySelectorAll('[data-checker-results] [data-status="warn"]').length,
       exampleBadge: root.querySelector('[data-example-badge]')?.textContent,
       fixButtons: root.querySelectorAll('.checker-fix button').length,
+      applyButtons: Array.from(root.querySelectorAll('.checker-fix button')).filter((button) => button.textContent.includes('anwenden')).length,
+      filterVisible: !root.querySelector('[data-result-filter]').hidden,
+      installHint: root.querySelector('[data-format-hint]').textContent,
       hasFormat: Boolean(root.querySelector('[data-check-format]')),
       hasTarget: Boolean(root.querySelector('[data-check-target]')),
       copy: Boolean(root.querySelector('[data-copy-report]')),
@@ -415,7 +418,8 @@ try {
   assert(skillCheck.h1 === "Prüfe deinen SEO Agent Skill. Repariere ihn direkt.", "Skill Check h1 mismatch");
   assert(skillCheck.initialPassed === 12 && skillCheck.initialSummary.includes('12 bestanden'), "Skill Check maintained example does not pass all twelve rules");
   assert(skillCheck.rows === 12 && skillCheck.failed === 7 && skillCheck.warnings === 5 && skillCheck.weakSummary === '0 bestanden · 5 Hinweise · 7 Fehler', "Skill Check weak-input diagnosis failed");
-  assert(skillCheck.exampleBadge === 'Eigene Eingabe' && skillCheck.fixButtons === 12, "Skill Check example state or fix blocks are incomplete");
+  assert(skillCheck.exampleBadge === 'Eigene Eingabe' && skillCheck.fixButtons === 24 && skillCheck.applyButtons === 12, "Skill Check example state or direct fix actions are incomplete");
+  assert(skillCheck.filterVisible && skillCheck.installHint.includes('.codex/skills/<name>/SKILL.md'), "Skill Check issue filter or install hint is missing");
   assert(skillCheck.hasFormat && skillCheck.hasTarget && skillCheck.copy && skillCheck.download && skillCheck.local, "Skill Check controls, report actions, or local boundary missing");
   assert(skillCheck.scrollWidth <= skillCheck.viewport, "Skill Check desktop overflow detected");
   const checkerModes = JSON.parse(await evaluate(`(async () => {
@@ -430,9 +434,13 @@ try {
     target.dispatchEvent(new Event('change', { bubbles: true }));
     const cursorRows = root.querySelectorAll('[data-checker-results] > div').length;
     const cursorText = root.querySelector('[data-checker-results]').textContent;
+    const cursorExample = input.value;
+    const cursorHint = root.querySelector('[data-format-hint]').textContent;
     format.value = 'prompt';
     format.dispatchEvent(new Event('change', { bubbles: true }));
     const promptRows = root.querySelectorAll('[data-checker-results] > div').length;
+    const promptExample = input.value;
+    const promptHint = root.querySelector('[data-format-hint]').textContent;
     format.value = 'skill';
     format.dispatchEvent(new Event('change', { bubbles: true }));
     target.value = 'codex';
@@ -446,13 +454,32 @@ try {
     await new Promise((resolve) => setTimeout(resolve, 30));
     const repairedSummary = root.querySelector('[data-check-summary]').textContent;
     const repairedPasses = root.querySelectorAll('[data-checker-results] [data-status="pass"]').length;
+    input.value = example.replace('name: technical-seo-auditor', 'name: Bad Name').replace(/description: [^\\n]+/, 'description: tiny');
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    root.querySelector('[data-repair-all]').click();
+    const correctedMetadata = input.value.includes('name: seo-agent-skill') && input.value.includes('description: Use this skill when');
+    const correctedSummary = root.querySelector('[data-check-summary]').textContent;
+    input.value = '# Do SEO\\n\\n## Auftrag\\nRank every page';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    const filteredRows = root.querySelectorAll('[data-checker-results] > div').length;
+    root.querySelector('[data-result-filter]').click();
+    const allRows = root.querySelectorAll('[data-checker-results] > div').length;
     input.value = '# Do SEO\\n\\nRank every page';
     input.dispatchEvent(new Event('input', { bubbles: true }));
-    return JSON.stringify({ cursorRows, cursorText, promptRows, dataHandoffVisible, crawlFoundryLink, disclosure, repairedSummary, repairedPasses });
+    root.querySelector('.checker-fix-actions button').click();
+    const appliedMetadata = { start: input.value.slice(0, 80), summary: root.querySelector('[data-check-summary]').textContent };
+    input.value = '# Do SEO\\n\\nRank every page';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    return JSON.stringify({ cursorRows, cursorText, cursorExample, cursorHint, promptRows, promptExample, promptHint, dataHandoffVisible, crawlFoundryLink, disclosure, repairedSummary, repairedPasses, correctedMetadata, correctedSummary, filteredRows, allRows, appliedMetadata });
   })()`));
   assert(checkerModes.cursorRows === 12 && checkerModes.cursorText.includes('Cursor-Rule-Frontmatter') && checkerModes.cursorText.includes('Cursor-Aktivierung'), "Cursor-specific rule checks are incomplete");
   assert(checkerModes.promptRows === 10, "Prompt mode must use ten relevant checks without SKILL.md-only metadata rules");
+  assert(checkerModes.cursorExample.startsWith('---\ndescription:') && checkerModes.cursorExample.includes('alwaysApply: false') && checkerModes.cursorHint.includes('.cursor/rules/<name>.mdc'), "Cursor example or install path is not target-specific");
+  assert(checkerModes.promptExample.startsWith('Du bist ein evidenzorientierter SEO-Agent.') && !checkerModes.promptExample.startsWith('---') && checkerModes.promptHint.includes('Frontmatter ist nicht erforderlich'), "Prompt example or usage hint is not format-specific");
   assert(checkerModes.repairedPasses === 12 && checkerModes.repairedSummary === '12 bestanden · 0 Hinweise · 0 Fehler', "Deterministic repair did not close all missing rule blocks");
+  assert(checkerModes.correctedMetadata && checkerModes.correctedSummary === '12 bestanden · 0 Hinweise · 0 Fehler', "Invalid metadata was not deterministically corrected");
+  assert(checkerModes.filteredRows === 11 && checkerModes.allRows === 12, "Issue-only result filter did not preserve access to all checks");
+  assert(checkerModes.appliedMetadata.start.startsWith('---\nname: seo-agent-skill') && checkerModes.appliedMetadata.summary.includes('4 bestanden'), "Individual apply-fix action did not repair the selected rule: " + JSON.stringify(checkerModes.appliedMetadata));
   assert(checkerModes.dataHandoffVisible && checkerModes.crawlFoundryLink && checkerModes.disclosure, "Contextual Crawl Foundry handoff or ownership disclosure is incomplete");
   await evaluate("document.querySelector('[data-download-report]').click(); true");
   let downloadedReport;
@@ -464,7 +491,7 @@ try {
   }
   assert(downloadedReport, "Skill Check did not create a downloadable Markdown report");
   const reportText = await readFile(resolve(downloadDir, downloadedReport), 'utf8');
-  assert(reportText.includes('# SEO Agent Skill QA Report') && reportText.includes('Regelwerk-Version: 1.1.0') && reportText.includes('SHA-256 der Eingabe:') && reportText.includes('Zielagent: Codex'), "Skill Check report metadata is incomplete");
+  assert(reportText.includes('# SEO Agent Skill QA Report') && reportText.includes('Regelwerk-Version: 1.2.0') && reportText.includes('SHA-256 der Eingabe:') && reportText.includes('Zielagent: Codex'), "Skill Check report metadata is incomplete");
   assert(reportText.includes('Bestanden: 0 · Hinweise: 5 · Fehler: 7') && reportText.includes('keine Zertifizierung') && reportText.includes('nicht aus'), "Skill Check report results or limitations are incomplete");
   await runAxe("skill check desktop");
   await evaluate("document.querySelector('[data-checker-input]').scrollTop = 0; document.querySelector('[data-skill-checker]').scrollIntoView(); true");

@@ -268,7 +268,7 @@
 
 .checker-input,
 .checker-results { display: grid; min-width: 0; }
-.checker-input { grid-template-rows: auto auto minmax(38rem, 1fr) auto; }
+.checker-input { grid-template-rows: auto auto auto minmax(38rem, 1fr) auto; }
 .checker-input { border-right: 1px solid var(--line); }
 .checker-input header,
 .checker-results > header {
@@ -295,6 +295,12 @@
 .checker-config select { width: 100%; border: 0; border-radius: 0; outline: 0; padding: 0.2rem 1.7rem 0.2rem 0; background-color: transparent; color: var(--text); font: 650 0.8rem/1.4 var(--sans); }
 .checker-config select:focus-visible { box-shadow: 0 2px 0 var(--mint); }
 .checker-config option { background: #111816; color: var(--text); }
+.checker-format-hint { margin: 0; padding: 0.65rem 1.35rem; border-bottom: 1px solid var(--line); color: var(--muted); background: #0a0f0e; font: 0.62rem/1.5 var(--mono); }
+.checker-result-meta { display: flex; align-items: flex-end; flex-direction: column; gap: 0.45rem; }
+.checker-result-meta button { border: 0; padding: 0; background: transparent; color: var(--mint); font: 700 0.66rem/1.4 var(--sans); cursor: pointer; }
+.checker-result-meta button:hover { color: var(--text); }
+.checker-result-meta button:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; }
+.checker-result-meta button[hidden] { display: none; }
 .checker-results > header strong[data-state="fail"] { color: #ff9b8a; }
 .checker-results > header strong[data-state="warn"] { color: #ffd479; }
 .checker-results > header strong[data-state="pass"] { color: var(--mint); }
@@ -329,7 +335,9 @@
 .checker-fix { display: grid; gap: 0.55rem; margin-top: 0.8rem; padding: 0.75rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #080d0c; }
 .checker-fix > span { color: var(--muted); font-family: var(--mono); font-size: 0.58rem; text-transform: uppercase; }
 .checker-fix code { overflow-x: auto; white-space: pre-wrap; color: #c9d8d2; font: 0.66rem/1.5 var(--mono); }
+.checker-fix-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
 .checker-fix button { justify-self: start; border: 0; padding: 0; background: transparent; color: var(--mint); font: 700 0.68rem/1.4 var(--sans); cursor: pointer; }
+.checker-fix-actions button + button { color: var(--muted-strong); }
 .checker-fix button:hover { color: var(--text); }
 .checker-fix button:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; }
 .checker-next-step { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; padding: 1.15rem 1.35rem; border-top: 1px solid var(--line); background: rgba(121,255,195,0.025); }
